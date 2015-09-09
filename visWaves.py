@@ -28,7 +28,7 @@ class Sample():
         self.transcription = transcription
         if prompt != "":
             self.prompt=prompt
-
+a
 
 class PlayWavePage(QtGui.QDialog):
 
