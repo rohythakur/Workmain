@@ -1,5 +1,4 @@
 #! /usr/bin/python
-#eeamesx
 import sys, os
 from PyQt4 import QtGui, QtCore
 import subprocess
@@ -8,9 +7,13 @@ import subprocess
 
 
 
-class Window(QtGui.QDialog):
-    def __init__(self, parent=None):
-        super(Window, self).__init__(parent)
+class Main(QtGui.QMainWindow):
+
+    def __init__(self,parent=None):
+        QtGui.QMainWindow.__init__(self,parent)
+        self.initUI()
+
+    def initUI(self):
 
 
 
@@ -79,7 +82,7 @@ class Window(QtGui.QDialog):
 
 
         self.button4 = QtGui.QPushButton('', self)
-        self.button4.clicked.connect(self.handleButton)
+        self.button4.clicked.connect(lambda: self.run('createxmlfromcsvfile.py'))
         self.button4.setIcon(QtGui.QIcon('min3.jpeg'))
         self.button4.setIconSize(QtCore.QSize(24,24))
         self.button4.move(20, 500)
@@ -98,11 +101,10 @@ class Window(QtGui.QDialog):
         self.lbl = QtGui.QLabel(self)
         date = cal.selectedDate()
         self.lbl.setText(date.toString())
-        self.lbl.move(130, 260)
+        self.lbl.move(600, 400)
 
 
         self.show()
-
 
 
 
@@ -128,17 +130,6 @@ class Window(QtGui.QDialog):
         qp.drawLine(20, 100, 750, 100)
 
 
-    def button1(self):
-        pass
-
-    def button2(self):
-        pass
-
-    def button2(self):
-        pass
-
-    def button2(self):
-        pass
 
 
     def handleButton(self):
@@ -173,7 +164,7 @@ class Window(QtGui.QDialog):
 if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)
 
-    main = Window()
+    main = Main()
     main.show()
 
     sys.exit(app.exec_())
