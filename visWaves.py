@@ -121,20 +121,24 @@ class Window(QtGui.QDialog):
 
 
 
+        #menu = QtGui.QMenu()
+        #menu.addAction(deselect_others)
+        #menu.exec_(self.sender().mapToGlobal(position))
 
-        self.browsebutton1 = QtGui.QPushButton('browse')
-        self.browsebutton1.clicked.connect(self.askForFile)
+        self.wavEntryInput = QtGui.QLineEdit(self)
 
-        self.xmlEntryInput = QtGui.QLineEdit(self)
-        self.browsebutton2 = QtGui.QPushButton('Examine Wav File')
-        self.browsebutton2.clicked.connect(self.loadWavPage)
-
-
-        self.examinebutton = QtGui.QPushButton('Examine Wav File')
-        self.examinebutton.clicked.connect(self.loadWavPage)
+        self.browsebutton11 = QtGui.QPushButton('Browse WAV')
+        self.browsebutton11.clicked.connect(self.browsebutton1)
 
 
-        self.askForFile = QtGui.QLineEdit(self)
+
+
+
+
+
+
+
+
 
 
         self.canvas = FigureCanvas(f)
@@ -149,15 +153,14 @@ class Window(QtGui.QDialog):
         grid = QtGui.QGridLayout()
 
 
-        grid.addWidget(self.askForFile, 1, 1, 1, 3)
-        grid.addWidget(self.browsebutton1, 2, 2, 1, 1)
+        grid.addWidget(self.wavEntryInput, 1, 1, 1, 3)
+        grid.addWidget(self.browsebutton11, 2, 2, 1, 1)
 
 
-        grid.addWidget(self.xmlEntryInput, 3, 1, 1, 3)
-        grid.addWidget(self.browsebutton2, 4, 2, 1, 1)
 
 
-        grid.addWidget(self.examinebutton, 5, 2, 2, 1)
+
+
 
         grid.addWidget(self.canvas, 1, 5, 6, 5)
 
@@ -176,6 +179,11 @@ class Window(QtGui.QDialog):
 #_________________________________________________________________________
     #Functions--------------------------------------------------------------
 
+
+
+    def browsebutton1(self, xmlEntry):
+        browsebutton = QtGui.QPushButton("Browse WAV", self)
+        browsebutton.triggered.connect(lambda: self.askForFile(xmlEntry))
 
     def close_application(self):
         print("Exiting")
@@ -210,8 +218,9 @@ class Window(QtGui.QDialog):
 
     def askForFile(self, target): # get path to file and enter it into the target field
         dirname = QtGui.QFileDialog.getOpenFileName(self, 'Open File', '.')
-
+        self.wavEntryInput.addItem(dirname)
         return dirname
+
 
 
 
@@ -293,11 +302,7 @@ class Window(QtGui.QDialog):
             self.examineButton.config()
         return True
 
-    def askForFile(self, wavpath): # get path to file and enter it into the target field
-        wavEntry, entered = QtGui.QInputDialog.getText(self, 'Input Dialog',
-                                              "Enter a path to a wav file: ")
-        if entered:
-            self.wavpath(str())
+
 
     # callback for loading PlayWavePage, passes file paths
     def loadWavPage(self):
