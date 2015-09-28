@@ -1,19 +1,11 @@
 __author__ = 'eeamesX'
 
-import sys, time
+import sys
 import os
 
 
-import subprocess
-from os.path import abspath
 
-
-from scipy.io.wavfile import read,write
-from pylab import plot,show,subplot,specgram
 from matplotlib.backends import qt4_compat
-from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib.figure import Figure
-
 
 use_pyside = qt4_compat.QT_API == qt4_compat.QT_API_PYSIDE
 
@@ -35,65 +27,151 @@ except AttributeError:
 #_________________________________________________________________________
 
 
-class pageTwo(QtGui.QDialog):
+class pageTwo(QtGui.QMainWindow):
     def __init__(self,parent = None):
-        QtGui.QDialog.__init__(self, parent)
+        QtGui.QMainWindow.__init__(self, parent)
 
         self.initUI()
 
     def initUI(self):
 # button move  (over, down)
-        self.setGeometry(300,300,800,600)
-        self.setWindowTitle("PyMail")
-        self.setWindowIcon(QtGui.QIcon("PyMail"))
+        self.setGeometry(300,300,1280,800)
+        self.setWindowTitle("Intel")
+        self.setWindowIcon(QtGui.QIcon("Intel Converter"))
         self.setStyleSheet("font-size:15px")
+
+
+#_________________________________________________________________________
+#(Menubah)
+
+
+        self.myQMenuBar = QtGui.QMenuBar(self)
+        self.toolBar = QtGui.QToolBar(self)
+        FileMenu = self.myQMenuBar.addMenu('File')
+        AboutMenu = self.myQMenuBar.addMenu('Help')
+
+#______________
+###Actions
+
+        exitAction = QtGui.QAction('Exit', self)
+        exitAction.setShortcut('Ctrl+Q')
+        exitAction.setStatusTip('Quit Program')
+        exitAction.triggered.connect(QtGui.qApp.quit)
+
+        popupmsgAction = QtGui.QAction('ReportErrors', self)
+        popupmsgAction.setStatusTip('Popup')
+        popupmsgAction.triggered.connect(self.popupmsg)
+
+
+###Icon bar
+
+        extractAction = QtGui.QAction(QtGui.QIcon('homologo.png'), 'Home Page', self)
+        extractAction.triggered.connect(self.close_application)
+        FileMenu.addAction(exitAction)
+
+        extractAction = QtGui.QAction(QtGui.QIcon('convertogo.png'), 'Convert Page', self)
+        extractAction.triggered.connect(self.close_application)
+        FileMenu.addAction(exitAction)
+
+        extractAction = QtGui.QAction(QtGui.QIcon('graphlogo.png'), 'Data Page', self)
+        extractAction.triggered.connect(self.close_application)
+        FileMenu.addAction(exitAction)
+
+        AboutMenu.addAction(popupmsgAction)
+##Calnder
+        cal = QtGui.QCalendarWidget(self)
+        cal.setGridVisible(True)
+        cal.move(20, 100)
+        cal.resize(200,200)
+        cal.clicked[QtCore.QDate].connect(self.showDate)
+####
+
+
+
+
+
+
+
+
+#Split Frames
+
+##
+
+#_________________________________________________________________________
+#
+
+#Canvas------------------
+# button move  (over, down)
+
+
+
+        self.lbl = QtGui.QLabel(self)
+        date = cal.selectedDate()
+        self.lbl.setText(date.toString())
+        self.lbl.move(70, 300)
+
+
+        extractAction = QtGui.QAction(QtGui.QIcon('homelogo.png'), 'Home Page', self)
+        extractAction.triggered.connect(self.startPage)
+
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractAction)
+
+        extractAction = QtGui.QAction(QtGui.QIcon('convertlogo.png'), 'Convert Page', self)
+        extractAction.triggered.connect(self.pageTwo)
+
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractAction)
+
+
+        extractAction = QtGui.QAction(QtGui.QIcon('graphlogo.png'), 'Data Page', self)
+        extractAction.triggered.connect(self.pageThree)
+
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractAction)
 
         self.lbl = QtGui.QLabel(self)
         self.lbl.setText("Page Two")
-        self.lbl.move(20,20)
+        self.lbl.move(20,100)
 
         self.button = QtGui.QPushButton('Home', self)
         self.button.clicked.connect(self.startPage)
         self.button.setIconSize(QtCore.QSize(24,24))
-        self.button.move(20, 30)
-        self.button.setFixedSize(100,75)
+        self.button.move(20, 590)
+        self.button.setFixedSize(200,75)
+# button move  (over, down)
 
-
-        self.button = QtGui.QPushButton('Page Two', self)
-        self.button.clicked.connect(self.pageTwo)
-        self.button.setIconSize(QtCore.QSize(24,24))
-        self.button.move(220, 30)
-        self.button.setFixedSize(100,75)
-
-
-
-        self.button2 = QtGui.QPushButton('Page Three', self)
-        self.button2.clicked.connect(self.pageThree)
+        self.button2 = QtGui.QPushButton('Page Two', self)
+        self.button2.clicked.connect(self.pageTwo)
         self.button2.setIconSize(QtCore.QSize(24,24))
-        self.button2.move(420, 30)
-        self.button2.setFixedSize(100,75)
+        self.button2.move(20, 645)
+        self.button2.setFixedSize(200,75)
 
 
+        self.button3 = QtGui.QPushButton('Page Three', self)
+        self.button3.clicked.connect(self.pageThree)
+        self.button3.setIconSize(QtCore.QSize(24,24))
+        self.button3.move(20, 700)
+        self.button3.setFixedSize(200,75)
 
-        self.button4 = QtGui.QPushButton('Quit', self)
-        self.button4.clicked.connect(self.close_application)
-        self.button4.setIconSize(QtCore.QSize(24,24))
-        self.button4.move(620, 500)
-        self.button4.setFixedSize(100,75)
+# button move  (over, down)
+
 
         self.listWidget = QtGui.QListWidget(self)
         self.listWidget.setObjectName(_fromUtf8("listWidget"))
-        self.listWidget.move(75,250)
+        self.listWidget.move(360,300)
+        self.listWidget.resize(300,300)
 
         self.listWidgetcomplete = QtGui.QListWidget(self)
         self.listWidgetcomplete.setObjectName(_fromUtf8("listWidget"))
-        self.listWidgetcomplete.move(475,250)
+        self.listWidgetcomplete.move(780,300)
+        self.listWidgetcomplete.resize(300,300)
 
 
 
     # Open a FILE and append to screen
         self.selectFileButton = QtGui.QPushButton('Select Files', self)
-        self.selectFileButton.move(135, 200)
+        self.selectFileButton.move(455, 250)
         self.selectFileButton.clicked.connect(self.selectFile)
 
 
@@ -101,18 +179,35 @@ class pageTwo(QtGui.QDialog):
 
     # Open a FILE and append to screen
         self.convertButton = QtGui.QPushButton('Convert!', self)
-        self.convertButton.move(350,350)
+        self.convertButton.move(670,400)
         self.convertButton.clicked.connect(self.osconvertfile)
 
 
 
 
+    def popupmsg(self):
+        msg = QtGui.QMessageBox.question(self, "Error!",
+                                         "If you have any questions feel free to ask.  Email me at EdwinX.Eames@intel.com",
+                                         QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+        if msg == QtGui.QMessageBox.Yes:
+
+            sys.exit()
+        else:
+            pass
+
+
+
+    def showDate(self, date):
+
+        self.lbl.setText(date.toString())
+
 
 
     def close_application(self):
-
-        print("whooaaaa so custom!!!")
+        print("whooaaaa you quit!!")
         sys.exit()
+
+
 
 
     def startPage(self):
@@ -120,6 +215,7 @@ class pageTwo(QtGui.QDialog):
         self.hide()
         startpage = mainWindow(self)
         startpage.show()
+        print ("Now Entering Start Page")
 
 
     def pageTwo(self):
@@ -127,26 +223,25 @@ class pageTwo(QtGui.QDialog):
         self.hide()
         pagetwo = pageTwo(self)
         pagetwo.show()
+        print ("Now Entering Page Two")
 
     def pageThree(self):
         self.hide()
         pagethree = pageThree(self)
         pagethree.show()
+        print ("Now Entering Page Three")
 
 
 # **************
 #Functions
-        #directory = ' directory'
-        #convertorString = "python /Users/eeamesX/work/data-scripts/longFileScripts/createXMLFromCSVSept.py"
 
-        #os.system('python createXMLFromCS.py' +directory)
-##########################################
 
     def selectFile(self):
 
 
         self.listWidget.clear() # In case there are any existing elements in the list
         directory = QtGui.QFileDialog.getExistingDirectory(self, "Pick a folder")
+        print directory
 
 
         for file_name in os.listdir(directory):
@@ -154,6 +249,7 @@ class pageTwo(QtGui.QDialog):
                 self.listWidget.addItem(file_name)
                 print (file_name)
         self.directory = directory
+        return directory
 
 
 
@@ -165,12 +261,10 @@ class pageTwo(QtGui.QDialog):
         directoryPath = self.directory
         print directoryPath
 
-        cmd = ('python /Users/eeamesX/PycharmProjects/Workmain/Createxmlfromcsv.py ' +str(directoryPath))
+        cmd = ('python createXMLFromCSV.py '
+               +str(directoryPath))
         print cmd
         os.system(cmd)
-
-
-
 
 
     def convertfile(self, directory):
@@ -292,53 +386,11 @@ class pageTwo(QtGui.QDialog):
 
 
 
-class MyMplCanvas(FigureCanvas):
-    """Ultimately, this is a QWidget (as well as a FigureCanvasAgg, etc.)."""
-    def __init__(self, parent=None, width=5, height=4, dpi=100):
-        fig = Figure(figsize=(width, height), dpi=dpi)
-        self.axes = fig.add_subplot(111)
-        # We want the axes cleared every time plot() is called
-        self.axes.hold(False)
-
-        self.compute_initial_figure()
-
-        #
-        FigureCanvas.__init__(self, fig)
-        self.setParent(parent)
-
-        FigureCanvas.setSizePolicy(self,
-                                   QtGui.QSizePolicy.Expanding,
-                                   QtGui.QSizePolicy.Expanding)
-        FigureCanvas.updateGeometry(self)
-
-    def compute_initial_figure(self):
-        pass
-
-class MyStaticMplCanvas(MyMplCanvas):
-    """Simple canvas with a sine plot."""
-
-    def compute_initial_figure(self):
-        #file = str(QtGui.QFileDialog.getOpenFileName(self, "Select File", "", "*.wav *.mp3"))
-
-        rate,data = read('test.wav') # reading
-        subplot(411)
-        plot(range(len(data)),data)
-        subplot(412)
-        # NFFT is the number of data points used in each block for the FFT
-        # and noverlap is the number of points of overlap between blocks
-        specgram(data, NFFT=128, noverlap=0) # small window
-        subplot(413)
-        specgram(data, NFFT=512, noverlap=0)
-        subplot(414)
-        specgram(data, NFFT=1024, noverlap=0) # big window
-
-        self.show()
 
 
-
-class pageThree(QtGui.QDialog):
+class pageThree(QtGui.QMainWindow):
     def __init__(self, parent=None):
-        QtGui.QDialog.__init__(self, parent)
+        QtGui.QMainWindow.__init__(self, parent)
 
         self.initUI()
 
@@ -347,115 +399,11 @@ class pageThree(QtGui.QDialog):
 
 
     def initUI(self):
-# button move  (over, down)
-        self.setGeometry(300,300,800,600)
-        self.setWindowTitle("PyMail")
-        self.setWindowIcon(QtGui.QIcon("PyMail"))
-        self.setStyleSheet("font-size:15px")
-
-
-
-        self.lbl = QtGui.QLabel(self)
-        self.lbl.setText("Page Three")
-        self.lbl.move(20,20)
-
-        self.button = QtGui.QPushButton('Home', self)
-        self.button.clicked.connect(self.startPage)
-        self.button.setIconSize(QtCore.QSize(24,24))
-        self.button.move(20, 30)
-        self.button.setFixedSize(100,75)
-
-
-        self.button = QtGui.QPushButton('Page Two', self)
-        self.button.clicked.connect(self.pageTwo)
-        self.button.setIconSize(QtCore.QSize(24,24))
-        self.button.move(220, 30)
-        self.button.setFixedSize(100,75)
-
-
-        self.button2 = QtGui.QPushButton('Page Three', self)
-        self.button2.clicked.connect(self.pageThree)
-        self.button2.setIconSize(QtCore.QSize(24,24))
-        self.button2.move(420, 30)
-        self.button2.setFixedSize(100,75)
-
-
-
-        self.button4 = QtGui.QPushButton('Quit', self)
-        self.button4.clicked.connect(self.close_application)
-        self.button4.setIconSize(QtCore.QSize(24,24))
-        self.button4.move(620, 500)
-        self.button4.setFixedSize(100,75)
-
-
-        # Open a FILE and append to screen
-        self.buttonSelect = QtGui.QPushButton('Select Wav', self)
-        self.buttonSelect.move(135, 200)
-        #self.buttonSelect.clicked.connect(self.computeInitialFigure)
-
-
-        self.main_widget = QtGui.QWidget(self)
-
-        l = QtGui.QVBoxLayout(self.main_widget)
-        sc = MyStaticMplCanvas(self.main_widget, width=5, height=4, dpi=100)
-
-        l.addWidget(sc)
-        self.main_widget.setFocus()
-        self.setCentralWidget(self.main_widget)
-
-        self.statusBar().showMessage("All hail matplotlib!", 2000)
-
-
-
-
-    def close_application(self):
-        print("whooaaaa so custom!!!")
-        sys.exit()
-
-
-    def startPage(self):
-
-        self.hide()
-        startpage = mainWindow(self)
-        startpage.show()
-
-
-    def pageTwo(self):
-
-        self.hide()
-        pagetwo = pageTwo(self)
-        pagetwo.show()
-
-    def pageThree(self):
-        self.hide()
-        pagethree = pageThree(self)
-        pagethree.show()
-
-
-
-
-
-
-
-#_________________________________________________________________________
-#_________________________________________________________________________
-#_________________________________________________________________________
-#_________________________________________________________________________
-#_________________________________________________________________________
-#_________________________________________________________________________
-
-class mainWindow(QtGui.QMainWindow):
-
-    def __init__(self,parent=None):
-        QtGui.QMainWindow.__init__(self,parent)
-        self.initUI()
-
-    def initUI(self):
-        self.setGeometry(300,300,800,600)
+        self.setGeometry(300,300,1280,800)
         self.setWindowTitle("Intel")
         self.setWindowIcon(QtGui.QIcon("Intel.png"))
-        self.setStyleSheet("font-size:15px")
-
+        #self.setStyleSheet("background-color: rgb(255, 255, 255);\n")
+                           #"border:1px solid rgb(0, 131, 195);")
 
 
 
@@ -469,25 +417,59 @@ class mainWindow(QtGui.QMainWindow):
         AboutMenu = self.myQMenuBar.addMenu('Help')
 
 #______________
-
+###Actions
 
         exitAction = QtGui.QAction('Exit', self)
         exitAction.setShortcut('Ctrl+Q')
         exitAction.setStatusTip('Quit Program')
         exitAction.triggered.connect(QtGui.qApp.quit)
 
-
-
         popupmsgAction = QtGui.QAction('ReportErrors', self)
         popupmsgAction.setStatusTip('Popup')
         popupmsgAction.triggered.connect(self.popupmsg)
 
 
+
+
+
+
+
+
+
+
+###Icon bar
+
+        extractAction = QtGui.QAction(QtGui.QIcon('homologo.png'), 'Home Page', self)
+        extractAction.triggered.connect(self.close_application)
+        FileMenu.addAction(exitAction)
+
+        extractAction = QtGui.QAction(QtGui.QIcon('convertogo.png'), 'Convert Page', self)
+        extractAction.triggered.connect(self.close_application)
+        FileMenu.addAction(exitAction)
+
+        extractAction = QtGui.QAction(QtGui.QIcon('graphlogo.png'), 'Data Page', self)
+        extractAction.triggered.connect(self.close_application)
         FileMenu.addAction(exitAction)
 
         AboutMenu.addAction(popupmsgAction)
+##Calnder
+        cal = QtGui.QCalendarWidget(self)
+        cal.setGridVisible(True)
+        cal.move(20, 100)
+        cal.resize(200,200)
+        cal.clicked[QtCore.QDate].connect(self.showDate)
+####
 
 
+
+
+
+
+
+
+#Split Frames
+
+##
 
 #_________________________________________________________________________
 #
@@ -495,39 +477,77 @@ class mainWindow(QtGui.QMainWindow):
 #Canvas------------------
 # button move  (over, down)
 
-        self.button = QtGui.QPushButton('Home', self)
-        self.button.clicked.connect(self.startPage)
-        self.button.setIconSize(QtCore.QSize(24,24))
-        self.button.move(20, 30)
-        self.button.setFixedSize(100,75)
-
-
-        self.button = QtGui.QPushButton('Page Two', self)
-        self.button.clicked.connect(self.pageTwo)
-        self.button.setIconSize(QtCore.QSize(24,24))
-        self.button.move(220, 30)
-        self.button.setFixedSize(100,75)
-
-
-        self.button2 = QtGui.QPushButton('Page Three', self)
-        self.button2.clicked.connect(self.pageThree)
-        self.button2.setIconSize(QtCore.QSize(24,24))
-        self.button2.move(420, 30)
-        self.button2.setFixedSize(100,75)
-
-
-
-        self.button4 = QtGui.QPushButton('Quit', self)
-        self.button4.clicked.connect(self.close_application)
-        self.button4.setIconSize(QtCore.QSize(24,24))
-        self.button4.move(620, 500)
-        self.button4.setFixedSize(100,75)
 
 
 
         self.lbl = QtGui.QLabel(self)
-        self.lbl.setText("Home")
-        self.lbl.move(390,100)
+        date = cal.selectedDate()
+        self.lbl.setText(date.toString())
+        self.lbl.move(70, 300)
+
+
+        extractAction = QtGui.QAction(QtGui.QIcon('homelogo.png'), 'Home Page', self)
+        extractAction.triggered.connect(self.startPage)
+
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractAction)
+
+        extractAction = QtGui.QAction(QtGui.QIcon('convertlogo.png'), 'Convert Page', self)
+        extractAction.triggered.connect(self.pageTwo)
+
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractAction)
+
+
+        extractAction = QtGui.QAction(QtGui.QIcon('graphlogo.png'), 'Data Page', self)
+        extractAction.triggered.connect(self.pageThree)
+
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractAction)
+
+
+
+
+
+        self.button = QtGui.QPushButton('Home', self)
+        self.button.clicked.connect(self.startPage)
+        self.button.setIconSize(QtCore.QSize(24,24))
+        self.button.move(20, 590)
+        self.button.setFixedSize(200,75)
+
+
+        self.button2 = QtGui.QPushButton('Page Two', self)
+        self.button2.clicked.connect(self.pageTwo)
+        self.button2.setIconSize(QtCore.QSize(24,24))
+        self.button2.move(20, 645)
+        self.button2.setFixedSize(200,75)
+
+
+        self.button3 = QtGui.QPushButton('Page Three', self)
+        self.button3.clicked.connect(self.pageThree)
+        self.button3.setIconSize(QtCore.QSize(24,24))
+        self.button3.move(20, 700)
+        self.button3.setFixedSize(200,75)
+
+
+
+
+
+
+        self.lbl = QtGui.QLabel(self)
+        self.lbl.setText("Data Team Program")
+        self.lbl.resize(145, 25)
+        self.lbl.move(580,40)
+
+
+        self.pixmap = QtGui.QPixmap("intelmed.png")
+
+        self.lbl2 = QtGui.QLabel(self)
+        self.lbl2.setPixmap(self.pixmap)
+        self.lbl2.move(1000,40)
+        self.lbl2.resize(300,200)
+
+
 
         self.show()
 
@@ -548,7 +568,9 @@ class mainWindow(QtGui.QMainWindow):
 
 
 
+    def showDate(self, date):
 
+        self.lbl.setText(date.toString())
     def close_application(self):
         print("whooaaaa so custom!!!")
         sys.exit()
@@ -559,6 +581,7 @@ class mainWindow(QtGui.QMainWindow):
         self.hide()
         startpage = mainWindow(self)
         startpage.show()
+        print ("Now Entering Start Page")
 
 
     def pageTwo(self):
@@ -566,11 +589,236 @@ class mainWindow(QtGui.QMainWindow):
         self.hide()
         pagetwo = pageTwo(self)
         pagetwo.show()
+        print ("Now Entering Page Two")
 
     def pageThree(self):
         self.hide()
         pagethree = pageThree(self)
         pagethree.show()
+        print ("Now Entering Page Three")
+
+
+
+
+
+
+
+
+
+
+#_________________________________________________________________________
+#_________________________________________________________________________
+#_________________________________________________________________________
+#_________________________________________________________________________
+#_________________________________________________________________________
+#_________________________________________________________________________
+
+class mainWindow(QtGui.QMainWindow):
+
+    def __init__(self,parent=None):
+        QtGui.QMainWindow.__init__(self,parent)
+        self.initUI()
+
+
+
+    def initUI(self):
+        self.setGeometry(300,300,1280,800)
+        self.setWindowTitle("Intel")
+        self.setWindowIcon(QtGui.QIcon("Intel.png"))
+        #self.setStyleSheet("background-color: rgb(255, 255, 255);\n")
+                           #"border:1px solid rgb(0, 131, 195);")
+
+
+
+#_________________________________________________________________________
+#(Menubah)
+
+
+        self.myQMenuBar = QtGui.QMenuBar(self)
+
+        FileMenu = self.myQMenuBar.addMenu('File')
+        AboutMenu = self.myQMenuBar.addMenu('Help')
+
+#______________
+###Actions
+
+        exitAction = QtGui.QAction('Exit', self)
+        exitAction.setShortcut('Ctrl+Q')
+        exitAction.setStatusTip('Quit Program')
+        exitAction.triggered.connect(QtGui.qApp.quit)
+
+        popupmsgAction = QtGui.QAction('ReportErrors', self)
+        popupmsgAction.setStatusTip('Popup')
+        popupmsgAction.triggered.connect(self.popupmsg)
+
+
+
+
+
+
+
+
+
+
+###Icon bar
+
+        extractAction = QtGui.QAction(QtGui.QIcon('homologo.png'), 'Home Page', self)
+        extractAction.triggered.connect(self.close_application)
+        FileMenu.addAction(exitAction)
+
+        extractAction = QtGui.QAction(QtGui.QIcon('convertogo.png'), 'Convert Page', self)
+        extractAction.triggered.connect(self.close_application)
+        FileMenu.addAction(exitAction)
+
+        extractAction = QtGui.QAction(QtGui.QIcon('graphlogo.png'), 'Data Page', self)
+        extractAction.triggered.connect(self.close_application)
+        FileMenu.addAction(exitAction)
+
+        AboutMenu.addAction(popupmsgAction)
+##Calnder
+        cal = QtGui.QCalendarWidget(self)
+        cal.setGridVisible(True)
+        cal.move(20, 100)
+        cal.resize(200,200)
+        cal.clicked[QtCore.QDate].connect(self.showDate)
+####
+
+
+
+
+
+
+
+
+#Split Frames
+
+##
+
+#_________________________________________________________________________
+#
+
+#Canvas------------------
+# button move  (over, down)
+
+
+
+
+        self.lbl = QtGui.QLabel(self)
+        date = cal.selectedDate()
+        self.lbl.setText(date.toString())
+        self.lbl.move(70, 300)
+
+
+        extractAction = QtGui.QAction(QtGui.QIcon('homelogo.png'), 'Home Page', self)
+        extractAction.triggered.connect(self.startPage)
+
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractAction)
+
+        extractAction = QtGui.QAction(QtGui.QIcon('convertlogo.png'), 'Convert Page', self)
+        extractAction.triggered.connect(self.pageTwo)
+
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractAction)
+
+
+        extractAction = QtGui.QAction(QtGui.QIcon('graphlogo.png'), 'Data Page', self)
+        extractAction.triggered.connect(self.pageThree)
+
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractAction)
+
+
+
+
+
+        self.button = QtGui.QPushButton('Home', self)
+        self.button.clicked.connect(self.startPage)
+        self.button.setIconSize(QtCore.QSize(24,24))
+        self.button.move(20, 590)
+        self.button.setFixedSize(200,75)
+
+
+        self.button = QtGui.QPushButton('Page Two', self)
+        self.button.clicked.connect(self.pageTwo)
+        self.button.setIconSize(QtCore.QSize(24,24))
+        self.button.move(20, 645)
+        self.button.setFixedSize(200,75)
+
+
+        self.button2 = QtGui.QPushButton('Page Three', self)
+        self.button2.clicked.connect(self.pageThree)
+        self.button2.setIconSize(QtCore.QSize(24,24))
+        self.button2.move(20, 700)
+        self.button2.setFixedSize(200,75)
+
+
+
+
+
+
+        self.lbl = QtGui.QLabel(self)
+        self.lbl.setText("Data Team Program")
+        self.lbl.resize(145, 25)
+        self.lbl.move(580,40)
+
+
+        self.pixmap = QtGui.QPixmap("intelmed.png")
+
+        self.lbl2 = QtGui.QLabel(self)
+        self.lbl2.setPixmap(self.pixmap)
+        self.lbl2.move(1000,40)
+        self.lbl2.resize(300,200)
+
+
+
+        self.show()
+
+
+
+#_________________________________________________________________________
+#
+    def popupmsg(self):
+        msg = QtGui.QMessageBox.question(self, "Error!",
+                                         "If you have any questions feel free to ask.  Email me at EdwinX.Eames@intel.com",
+                                         QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+        if msg == QtGui.QMessageBox.Yes:
+
+            sys.exit()
+        else:
+            pass
+
+
+
+
+    def showDate(self, date):
+
+        self.lbl.setText(date.toString())
+    def close_application(self):
+        print("whooaaaa so custom!!!")
+        sys.exit()
+
+
+    def startPage(self):
+
+        self.hide()
+        startpage = mainWindow(self)
+        startpage.show()
+        print ("Now Entering Start Page")
+
+
+    def pageTwo(self):
+
+        self.hide()
+        pagetwo = pageTwo(self)
+        pagetwo.show()
+        print ("Now Entering Page Two")
+
+    def pageThree(self):
+        self.hide()
+        pagethree = pageThree(self)
+        pagethree.show()
+        print ("Now Entering Page Three")
 
 
 
