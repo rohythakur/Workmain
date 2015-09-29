@@ -4,78 +4,75 @@ from datetime import date
 import os
 import re
 
+directoryPath = sys.argv[1]
 
+directoryPath = directoryPath + "/"
 
-def convert():
-    #directoryPath = sys.argv[1]
+print directoryPath, ':'
 
-    directoryPath = "/"
+# process all non-master CSVs
+for fileLocated in os.listdir(directoryPath):
+    if fileLocated.endswith(".csv") and 'master' not in fileLocated.lower():
 
-    print directoryPath, ':'
+        csvFilename = fileLocated
+        strippedFileName =  os.path.splitext(csvFilename)[0]
+        wavFileName =  directoryPath  + strippedFileName + ".wav"
 
-    # process all non-master CSVs
-    for fileLocated in os.listdir(directoryPath):
-        if fileLocated.endswith(".csv") and 'master' not in fileLocated.lower():
+        print strippedFileName
+        cutOff = re.compile(r"(([0-9]{8})?.*_[Tt]r-[0-9]+)_?(?:([0-9]+)mph)?.*")
+        allGroups = cutOff.search(strippedFileName).groups()
+        result = cutOff.search(strippedFileName)
+        xmlBaseFileName = result.group(1)
+        if result.group(2) is not None: # try to get date of delivery from filename
+            dateDelivery = "%s/%s/%s" % (result.group(2)[0:2], result.group(2)[2:4], result.group(2)[4:8])
+        else:
+            dateDelivery = 'n/a'
+            print 'Could not parse date received from filename'
+        if result.group(3) is not None: # try to get mph from filename
+            mph = result.group(3)
+        else:
+            mph = 'n/a/'
+            print 'Could not parse mph from filename'
 
-            csvFilename = fileLocated
-            strippedFileName =  os.path.splitext(csvFilename)[0]
-            wavFileName =  directoryPath  + strippedFileName + ".wav"
+        csvFilename = directoryPath + csvFilename
+        csvFile = open(csvFilename, 'rU')
 
-            print strippedFileName
-            cutOff = re.compile(r"(([0-9]{8})?.*_[Tt]r-[0-9]+)_?(?:([0-9]+)mph)?.*")
-            allGroups = cutOff.search(strippedFileName).groups()
-            result = cutOff.search(strippedFileName)
-            xmlBaseFileName = result.group(1)
-            if result.group(2) is not None: # try to get date of delivery from filename
-                dateDelivery = "%s/%s/%s" % (result.group(2)[0:2], result.group(2)[2:4], result.group(2)[4:8])
-            else:
-                dateDelivery = 'n/a'
-                print 'Could not parse date received from filename'
-            if result.group(3) is not None: # try to get mph from filename
-                mph = result.group(3)
-            else:
-                mph = 'n/a/'
-                print 'Could not parse mph from filename'
+        csvReader = csv.DictReader(csvFile, delimiter=',', quotechar='"')
 
-            csvFilename = directoryPath + csvFilename
-            csvFile = open(csvFilename, 'rU')
+        postProcTags = ["startTime", "endTime", "transcription", "signalQuality", "startSession", "endSession"]
 
-            csvReader = csv.DictReader(csvFile, delimiter=',', quotechar='"')
+        metaDataObj = metaDataCreator.MetaData()
 
-            postProcTags = ["startTime", "endTime", "transcription", "signalQuality", "startSession", "endSession"]
+        for row in csvReader:
+            sampleNode = etree.Element("Sample")
+            if "literalPrompt" in row and row["literalPrompt"].strip() != '':
+                promptNode = etree.Element("Prompt")
+                promptNode = metaDataCreator.createPromptNode(*[(tagName, row[tagName]) for tagName in row.keys() if tagName not in postProcTags and tagName != 'order'])
+                sampleNode.append(promptNode)
+            if "transcription" in row and row["transcription"].strip() != '':
 
-            metaDataObj = metaDataCreator.MetaData()
+                postProcNode = etree.Element("postProc")
+                postProcNode = metaDataCreator.createPostProcNode(*[row[postProcTag] for postProcTag in postProcTags])
+                sampleNode.append(postProcNode)
 
-            for row in csvReader:
-                sampleNode = etree.Element("Sample")
-                if "literalPrompt" in row and row["literalPrompt"].strip() != '':
-                    promptNode = etree.Element("Prompt")
-                    promptNode = metaDataCreator.createPromptNode(*[(tagName, row[tagName]) for tagName in row.keys() if tagName not in postProcTags and tagName != 'order'])
-                    sampleNode.append(promptNode)
-                if "transcription" in row and row["transcription"].strip() != '':
+            metaDataObj.addSamplePair(sampleNode)
 
-                    postProcNode = etree.Element("postProc")
-                    postProcNode = metaDataCreator.createPostProcNode(*[row[postProcTag] for postProcTag in postProcTags])
-                    sampleNode.append(postProcNode)
+                #print etree.tostring(sampleNode, pretty_print=True)
 
-                metaDataObj.addSamplePair(sampleNode)
-
-                    #print etree.tostring(sampleNode, pretty_print=True)
-
-            metaDataObj.createSpeakerNode(gender="Male") # (speakerId='80', gender="Female", ageGroupMin="40", ageGroupMax="49", nativeSpeaker="True")
-            metaDataObj.createAudioNode(filePath=wavFileName)
-            metaDataObj.createSessionNode(speed=mph, subDomain='biking')
-            metaDataObj.createGeneralNode(originalFileName=xmlBaseFileName, dateOfDelivery=dateDelivery, dateOfProcessing='%s/%s/%s' % (date.today().month, date.today().day, date.today().year))
-            metaDataObj.createHardwareSetupNode(micType='n/a', bikeUnit='311', micAngle='n/a')
+        metaDataObj.createSpeakerNode(gender="Male") # (speakerId='80', gender="Female", ageGroupMin="40", ageGroupMax="49", nativeSpeaker="True")
+        metaDataObj.createAudioNode(filePath=wavFileName)
+        metaDataObj.createSessionNode(speed=mph, subDomain='biking')
+        metaDataObj.createGeneralNode(originalFileName=xmlBaseFileName, dateOfDelivery=dateDelivery, dateOfProcessing='%s/%s/%s' % (date.today().month, date.today().day, date.today().year))
+        metaDataObj.createHardwareSetupNode(micType='n/a', bikeUnit='311', micAngle='n/a')
 
 
 
 
 
 
-            tree = etree.ElementTree(metaDataObj.root)
-            outputFilename = csvFilename.replace(".csv", ".xml")
+        tree = etree.ElementTree(metaDataObj.root)
+        outputFilename = csvFilename.replace(".csv", ".xml")
 
-            tree.write(outputFilename, pretty_print=True)
+        tree.write(outputFilename, pretty_print=True)
 
 

@@ -2,7 +2,8 @@ __author__ = 'eeamesX'
 
 import sys
 import os
-
+import subprocess
+import metaDataCreator
 
 
 from PyQt4 import QtGui, QtCore
@@ -203,12 +204,6 @@ class dataRelease(QtGui.QMainWindow):
         popupmsgAction.triggered.connect(self.popupmsg)
 
 
-
-
-
-
-
-
         AboutMenu.addAction(popupmsgAction)
 
 
@@ -258,10 +253,6 @@ class dataRelease(QtGui.QMainWindow):
 
 
 
-
-#Split Frames
-
-##
 
 #________________________
 
@@ -317,22 +308,59 @@ class dataRelease(QtGui.QMainWindow):
         self.button6.setFixedSize(200,75)
 
 
-
+# button move  (over, down)
 
         self.lbl = QtGui.QLabel(self)
-        self.lbl.setText("Data Release Made Easy")
-        self.lbl.resize(145, 25)
-        self.lbl.move(580,40)
+        self.lbl.setText("SSH Made Easy")
+        self.lbl.resize(145, 125)
+        self.lbl.move(600,20)
 
 
-        self.pixmap = QtGui.QPixmap("intelmed.png")
+        #self.pixmap = QtGui.QPixmap("dotgreen.png")
+
+        #self.lbl2 = QtGui.QLabel(self)
+        #self.lbl2.setPixmap(self.pixmap)
+        #self.lbl2.move(1000,40)
+        #self.lbl2.resize(300,200)
+
+# button move  (over, down)
+
+        self.lbl = QtGui.QLabel(self)
+        self.lbl.setText("Test SSH Connection")
+        self.lbl.resize(145, 205)
+        self.lbl.move(550,60)
+
+        self.userl = QtGui.QLabel("Username: ",self)
+        self.userl.move(350,200)
+        self.user = QtGui.QLineEdit(self)
+        self.user.move(430,200)
+
+        self.sshaddl= QtGui.QLabel("SSH Address:",self)
+        self.sshaddl.move(550,200)
+
+        self.sshadd= QtGui.QLineEdit(self)
+        self.sshadd.setEchoMode(self.sshadd.Password)
+        self.sshadd.move(650,200)
+        self.sshadd.setText('10.127.235.151')
+
+
+        self.button7 = QtGui.QPushButton('Login', self)
+        self.button7.clicked.connect(self.sshTest)
+        self.button7.setIconSize(QtCore.QSize(24,24))
+        self.button7.move(550, 250)
+
+
+        self.echo = QtGui.QCheckBox("Show/Hide Adress",self)
+        self.echo.stateChanged.connect(self.Echo)
+        self.echo.move(550,300)
+        self.echo.resize(140,145)
+
+        self.pixmap = QtGui.QPixmap("dotred.png")
 
         self.lbl2 = QtGui.QLabel(self)
         self.lbl2.setPixmap(self.pixmap)
-        self.lbl2.move(1000,40)
-        self.lbl2.resize(300,200)
-
-
+        self.lbl2.move(775,170)
+        self.lbl2.resize(75,75)
 
         self.show()
 
@@ -340,6 +368,44 @@ class dataRelease(QtGui.QMainWindow):
 
 #____________
 #
+
+
+
+    def sshTest(self):
+
+        HOST="10.127.235.151"
+        # Ports are handled in ~/.ssh/config since we use OpenSSH
+        COMMAND="uname -a"
+
+        USERNAME= self.sshadd.text()
+
+        ssh = subprocess.Popen(["ssh", USERNAME % HOST, COMMAND],
+                               shell=False,
+                               stdout=subprocess.PIPE,
+                               stderr=subprocess.PIPE)
+        print ssh
+        result = ssh.stdout.readlines()
+        print result
+        if result == []:
+            error = ssh.stderr.readlines()
+            print >>sys.stderr, "ERROR: %s" % error
+
+        else:
+            print result
+
+
+    def Echo(self,state):
+        if state == QtCore.Qt.Checked:
+            self.sshadd.setEchoMode(self.sshadd.Normal)
+        else:
+            self.sshadd.setEchoMode(self.sshadd.Password)
+
+
+    def showDate(self, date):
+
+        self.lbl.setText(date.toString())
+
+
     def popupmsg(self):
         msg = QtGui.QMessageBox.question(self, "Error!",
                                          "If you have any questions feel free to ask.  Email me at EdwinX.Eames@intel.com",
@@ -349,13 +415,6 @@ class dataRelease(QtGui.QMainWindow):
             sys.exit()
         else:
             pass
-
-
-
-
-    def showDate(self, date):
-
-        self.lbl.setText(date.toString())
 
 
     def close_application(self):
@@ -672,6 +731,13 @@ class convertorPage(QtGui.QMainWindow):
 
 
 
+
+
+
+
+
+
+
 #_________________________________________________________________________
 #_________________________________________________________________________
 #_________________________________________________________________________
@@ -878,6 +944,8 @@ class dataScience(QtGui.QMainWindow):
     def showDate(self, date):
 
         self.lbl.setText(date.toString())
+
+
     def close_application(self):
         print("whooaaaa so custom!!!")
         sys.exit()
