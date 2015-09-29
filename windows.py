@@ -5,10 +5,6 @@ import os
 
 
 
-from matplotlib.backends import qt4_compat
-
-use_pyside = qt4_compat.QT_API == qt4_compat.QT_API_PYSIDE
-
 from PyQt4 import QtGui, QtCore
 
 try:
@@ -20,14 +16,393 @@ except AttributeError:
 
 
 
-#_________________________________________________________________________
-#_________________________________________________________________________
-#_________________________________________________________________________
-#_________________________________________________________________________
-#_________________________________________________________________________
+#GameWindow Page
 
 
-class pageTwo(QtGui.QMainWindow):
+class gameWindow(QtGui.QMainWindow):
+    def __init__(self, parent=None):
+        QtGui.QMainWindow.__init__(self, parent)
+
+        self.initUI()
+
+
+
+
+
+    def initUI(self):
+        self.setGeometry(300,300,1280,800)
+        self.setWindowTitle("Intel")
+        self.setWindowIcon(QtGui.QIcon("Intel.png"))
+        #self.setStyleSheet("background-color: rgb(255, 255, 255);\n")
+                           #"border:1px solid rgb(0, 131, 195);")
+
+
+
+#_________________________________________________________________________
+#(Menubah)
+
+
+        self.myQMenuBar = QtGui.QMenuBar(self)
+
+        FileMenu = self.myQMenuBar.addMenu('File')
+        AboutMenu = self.myQMenuBar.addMenu('Help')
+
+#______________
+###Actions
+
+        exitAction = QtGui.QAction('Exit', self)
+        exitAction.setShortcut('Ctrl+Q')
+        exitAction.setStatusTip('Quit Program')
+        exitAction.triggered.connect(QtGui.qApp.quit)
+
+
+
+
+
+
+
+
+
+#______________
+###Icon bar
+
+        extractActionHome = QtGui.QAction(QtGui.QIcon('homelogo.png'), 'Home Page', self)
+        extractActionHome.triggered.connect(self.startPage)
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractActionHome)
+
+
+
+        extractActionConvert = QtGui.QAction(QtGui.QIcon('convertlogo.png'), 'Convert Page', self)
+        extractActionConvert.triggered.connect(self.pageTwo)
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractActionConvert)
+
+
+
+
+        extractActiondataScience = QtGui.QAction(QtGui.QIcon('graphlogo.png'), 'Data Page', self)
+        extractActiondataScience.triggered.connect(self.pageThree)
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractActiondataScience)
+
+        extractActiondataRelease = QtGui.QAction(QtGui.QIcon('dataRelease.png'), 'Data Release', self)
+        extractActiondataRelease.triggered.connect(self.pageFour)
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractActiondataRelease)
+
+        extractActiongameWindow = QtGui.QAction(QtGui.QIcon('gamelogo.png'), 'Game Page', self)
+        extractActiongameWindow.triggered.connect(self.pageFive)
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractActiongameWindow)
+
+
+
+    def popupmsg(self):
+        msg = QtGui.QMessageBox.question(self, "Error!",
+                                         "If you have any questions feel free to ask.  Email me at EdwinX.Eames@intel.com",
+                                         QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+        if msg == QtGui.QMessageBox.Yes:
+
+            sys.exit()
+        else:
+            pass
+
+
+
+
+    def showDate(self, date):
+
+        self.lbl.setText(date.toString())
+    def close_application(self):
+        print("whooaaaa so custom!!!")
+        sys.exit()
+
+
+    def startPage(self):
+
+        self.hide()
+        startpage = mainWindow(self)
+        startpage.show()
+        print ("Now Entering Start Page")
+
+
+    def pageTwo(self):
+
+        self.hide()
+        pagetwo = convertorPage(self)
+        pagetwo.show()
+        print ("Now Entering Page Two")
+
+    def pageThree(self):
+        self.hide()
+        pagethree = dataScience(self)
+        pagethree.show()
+        print ("Now Entering Page Three")
+
+
+    def pageFour(self):
+
+        self.hide()
+        pageFour = dataRelease(self)
+        pageFour.show()
+        print ("Now Entering Page 4")
+
+    def pageFive(self):
+        self.hide()
+        pageFive = gameWindow(self)
+        pageFive.show()
+        print ("Now Entering Page 5")
+
+
+#____________
+#
+
+
+#datarelease page#datarelease page#datarelease page#datarelease page
+# #datarelease page#datarelease page#datarelease page#datarelease page
+#datarelease page
+class dataRelease(QtGui.QMainWindow):
+    def __init__(self, parent=None):
+        QtGui.QMainWindow.__init__(self, parent)
+
+        self.initUI()
+
+
+
+
+
+    def initUI(self):
+        self.setGeometry(300,300,1280,800)
+        self.setWindowTitle("Intel")
+        self.setWindowIcon(QtGui.QIcon("Intel.png"))
+        #self.setStyleSheet("background-color: rgb(255, 255, 255);\n")
+                           #"border:1px solid rgb(0, 131, 195);")
+
+
+
+#_________________________________________________________________________
+#(Menubah)
+
+
+        self.myQMenuBar = QtGui.QMenuBar(self)
+
+        FileMenu = self.myQMenuBar.addMenu('File')
+        AboutMenu = self.myQMenuBar.addMenu('Help')
+
+#______________
+###Actions
+
+        exitAction = QtGui.QAction('Exit', self)
+        exitAction.setShortcut('Ctrl+Q')
+        exitAction.setStatusTip('Quit Program')
+        exitAction.triggered.connect(QtGui.qApp.quit)
+
+        popupmsgAction = QtGui.QAction('ReportErrors', self)
+        popupmsgAction.setStatusTip('Popup')
+        popupmsgAction.triggered.connect(self.popupmsg)
+
+
+
+
+
+
+
+
+        AboutMenu.addAction(popupmsgAction)
+
+
+###Icon bar
+
+        extractActionHome = QtGui.QAction(QtGui.QIcon('homelogo.png'), 'Home Page', self)
+        extractActionHome.triggered.connect(self.startPage)
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractActionHome)
+
+
+
+        extractActionConvert = QtGui.QAction(QtGui.QIcon('convertlogo.png'), 'Convert Page', self)
+        extractActionConvert.triggered.connect(self.pageTwo)
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractActionConvert)
+
+
+
+
+        extractActiondataScience = QtGui.QAction(QtGui.QIcon('graphlogo.png'), 'Data Page', self)
+        extractActiondataScience.triggered.connect(self.pageThree)
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractActiondataScience)
+
+        extractActiondataRelease = QtGui.QAction(QtGui.QIcon('dataRelease.png'), 'Data Release', self)
+        extractActiondataRelease.triggered.connect(self.pageFour)
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractActiondataRelease)
+
+        extractActiongameWindow = QtGui.QAction(QtGui.QIcon('gamelogo.png'), 'Game Page', self)
+        extractActiongameWindow.triggered.connect(self.pageFive)
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractActiongameWindow)
+
+##Calnder
+        cal = QtGui.QCalendarWidget(self)
+        cal.setGridVisible(True)
+        cal.move(20, 100)
+        cal.resize(200,200)
+        cal.clicked[QtCore.QDate].connect(self.showDate)
+####
+
+
+
+
+
+
+
+
+#Split Frames
+
+##
+
+#________________________
+
+#Canvas------------------
+# button move  (over, down)
+
+
+
+
+        self.lbl = QtGui.QLabel(self)
+        date = cal.selectedDate()
+        self.lbl.setText(date.toString())
+        self.lbl.move(70, 300)
+
+
+
+
+
+
+
+        self.button = QtGui.QPushButton('Home', self)
+        self.button.clicked.connect(self.startPage)
+        self.button.setIconSize(QtCore.QSize(24,24))
+        self.button.move(20, 480)
+        self.button.setFixedSize(200,75)
+# button move  (over, down)
+
+        self.button2 = QtGui.QPushButton('Convertor Page', self)
+        self.button2.clicked.connect(self.pageTwo)
+        self.button2.setIconSize(QtCore.QSize(24,24))
+        self.button2.move(20, 535)
+        self.button2.setFixedSize(200,75)
+
+
+        self.button3 = QtGui.QPushButton('Data Science', self)
+        self.button3.clicked.connect(self.pageThree)
+        self.button3.setIconSize(QtCore.QSize(24,24))
+        self.button3.move(20, 590)
+        self.button3.setFixedSize(200,75)
+
+
+
+        self.button5 = QtGui.QPushButton('Remote File Upload', self)
+        self.button5.clicked.connect(self.pageFour)
+        self.button5.setIconSize(QtCore.QSize(24,24))
+        self.button5.move(20, 645)
+        self.button5.setFixedSize(200,75)
+
+        self.button6 = QtGui.QPushButton('Game Page', self)
+        self.button6.clicked.connect(self.pageFive)
+        self.button6.setIconSize(QtCore.QSize(24,24))
+        self.button6.move(20, 700)
+        self.button6.setFixedSize(200,75)
+
+
+
+
+        self.lbl = QtGui.QLabel(self)
+        self.lbl.setText("Data Release Made Easy")
+        self.lbl.resize(145, 25)
+        self.lbl.move(580,40)
+
+
+        self.pixmap = QtGui.QPixmap("intelmed.png")
+
+        self.lbl2 = QtGui.QLabel(self)
+        self.lbl2.setPixmap(self.pixmap)
+        self.lbl2.move(1000,40)
+        self.lbl2.resize(300,200)
+
+
+
+        self.show()
+
+
+
+#____________
+#
+    def popupmsg(self):
+        msg = QtGui.QMessageBox.question(self, "Error!",
+                                         "If you have any questions feel free to ask.  Email me at EdwinX.Eames@intel.com",
+                                         QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+        if msg == QtGui.QMessageBox.Yes:
+
+            sys.exit()
+        else:
+            pass
+
+
+
+
+    def showDate(self, date):
+
+        self.lbl.setText(date.toString())
+
+
+    def close_application(self):
+        print("whooaaaa so custom!!!")
+        sys.exit()
+
+
+    def startPage(self):
+
+        self.hide()
+        startpage = mainWindow(self)
+        startpage.show()
+        print ("Now Entering Start Page")
+
+
+    def pageTwo(self):
+
+        self.hide()
+        pagetwo = convertorPage(self)
+        pagetwo.show()
+        print ("Now Entering Page Two")
+
+    def pageThree(self):
+        self.hide()
+        pagethree = dataScience(self)
+        pagethree.show()
+        print ("Now Entering Page Three")
+
+
+    def pageFour(self):
+
+        self.hide()
+        pageFour = dataRelease(self)
+        pageFour.show()
+        print ("Now Entering Page 4")
+
+    def pageFive(self):
+        self.hide()
+        pageFive = gameWindow(self)
+        pageFive.show()
+        print ("Now Entering Page 5")
+
+
+
+#__________________________Data Releaee Page
+
+class convertorPage(QtGui.QMainWindow):
     def __init__(self,parent = None):
         QtGui.QMainWindow.__init__(self, parent)
 
@@ -61,23 +436,41 @@ class pageTwo(QtGui.QMainWindow):
         popupmsgAction = QtGui.QAction('ReportErrors', self)
         popupmsgAction.setStatusTip('Popup')
         popupmsgAction.triggered.connect(self.popupmsg)
-
+        AboutMenu.addAction(popupmsgAction)
 
 ###Icon bar
 
-        extractAction = QtGui.QAction(QtGui.QIcon('homologo.png'), 'Home Page', self)
-        extractAction.triggered.connect(self.close_application)
-        FileMenu.addAction(exitAction)
+        extractActionHome = QtGui.QAction(QtGui.QIcon('homelogo.png'), 'Home Page', self)
+        extractActionHome.triggered.connect(self.startPage)
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractActionHome)
 
-        extractAction = QtGui.QAction(QtGui.QIcon('convertogo.png'), 'Convert Page', self)
-        extractAction.triggered.connect(self.close_application)
-        FileMenu.addAction(exitAction)
 
-        extractAction = QtGui.QAction(QtGui.QIcon('graphlogo.png'), 'Data Page', self)
-        extractAction.triggered.connect(self.close_application)
-        FileMenu.addAction(exitAction)
 
-        AboutMenu.addAction(popupmsgAction)
+        extractActionConvert = QtGui.QAction(QtGui.QIcon('convertlogo.png'), 'Convert Page', self)
+        extractActionConvert.triggered.connect(self.pageTwo)
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractActionConvert)
+
+
+
+
+        extractActiondataScience = QtGui.QAction(QtGui.QIcon('graphlogo.png'), 'Data Page', self)
+        extractActiondataScience.triggered.connect(self.pageThree)
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractActiondataScience)
+
+        extractActiondataRelease = QtGui.QAction(QtGui.QIcon('dataRelease.png'), 'Data Release', self)
+        extractActiondataRelease.triggered.connect(self.pageFour)
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractActiondataRelease)
+
+        extractActiongameWindow = QtGui.QAction(QtGui.QIcon('gamelogo.png'), 'Game Page', self)
+        extractActiongameWindow.triggered.connect(self.pageFive)
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractActiongameWindow)
+
+
 ##Calnder
         cal = QtGui.QCalendarWidget(self)
         cal.setGridVisible(True)
@@ -105,54 +498,53 @@ class pageTwo(QtGui.QMainWindow):
 
 
 
+
         self.lbl = QtGui.QLabel(self)
         date = cal.selectedDate()
         self.lbl.setText(date.toString())
         self.lbl.move(70, 300)
 
 
-        extractAction = QtGui.QAction(QtGui.QIcon('homelogo.png'), 'Home Page', self)
-        extractAction.triggered.connect(self.startPage)
 
-        self.toolBar = self.addToolBar("Extraction")
-        self.toolBar.addAction(extractAction)
-
-        extractAction = QtGui.QAction(QtGui.QIcon('convertlogo.png'), 'Convert Page', self)
-        extractAction.triggered.connect(self.pageTwo)
-
-        self.toolBar = self.addToolBar("Extraction")
-        self.toolBar.addAction(extractAction)
-
-
-        extractAction = QtGui.QAction(QtGui.QIcon('graphlogo.png'), 'Data Page', self)
-        extractAction.triggered.connect(self.pageThree)
-
-        self.toolBar = self.addToolBar("Extraction")
-        self.toolBar.addAction(extractAction)
 
         self.lbl = QtGui.QLabel(self)
         self.lbl.setText("Page Two")
         self.lbl.move(20,100)
 
+
         self.button = QtGui.QPushButton('Home', self)
         self.button.clicked.connect(self.startPage)
         self.button.setIconSize(QtCore.QSize(24,24))
-        self.button.move(20, 590)
+        self.button.move(20, 480)
         self.button.setFixedSize(200,75)
 # button move  (over, down)
 
-        self.button2 = QtGui.QPushButton('Page Two', self)
+        self.button2 = QtGui.QPushButton('Convertor Page', self)
         self.button2.clicked.connect(self.pageTwo)
         self.button2.setIconSize(QtCore.QSize(24,24))
-        self.button2.move(20, 645)
+        self.button2.move(20, 535)
         self.button2.setFixedSize(200,75)
 
 
-        self.button3 = QtGui.QPushButton('Page Three', self)
+        self.button3 = QtGui.QPushButton('Data Science', self)
         self.button3.clicked.connect(self.pageThree)
         self.button3.setIconSize(QtCore.QSize(24,24))
-        self.button3.move(20, 700)
+        self.button3.move(20, 590)
         self.button3.setFixedSize(200,75)
+
+
+
+        self.button5 = QtGui.QPushButton('Remote File Upload', self)
+        self.button5.clicked.connect(self.pageFour)
+        self.button5.setIconSize(QtCore.QSize(24,24))
+        self.button5.move(20, 645)
+        self.button5.setFixedSize(200,75)
+
+        self.button6 = QtGui.QPushButton('Game Page', self)
+        self.button6.clicked.connect(self.pageFive)
+        self.button6.setIconSize(QtCore.QSize(24,24))
+        self.button6.move(20, 700)
+        self.button6.setFixedSize(200,75)
 
 # button move  (over, down)
 
@@ -172,7 +564,7 @@ class pageTwo(QtGui.QMainWindow):
     # Open a FILE and append to screen
         self.selectFileButton = QtGui.QPushButton('Select Files', self)
         self.selectFileButton.move(455, 250)
-        self.selectFileButton.clicked.connect(self.selectFile)
+        self.selectFileButton.clicked.connect(self.selectFilecsvtoxml)
 
 
 
@@ -180,10 +572,10 @@ class pageTwo(QtGui.QMainWindow):
     # Open a FILE and append to screen
         self.convertButton = QtGui.QPushButton('Convert!', self)
         self.convertButton.move(670,400)
-        self.convertButton.clicked.connect(self.osconvertfile)
+        self.convertButton.clicked.connect(self.osconvertfilecsvtoxml)
 
 
-
+        self.show()
 
     def popupmsg(self):
         msg = QtGui.QMessageBox.question(self, "Error!",
@@ -209,7 +601,6 @@ class pageTwo(QtGui.QMainWindow):
 
 
 
-
     def startPage(self):
 
         self.hide()
@@ -221,22 +612,35 @@ class pageTwo(QtGui.QMainWindow):
     def pageTwo(self):
 
         self.hide()
-        pagetwo = pageTwo(self)
+        pagetwo = convertorPage(self)
         pagetwo.show()
         print ("Now Entering Page Two")
 
     def pageThree(self):
         self.hide()
-        pagethree = pageThree(self)
+        pagethree = dataScience(self)
         pagethree.show()
         print ("Now Entering Page Three")
 
+
+    def pageFour(self):
+
+        self.hide()
+        pageFour = dataRelease(self)
+        pageFour.show()
+        print ("Now Entering Page 4")
+
+    def pageFive(self):
+        self.hide()
+        pageFive = gameWindow(self)
+        pageFive.show()
+        print ("Now Entering Page 5")
 
 # **************
 #Functions
 
 
-    def selectFile(self):
+    def selectFilecsvtoxml(self):
 
 
         self.listWidget.clear() # In case there are any existing elements in the list
@@ -255,7 +659,7 @@ class pageTwo(QtGui.QMainWindow):
 
 
 
-    def osconvertfile(self):
+    def osconvertfilecsvtoxml(self):
 
 
         directoryPath = self.directory
@@ -267,112 +671,6 @@ class pageTwo(QtGui.QMainWindow):
         os.system(cmd)
 
 
-    def convertfile(self, directory):
-
-        import csv, argparse, sys, metaDataCreator
-        from lxml import etree
-        from datetime import date
-        import os
-        import re
-
-        genderMap = {"M": "Male", "F" : "Female"}
-        nativeMap = {"N": "True", "NN": "False"}
-
-
-
-
-        directoryPath = directory
-
-        #directoryPath = "./" + directoryPath + "/"
-
-        print directoryPath, ':'
-
-        # process all non-master CSVs
-        for fileLocated in directoryPath:
-            if fileLocated.endswith(".csv") and 'master' not in fileLocated.lower():
-
-                csvFilename = fileLocated
-                strippedFileName =  os.path.splitext(csvFilename)[0]
-                wavFileName =  directoryPath  + strippedFileName + ".wav"
-
-                print strippedFileName
-                filenameRE = re.compile(r"(?P<PTL>PTL{2}[0-9][a-z]?)-(?P<UID>UID_[^-]*)-(?P<GENDER>[MF])-(?P<NATIVITY>N{1,2})-(?P<SERIALNUMBER>[0-9a-z]{6})-.*")
-                filenameGroups = filenameRE.search(strippedFileName)
-
-                ptlPortion = filenameGroups.group("PTL")
-                uidPortion = filenameGroups.group("UID")
-                genderPortion = filenameGroups.group("GENDER")
-                nativityPortion = filenameGroups.group("NATIVITY")
-                serialNumberPortion = filenameGroups.group("SERIALNUMBER")
-                #cutOff = re.compile(r"(([0-9]{8})?.*_[Tt]r-[0-9]+)_?(?:([0-9]+)mph)?.*")
-                #allGroups = cutOff.search(strippedFileName).groups()
-                #result = cutOff.search(strippedFileName)
-                xmlBaseFileName = filenameGroups.group(0)
-                #if result.group(2) is not None: # try to get date of delivery from filename
-                    #dateDelivery = "%s/%s/%s" % (result.group(2)[0:2], result.group(2)[2:4], result.group(2)[4:8])
-                #else:
-                    #dateDelivery = 'n/a'
-                    #print 'Could not parse date received from filename'
-                #if result.group(3) is not None: # try to get mph from filename
-                    #mph = result.group(3)
-                #else:
-                    #mph = 'n/a/'
-                    #print 'Could not parse mph from filename'
-
-                csvFilename = directoryPath + csvFilename
-                csvFile = open(csvFilename, 'rU')
-
-
-                csvReader = csv.DictReader(csvFile, delimiter=',', quotechar='"')
-                csvReader.fieldnames = map(csvReader.fieldnames)
-
-                postProcTags = ["startTime", "endTime", "transcription", "signalQuality"]
-
-                metaDataObj = metaDataCreator.MetaData()
-
-                for row in csvReader:
-                    sampleNode = etree.Element("Sample")
-                    if "literalPrompt" in row and row["literalPrompt"].strip() != '':
-                        promptNode = etree.Element("Prompt")
-                        promptNode = metaDataCreator.createPromptNode(*[(tagName, row[tagName]) for tagName in row.keys() if tagName not in postProcTags and tagName != 'order'])
-                        sampleNode.append(promptNode)
-                    if "transcription" in row and row["transcription"].strip() != '':
-
-                        postProcNode = etree.Element("postProc")
-                        postProcNode = metaDataCreator.createPostProcNode(*[row[postProcTag] for postProcTag in postProcTags])
-                        promptNode = metaDataCreator.createPromptNode(fileName="prototype_testing_list_3b.csv")
-                        sampleNode.append(postProcNode)
-                        sampleNode.append(promptNode)
-
-                    metaDataObj.addSamplePair(sampleNode)
-
-                        #print etree.tostring(sampleNode, pretty_print=True)
-
-                metaDataObj.createSpeakerNode(gender=genderMap[genderPortion], speakerId=uidPortion.replace("UID_", ""), nativeSpeaker=nativeMap[nativityPortion]) # (speakerId='80', gender="Female", ageGroupMin="40", ageGroupMax="49", nativeSpeaker="True")
-                metaDataObj.createAudioNode(filePath=wavFileName)
-                metaDataObj.createDeviceNode(serialNumber=serialNumberPortion)
-                #metaDataObj.createSessionNode(subDomain='biking')
-                metaDataObj.createGeneralNode(originalFileName=xmlBaseFileName, dateOfProcessing='%s/%s/%s' % (date.today().month, date.today().day, date.today().year))
-                #metaDataObj.createHardwareSetupNode(micType='n/a', bikeUnit='311', micAngle='n/a')
-
-
-
-
-
-
-                tree = etree.ElementTree(metaDataObj.root)
-                outputFilename = csvFilename.replace(".csv", ".xml")
-
-                tree.write(outputFilename, pretty_print=True)
-
-
-
-
-
-
-
-
-
 
 #_________________________________________________________________________
 #_________________________________________________________________________
@@ -382,13 +680,13 @@ class pageTwo(QtGui.QMainWindow):
 #_________________________________________________________________________
 #_________________________________________________________________________
 
+#----DataScience
 
 
 
 
 
-
-class pageThree(QtGui.QMainWindow):
+class dataScience(QtGui.QMainWindow):
     def __init__(self, parent=None):
         QtGui.QMainWindow.__init__(self, parent)
 
@@ -439,19 +737,36 @@ class pageThree(QtGui.QMainWindow):
 
 ###Icon bar
 
-        extractAction = QtGui.QAction(QtGui.QIcon('homologo.png'), 'Home Page', self)
-        extractAction.triggered.connect(self.close_application)
-        FileMenu.addAction(exitAction)
 
-        extractAction = QtGui.QAction(QtGui.QIcon('convertogo.png'), 'Convert Page', self)
-        extractAction.triggered.connect(self.close_application)
-        FileMenu.addAction(exitAction)
+        extractActionHome = QtGui.QAction(QtGui.QIcon('homelogo.png'), 'Home Page', self)
+        extractActionHome.triggered.connect(self.startPage)
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractActionHome)
 
-        extractAction = QtGui.QAction(QtGui.QIcon('graphlogo.png'), 'Data Page', self)
-        extractAction.triggered.connect(self.close_application)
-        FileMenu.addAction(exitAction)
 
-        AboutMenu.addAction(popupmsgAction)
+
+        extractActionConvert = QtGui.QAction(QtGui.QIcon('convertlogo.png'), 'Convert Page', self)
+        extractActionConvert.triggered.connect(self.pageTwo)
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractActionConvert)
+
+
+
+
+        extractActiondataScience = QtGui.QAction(QtGui.QIcon('graphlogo.png'), 'Data Page', self)
+        extractActiondataScience.triggered.connect(self.pageThree)
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractActiondataScience)
+
+        extractActiondataRelease = QtGui.QAction(QtGui.QIcon('dataRelease.png'), 'Data Release', self)
+        extractActiondataRelease.triggered.connect(self.pageFour)
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractActiondataRelease)
+
+        extractActiongameWindow = QtGui.QAction(QtGui.QIcon('gamelogo.png'), 'Game Page', self)
+        extractActiongameWindow.triggered.connect(self.pageFive)
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractActiongameWindow)
 ##Calnder
         cal = QtGui.QCalendarWidget(self)
         cal.setGridVisible(True)
@@ -486,56 +801,48 @@ class pageThree(QtGui.QMainWindow):
         self.lbl.move(70, 300)
 
 
-        extractAction = QtGui.QAction(QtGui.QIcon('homelogo.png'), 'Home Page', self)
-        extractAction.triggered.connect(self.startPage)
-
-        self.toolBar = self.addToolBar("Extraction")
-        self.toolBar.addAction(extractAction)
-
-        extractAction = QtGui.QAction(QtGui.QIcon('convertlogo.png'), 'Convert Page', self)
-        extractAction.triggered.connect(self.pageTwo)
-
-        self.toolBar = self.addToolBar("Extraction")
-        self.toolBar.addAction(extractAction)
-
-
-        extractAction = QtGui.QAction(QtGui.QIcon('graphlogo.png'), 'Data Page', self)
-        extractAction.triggered.connect(self.pageThree)
-
-        self.toolBar = self.addToolBar("Extraction")
-        self.toolBar.addAction(extractAction)
-
-
-
 
 
         self.button = QtGui.QPushButton('Home', self)
         self.button.clicked.connect(self.startPage)
         self.button.setIconSize(QtCore.QSize(24,24))
-        self.button.move(20, 590)
+        self.button.move(20, 480)
         self.button.setFixedSize(200,75)
+# button move  (over, down)
 
-
-        self.button2 = QtGui.QPushButton('Page Two', self)
+        self.button2 = QtGui.QPushButton('Convertor Page', self)
         self.button2.clicked.connect(self.pageTwo)
         self.button2.setIconSize(QtCore.QSize(24,24))
-        self.button2.move(20, 645)
+        self.button2.move(20, 535)
         self.button2.setFixedSize(200,75)
 
 
-        self.button3 = QtGui.QPushButton('Page Three', self)
+        self.button3 = QtGui.QPushButton('Data Science', self)
         self.button3.clicked.connect(self.pageThree)
         self.button3.setIconSize(QtCore.QSize(24,24))
-        self.button3.move(20, 700)
+        self.button3.move(20, 590)
         self.button3.setFixedSize(200,75)
 
+
+
+        self.button5 = QtGui.QPushButton('Remote File Upload', self)
+        self.button5.clicked.connect(self.pageFour)
+        self.button5.setIconSize(QtCore.QSize(24,24))
+        self.button5.move(20, 645)
+        self.button5.setFixedSize(200,75)
+
+        self.button6 = QtGui.QPushButton('Game Page', self)
+        self.button6.clicked.connect(self.pageFive)
+        self.button6.setIconSize(QtCore.QSize(24,24))
+        self.button6.move(20, 700)
+        self.button6.setFixedSize(200,75)
 
 
 
 
 
         self.lbl = QtGui.QLabel(self)
-        self.lbl.setText("Data Team Program")
+        self.lbl.setText("Data Science")
         self.lbl.resize(145, 25)
         self.lbl.move(580,40)
 
@@ -587,15 +894,29 @@ class pageThree(QtGui.QMainWindow):
     def pageTwo(self):
 
         self.hide()
-        pagetwo = pageTwo(self)
+        pagetwo = convertorPage(self)
         pagetwo.show()
         print ("Now Entering Page Two")
 
     def pageThree(self):
         self.hide()
-        pagethree = pageThree(self)
+        pagethree = dataScience(self)
         pagethree.show()
         print ("Now Entering Page Three")
+
+
+    def pageFour(self):
+
+        self.hide()
+        pageFour = dataRelease(self)
+        pageFour.show()
+        print ("Now Entering Page 4")
+
+    def pageFive(self):
+        self.hide()
+        pageFive = gameWindow(self)
+        pageFive.show()
+        print ("Now Entering Page 5")
 
 
 
@@ -662,19 +983,36 @@ class mainWindow(QtGui.QMainWindow):
 
 ###Icon bar
 
-        extractAction = QtGui.QAction(QtGui.QIcon('homologo.png'), 'Home Page', self)
-        extractAction.triggered.connect(self.close_application)
-        FileMenu.addAction(exitAction)
 
-        extractAction = QtGui.QAction(QtGui.QIcon('convertogo.png'), 'Convert Page', self)
-        extractAction.triggered.connect(self.close_application)
-        FileMenu.addAction(exitAction)
+        extractActionHome = QtGui.QAction(QtGui.QIcon('homelogo.png'), 'Home Page', self)
+        extractActionHome.triggered.connect(self.startPage)
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractActionHome)
 
-        extractAction = QtGui.QAction(QtGui.QIcon('graphlogo.png'), 'Data Page', self)
-        extractAction.triggered.connect(self.close_application)
-        FileMenu.addAction(exitAction)
 
-        AboutMenu.addAction(popupmsgAction)
+
+        extractActionConvert = QtGui.QAction(QtGui.QIcon('convertlogo.png'), 'Convert Page', self)
+        extractActionConvert.triggered.connect(self.pageTwo)
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractActionConvert)
+
+
+
+
+        extractActiondataScience = QtGui.QAction(QtGui.QIcon('graphlogo.png'), 'Data Page', self)
+        extractActiondataScience.triggered.connect(self.pageThree)
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractActiondataScience)
+
+        extractActiondataRelease = QtGui.QAction(QtGui.QIcon('dataRelease.png'), 'Data Release', self)
+        extractActiondataRelease.triggered.connect(self.pageFour)
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractActiondataRelease)
+
+        extractActiongameWindow = QtGui.QAction(QtGui.QIcon('gamelogo.png'), 'Game Page', self)
+        extractActiongameWindow.triggered.connect(self.pageFive)
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractActiongameWindow)
 ##Calnder
         cal = QtGui.QCalendarWidget(self)
         cal.setGridVisible(True)
@@ -709,24 +1047,8 @@ class mainWindow(QtGui.QMainWindow):
         self.lbl.move(70, 300)
 
 
-        extractAction = QtGui.QAction(QtGui.QIcon('homelogo.png'), 'Home Page', self)
-        extractAction.triggered.connect(self.startPage)
-
-        self.toolBar = self.addToolBar("Extraction")
-        self.toolBar.addAction(extractAction)
-
-        extractAction = QtGui.QAction(QtGui.QIcon('convertlogo.png'), 'Convert Page', self)
-        extractAction.triggered.connect(self.pageTwo)
-
-        self.toolBar = self.addToolBar("Extraction")
-        self.toolBar.addAction(extractAction)
 
 
-        extractAction = QtGui.QAction(QtGui.QIcon('graphlogo.png'), 'Data Page', self)
-        extractAction.triggered.connect(self.pageThree)
-
-        self.toolBar = self.addToolBar("Extraction")
-        self.toolBar.addAction(extractAction)
 
 
 
@@ -735,23 +1057,36 @@ class mainWindow(QtGui.QMainWindow):
         self.button = QtGui.QPushButton('Home', self)
         self.button.clicked.connect(self.startPage)
         self.button.setIconSize(QtCore.QSize(24,24))
-        self.button.move(20, 590)
+        self.button.move(20, 480)
         self.button.setFixedSize(200,75)
+# button move  (over, down)
 
-
-        self.button = QtGui.QPushButton('Page Two', self)
-        self.button.clicked.connect(self.pageTwo)
-        self.button.setIconSize(QtCore.QSize(24,24))
-        self.button.move(20, 645)
-        self.button.setFixedSize(200,75)
-
-
-        self.button2 = QtGui.QPushButton('Page Three', self)
-        self.button2.clicked.connect(self.pageThree)
+        self.button2 = QtGui.QPushButton('Convertor Page', self)
+        self.button2.clicked.connect(self.pageTwo)
         self.button2.setIconSize(QtCore.QSize(24,24))
-        self.button2.move(20, 700)
+        self.button2.move(20, 535)
         self.button2.setFixedSize(200,75)
 
+
+        self.button3 = QtGui.QPushButton('Data Science', self)
+        self.button3.clicked.connect(self.pageThree)
+        self.button3.setIconSize(QtCore.QSize(24,24))
+        self.button3.move(20, 590)
+        self.button3.setFixedSize(200,75)
+
+
+
+        self.button5 = QtGui.QPushButton('Remote File Upload', self)
+        self.button5.clicked.connect(self.pageFour)
+        self.button5.setIconSize(QtCore.QSize(24,24))
+        self.button5.move(20, 645)
+        self.button5.setFixedSize(200,75)
+
+        self.button6 = QtGui.QPushButton('Game Page', self)
+        self.button6.clicked.connect(self.pageFive)
+        self.button6.setIconSize(QtCore.QSize(24,24))
+        self.button6.move(20, 700)
+        self.button6.setFixedSize(200,75)
 
 
 
@@ -770,6 +1105,13 @@ class mainWindow(QtGui.QMainWindow):
         self.lbl2.move(1000,40)
         self.lbl2.resize(300,200)
 
+
+        self.pixmap = QtGui.QPixmap("DataScience.png")
+
+        self.lbl2 = QtGui.QLabel(self)
+        self.lbl2.setPixmap(self.pixmap)
+        self.lbl2.move(300,200)
+        self.lbl2.resize(600,600)
 
 
         self.show()
@@ -810,18 +1152,29 @@ class mainWindow(QtGui.QMainWindow):
     def pageTwo(self):
 
         self.hide()
-        pagetwo = pageTwo(self)
+        pagetwo = convertorPage(self)
         pagetwo.show()
         print ("Now Entering Page Two")
 
     def pageThree(self):
         self.hide()
-        pagethree = pageThree(self)
+        pagethree = dataScience(self)
         pagethree.show()
         print ("Now Entering Page Three")
 
 
+    def pageFour(self):
 
+        self.hide()
+        pageFour = dataRelease(self)
+        pageFour.show()
+        print ("Now Entering Page 4")
+
+    def pageFive(self):
+        self.hide()
+        pageFive = gameWindow(self)
+        pageFive.show()
+        print ("Now Entering Page 5")
 
 def main():
     app = QtGui.QApplication(sys.argv)
