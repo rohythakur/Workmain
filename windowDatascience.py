@@ -1,5 +1,4 @@
-__author__ = 'eeamesX'
-
+__author__ = 'ed'
 import sys
 import os
 import subprocess
@@ -16,11 +15,15 @@ except AttributeError:
 
 
 
-class mainWindow(QtGui.QMainWindow):
 
-    def __init__(self,parent=None):
-        QtGui.QMainWindow.__init__(self,parent)
+
+class dataScience(QtGui.QMainWindow):
+    def __init__(self, parent=None):
+        QtGui.QMainWindow.__init__(self, parent)
+
         self.initUI()
+
+
 
 
 
@@ -35,6 +38,7 @@ class mainWindow(QtGui.QMainWindow):
 
 #_________________________________________________________________________
 #(Menubah)
+
 
 
 
@@ -96,7 +100,6 @@ class mainWindow(QtGui.QMainWindow):
         cal = QtGui.QCalendarWidget(self)
         cal.setGridVisible(True)
         cal.move(20, 100)
-
         cal.resize(200,200)
         cal.clicked[QtCore.QDate].connect(self.showDate)
 ####
@@ -125,11 +128,6 @@ class mainWindow(QtGui.QMainWindow):
         date = cal.selectedDate()
         self.lbl.setText(date.toString())
         self.lbl.move(70, 300)
-
-
-
-
-
 
 
 
@@ -173,7 +171,7 @@ class mainWindow(QtGui.QMainWindow):
 
 
         self.lbl = QtGui.QLabel(self)
-        self.lbl.setText("Data Team Program")
+        self.lbl.setText("Data Science")
         self.lbl.resize(145, 25)
         self.lbl.move(580,40)
 
@@ -185,13 +183,6 @@ class mainWindow(QtGui.QMainWindow):
         self.lbl2.move(1000,40)
         self.lbl2.resize(300,200)
 
-
-        self.pixmap = QtGui.QPixmap("DataScience.png")
-
-        self.lbl2 = QtGui.QLabel(self)
-        self.lbl2.setPixmap(self.pixmap)
-        self.lbl2.move(300,200)
-        self.lbl2.resize(600,600)
 
 
         self.show()
@@ -216,6 +207,8 @@ class mainWindow(QtGui.QMainWindow):
     def showDate(self, date):
 
         self.lbl.setText(date.toString())
+
+
     def close_application(self):
         print("whooaaaa so custom!!!")
         sys.exit()
@@ -258,13 +251,8 @@ class mainWindow(QtGui.QMainWindow):
 
 
 
-def main():
-    app = QtGui.QApplication(sys.argv)
 
-    main = mainWindow()
-    main.show()
 
-    sys.exit(app.exec_())
 
-if __name__ == "__main__":
-    main()
+
+

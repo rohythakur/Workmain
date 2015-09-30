@@ -1,5 +1,4 @@
-__author__ = 'eeamesX'
-
+__author__ = 'ed'
 import sys
 import os
 import subprocess
@@ -16,11 +15,17 @@ except AttributeError:
 
 
 
-class mainWindow(QtGui.QMainWindow):
 
-    def __init__(self,parent=None):
-        QtGui.QMainWindow.__init__(self,parent)
+#GameWindow Page
+
+
+class gameWindow(QtGui.QMainWindow):
+    def __init__(self, parent):
+        QtGui.QMainWindow.__init__(self, parent)
+
         self.initUI()
+
+
 
 
 
@@ -42,26 +47,15 @@ class mainWindow(QtGui.QMainWindow):
 #______________
 ###Actions
 
-        exitAction = QtGui.QAction('Exit', self)
-        exitAction.setShortcut('Ctrl+Q')
-        exitAction.setStatusTip('Quit Program')
-        exitAction.triggered.connect(QtGui.qApp.quit)
+        centralwidget = QtGui.QWidget(gameWindow)
+        centralwidget.setObjectName(_fromUtf8("centralwidget"))
+        frame = QtGui.QFrame(self.centralwidget)
+        frame.setGeometry(QtCore.QRect(10, 70, 331, 671))
+        frame.setFrameShape(QtGui.QFrame.StyledPanel)
+        frame.setFrameShadow(QtGui.QFrame.Raised)
 
-        popupmsgAction = QtGui.QAction('ReportErrors', self)
-        popupmsgAction.setStatusTip('Popup')
-        popupmsgAction.triggered.connect(self.popupmsg)
-
-
-
-
-
-
-
-
-
-
+#______________
 ###Icon bar
-
 
         extractActionHome = QtGui.QAction(QtGui.QIcon('homelogo.png'), 'Home Page', self)
         extractActionHome.triggered.connect(self.startPage)
@@ -92,39 +86,6 @@ class mainWindow(QtGui.QMainWindow):
         extractActiongameWindow.triggered.connect(self.pageFive)
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(extractActiongameWindow)
-##Calnder
-        cal = QtGui.QCalendarWidget(self)
-        cal.setGridVisible(True)
-        cal.move(20, 100)
-
-        cal.resize(200,200)
-        cal.clicked[QtCore.QDate].connect(self.showDate)
-####
-
-
-
-
-
-
-
-
-#Split Frames
-
-##
-
-#_________________________________________________________________________
-#
-
-#Canvas------------------
-# button move  (over, down)
-
-
-
-
-        self.lbl = QtGui.QLabel(self)
-        date = cal.selectedDate()
-        self.lbl.setText(date.toString())
-        self.lbl.move(70, 300)
 
 
 
@@ -134,72 +95,14 @@ class mainWindow(QtGui.QMainWindow):
 
 
 
-        self.button = QtGui.QPushButton('Home', self)
-        self.button.clicked.connect(self.startPage)
-        self.button.setIconSize(QtCore.QSize(24,24))
-        self.button.move(20, 480)
-        self.button.setFixedSize(200,75)
-# button move  (over, down)
-
-        self.button2 = QtGui.QPushButton('Convertor Page', self)
-        self.button2.clicked.connect(self.pageTwo)
-        self.button2.setIconSize(QtCore.QSize(24,24))
-        self.button2.move(20, 535)
-        self.button2.setFixedSize(200,75)
-
-
-        self.button3 = QtGui.QPushButton('Data Science', self)
-        self.button3.clicked.connect(self.pageThree)
-        self.button3.setIconSize(QtCore.QSize(24,24))
-        self.button3.move(20, 590)
-        self.button3.setFixedSize(200,75)
-
-
-
-        self.button5 = QtGui.QPushButton('Remote File Upload', self)
-        self.button5.clicked.connect(self.pageFour)
-        self.button5.setIconSize(QtCore.QSize(24,24))
-        self.button5.move(20, 645)
-        self.button5.setFixedSize(200,75)
-
-        self.button6 = QtGui.QPushButton('Game Page', self)
-        self.button6.clicked.connect(self.pageFive)
-        self.button6.setIconSize(QtCore.QSize(24,24))
-        self.button6.move(20, 700)
-        self.button6.setFixedSize(200,75)
 
 
 
 
 
-        self.lbl = QtGui.QLabel(self)
-        self.lbl.setText("Data Team Program")
-        self.lbl.resize(145, 25)
-        self.lbl.move(580,40)
-
-
-        self.pixmap = QtGui.QPixmap("intelmed.png")
-
-        self.lbl2 = QtGui.QLabel(self)
-        self.lbl2.setPixmap(self.pixmap)
-        self.lbl2.move(1000,40)
-        self.lbl2.resize(300,200)
-
-
-        self.pixmap = QtGui.QPixmap("DataScience.png")
-
-        self.lbl2 = QtGui.QLabel(self)
-        self.lbl2.setPixmap(self.pixmap)
-        self.lbl2.move(300,200)
-        self.lbl2.resize(600,600)
-
-
-        self.show()
 
 
 
-#_________________________________________________________________________
-#
     def popupmsg(self):
         msg = QtGui.QMessageBox.question(self, "Error!",
                                          "If you have any questions feel free to ask.  Email me at EdwinX.Eames@intel.com",
@@ -256,15 +159,3 @@ class mainWindow(QtGui.QMainWindow):
         pageFive.show()
         print ("Now Entering Page 5")
 
-
-
-def main():
-    app = QtGui.QApplication(sys.argv)
-
-    main = mainWindow()
-    main.show()
-
-    sys.exit(app.exec_())
-
-if __name__ == "__main__":
-    main()

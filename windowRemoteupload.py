@@ -1,5 +1,4 @@
-__author__ = 'eeamesX'
-
+__author__ = 'ed'
 import sys
 import os
 import subprocess
@@ -15,12 +14,13 @@ except AttributeError:
         return s
 
 
+class dataRelease(QtGui.QMainWindow):
+    def __init__(self, parent=None):
+        QtGui.QMainWindow.__init__(self, parent)
 
-class mainWindow(QtGui.QMainWindow):
-
-    def __init__(self,parent=None):
-        QtGui.QMainWindow.__init__(self,parent)
         self.initUI()
+
+
 
 
 
@@ -42,26 +42,11 @@ class mainWindow(QtGui.QMainWindow):
 #______________
 ###Actions
 
-        exitAction = QtGui.QAction('Exit', self)
-        exitAction.setShortcut('Ctrl+Q')
-        exitAction.setStatusTip('Quit Program')
-        exitAction.triggered.connect(QtGui.qApp.quit)
-
-        popupmsgAction = QtGui.QAction('ReportErrors', self)
-        popupmsgAction.setStatusTip('Popup')
-        popupmsgAction.triggered.connect(self.popupmsg)
-
-
-
-
-
-
 
 
 
 
 ###Icon bar
-
 
         extractActionHome = QtGui.QAction(QtGui.QIcon('homelogo.png'), 'Home Page', self)
         extractActionHome.triggered.connect(self.startPage)
@@ -92,11 +77,11 @@ class mainWindow(QtGui.QMainWindow):
         extractActiongameWindow.triggered.connect(self.pageFive)
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(extractActiongameWindow)
+
 ##Calnder
         cal = QtGui.QCalendarWidget(self)
         cal.setGridVisible(True)
         cal.move(20, 100)
-
         cal.resize(200,200)
         cal.clicked[QtCore.QDate].connect(self.showDate)
 ####
@@ -108,12 +93,7 @@ class mainWindow(QtGui.QMainWindow):
 
 
 
-#Split Frames
-
-##
-
-#_________________________________________________________________________
-#
+#________________________
 
 #Canvas------------------
 # button move  (over, down)
@@ -125,8 +105,6 @@ class mainWindow(QtGui.QMainWindow):
         date = cal.selectedDate()
         self.lbl.setText(date.toString())
         self.lbl.move(70, 300)
-
-
 
 
 
@@ -169,37 +147,104 @@ class mainWindow(QtGui.QMainWindow):
         self.button6.setFixedSize(200,75)
 
 
-
-
+# button move  (over, down)
 
         self.lbl = QtGui.QLabel(self)
-        self.lbl.setText("Data Team Program")
-        self.lbl.resize(145, 25)
-        self.lbl.move(580,40)
+        self.lbl.setText("SSH Made Easy")
+        self.lbl.resize(145, 125)
+        self.lbl.move(600,20)
 
 
-        self.pixmap = QtGui.QPixmap("intelmed.png")
+        #self.pixmap = QtGui.QPixmap("dotgreen.png")
+
+        #self.lbl2 = QtGui.QLabel(self)
+        #self.lbl2.setPixmap(self.pixmap)
+        #self.lbl2.move(1000,40)
+        #self.lbl2.resize(300,200)
+
+# button move  (over, down)
+
+        self.lbl = QtGui.QLabel(self)
+        self.lbl.setText("Test SSH Connection")
+        self.lbl.resize(145, 205)
+        self.lbl.move(550,60)
+
+        self.userl = QtGui.QLabel("Username: ",self)
+        self.userl.move(350,200)
+        self.user = QtGui.QLineEdit(self)
+        self.user.move(430,200)
+
+        self.sshaddl= QtGui.QLabel("SSH Address:",self)
+        self.sshaddl.move(550,200)
+
+        self.sshadd= QtGui.QLineEdit(self)
+        self.sshadd.setEchoMode(self.sshadd.Password)
+        self.sshadd.move(650,200)
+        self.sshadd.setText('10.127.235.151')
+
+
+        self.button7 = QtGui.QPushButton('Login', self)
+        self.button7.clicked.connect(self.sshTest)
+        self.button7.setIconSize(QtCore.QSize(24,24))
+        self.button7.move(550, 250)
+
+
+        self.echo = QtGui.QCheckBox("Show/Hide Adress",self)
+        self.echo.stateChanged.connect(self.Echo)
+        self.echo.move(550,300)
+        self.echo.resize(140,145)
+
+        self.pixmap = QtGui.QPixmap("dotred.png")
 
         self.lbl2 = QtGui.QLabel(self)
         self.lbl2.setPixmap(self.pixmap)
-        self.lbl2.move(1000,40)
-        self.lbl2.resize(300,200)
-
-
-        self.pixmap = QtGui.QPixmap("DataScience.png")
-
-        self.lbl2 = QtGui.QLabel(self)
-        self.lbl2.setPixmap(self.pixmap)
-        self.lbl2.move(300,200)
-        self.lbl2.resize(600,600)
-
+        self.lbl2.move(775,170)
+        self.lbl2.resize(75,75)
 
         self.show()
 
 
 
-#_________________________________________________________________________
+#____________
 #
+
+
+
+    def sshTest(self):
+
+        HOST="10.127.235.151"
+        # Ports are handled in ~/.ssh/config since we use OpenSSH
+        COMMAND="uname -a"
+
+        USERNAME= self.sshadd.text()
+
+        ssh = subprocess.Popen(["ssh", USERNAME % HOST, COMMAND],
+                               shell=False,
+                               stdout=subprocess.PIPE,
+                               stderr=subprocess.PIPE)
+        print ssh
+        result = ssh.stdout.readlines()
+        print result
+        if result == []:
+            error = ssh.stderr.readlines()
+            print >>sys.stderr, "ERROR: %s" % error
+
+        else:
+            print result
+
+
+    def Echo(self,state):
+        if state == QtCore.Qt.Checked:
+            self.sshadd.setEchoMode(self.sshadd.Normal)
+        else:
+            self.sshadd.setEchoMode(self.sshadd.Password)
+
+
+    def showDate(self, date):
+
+        self.lbl.setText(date.toString())
+
+
     def popupmsg(self):
         msg = QtGui.QMessageBox.question(self, "Error!",
                                          "If you have any questions feel free to ask.  Email me at EdwinX.Eames@intel.com",
@@ -211,11 +256,6 @@ class mainWindow(QtGui.QMainWindow):
             pass
 
 
-
-
-    def showDate(self, date):
-
-        self.lbl.setText(date.toString())
     def close_application(self):
         print("whooaaaa so custom!!!")
         sys.exit()
@@ -256,15 +296,3 @@ class mainWindow(QtGui.QMainWindow):
         pageFive.show()
         print ("Now Entering Page 5")
 
-
-
-def main():
-    app = QtGui.QApplication(sys.argv)
-
-    main = mainWindow()
-    main.show()
-
-    sys.exit(app.exec_())
-
-if __name__ == "__main__":
-    main()

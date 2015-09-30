@@ -1,11 +1,10 @@
 __author__ = 'ed'
-
 import sys
 import os
 import subprocess
 import metaDataCreator
 
-
+from csvtoxmlPage import convertcsvTxml
 from PyQt4 import QtGui, QtCore
 
 try:
@@ -16,8 +15,9 @@ except AttributeError:
 
 
 
-class convertcsvTxml(QtGui.QWidget):
-    def __init__(self, parent = None):
+
+class convertorPage(QtGui.QMainWindow):
+    def __init__(self,parent = None):
         QtGui.QWidget.__init__(self, parent)
 
         self.initUI()
@@ -43,6 +43,45 @@ class convertcsvTxml(QtGui.QWidget):
 
 ###Icon bar
 
+        extractActionHome = QtGui.QAction(QtGui.QIcon('homelogo.png'), 'Home Page', self)
+        extractActionHome.triggered.connect(self.startPage)
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractActionHome)
+
+
+
+        extractActionConvert = QtGui.QAction(QtGui.QIcon('convertlogo.png'), 'Convert Page', self)
+        extractActionConvert.triggered.connect(self.pageTwo)
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractActionConvert)
+
+
+
+
+        extractActiondataScience = QtGui.QAction(QtGui.QIcon('graphlogo.png'), 'Data Page', self)
+        extractActiondataScience.triggered.connect(self.pageThree)
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractActiondataScience)
+
+        extractActiondataRelease = QtGui.QAction(QtGui.QIcon('dataRelease.png'), 'Data Release', self)
+        extractActiondataRelease.triggered.connect(self.pageFour)
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractActiondataRelease)
+
+        extractActiongameWindow = QtGui.QAction(QtGui.QIcon('gamelogo.png'), 'Game Page', self)
+        extractActiongameWindow.triggered.connect(self.pageFive)
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractActiongameWindow)
+
+
+##Calnder
+        cal = QtGui.QCalendarWidget(self)
+        cal.setGridVisible(True)
+        cal.move(20, 100)
+        cal.resize(200,200)
+        cal.clicked[QtCore.QDate].connect(self.showDate)
+####
+
 
 
 
@@ -62,6 +101,10 @@ class convertcsvTxml(QtGui.QWidget):
 
 
 
+        self.lbl = QtGui.QLabel(self)
+        date = cal.selectedDate()
+        self.lbl.setText(date.toString())
+        self.lbl.move(70, 300)
 
 
 
@@ -109,41 +152,18 @@ class convertcsvTxml(QtGui.QWidget):
 # button move  (over, down)
 
 
-
-        self.button6 = QtGui.QPushButton('Game Page', self)
-        self.button6.clicked.connect(self.pageFive)
-        self.button6.setIconSize(QtCore.QSize(24,24))
-        self.button6.move(200, 300)
-        self.button6.setFixedSize(200,75)
-
+        self.convertcsv = QtGui.QPushButton('Child Window', self)
+        self.convertcsv.clicked.connect(self.csvtoXmlconvertor)
+        self.convertcsv.setIconSize(QtCore.QSize(24,24))
+        self.convertcsv.move(200,100)
+        self.convertcsv.setFixedSize(200,75)
 
 
-
-        self.listWidget = QtGui.QListWidget(self)
-
-        self.listWidget.move(360,300)
-        self.listWidget.resize(300,300)
-
-        self.listWidgetcomplete = QtGui.QListWidget(self)
-
-        self.listWidgetcomplete.move(780,300)
-        self.listWidgetcomplete.resize(300,300)
-
-
-
-    # Open a FILE and append to screen
-        self.selectFileButton = QtGui.QPushButton('Select Files', self)
-        self.selectFileButton.move(455, 250)
-        self.selectFileButton.clicked.connect(self.selectFilecsvtoxml)
-
-
-
-
-    # Open a FILE and append to screen
-        self.convertButton = QtGui.QPushButton('Convert!', self)
-        self.convertButton.move(670,400)
-        self.convertButton.clicked.connect(self.osconvertfilecsvtoxml)
-
+    def csvtoXmlconvertor(self):
+        #self.hide()
+        self.FT = convertcsvTxml(self)
+        print 'Button Pressed'
+        self.FT.show()
 
 
     def showDate(self, date):
@@ -192,46 +212,3 @@ class convertcsvTxml(QtGui.QWidget):
         pageFive = gameWindow(self)
         pageFive.show()
         print ("Now Entering Page 5")
-
-# **************
-#Functions
-
-
-    def selectFilecsvtoxml(self):
-
-
-        self.listWidget.clear() # In case there are any existing elements in the list
-        directory = QtGui.QFileDialog.getExistingDirectory(self, "Pick a folder")
-        print directory
-
-
-        for file_name in os.listdir(directory):
-            if file_name.endswith(".csv"):
-                self.listWidget.addItem(file_name)
-                print (file_name)
-        self.directory = directory
-        return directory
-
-
-
-
-
-    def osconvertfilecsvtoxml(self):
-
-
-        directoryPath = self.directory
-        print directoryPath
-
-        cmd = ('python createXMLFromCSV.py '
-               +str(directoryPath))
-        print cmd
-        os.system(cmd)
-
-if __name__ == "__main__":
-    app = QtGui.QApplication(sys.argv)
-    childwindow = convertorPage()
-    childwindow.show()
-
-    sys.exit(app.exec_())
-
-
