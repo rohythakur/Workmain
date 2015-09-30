@@ -5,7 +5,7 @@ import os
 import subprocess
 import metaDataCreator
 
-
+from csvtoxmlPage import convertcsvTxml
 from PyQt4 import QtGui, QtCore
 
 try:
@@ -21,7 +21,7 @@ except AttributeError:
 
 
 class gameWindow(QtGui.QMainWindow):
-    def __init__(self, parent=None):
+    def __init__(self, parent):
         QtGui.QMainWindow.__init__(self, parent)
 
         self.initUI()
@@ -43,26 +43,17 @@ class gameWindow(QtGui.QMainWindow):
 #(Menubah)
 
 
-        self.myQMenuBar = QtGui.QMenuBar(self)
 
-        FileMenu = self.myQMenuBar.addMenu('File')
-        AboutMenu = self.myQMenuBar.addMenu('Help')
 
 #______________
 ###Actions
 
-        exitAction = QtGui.QAction('Exit', self)
-        exitAction.setShortcut('Ctrl+Q')
-        exitAction.setStatusTip('Quit Program')
-        exitAction.triggered.connect(QtGui.qApp.quit)
-
-
-
-
-
-
-
-
+        centralwidget = QtGui.QWidget(gameWindow)
+        centralwidget.setObjectName(_fromUtf8("centralwidget"))
+        frame = QtGui.QFrame(self.centralwidget)
+        frame.setGeometry(QtCore.QRect(10, 70, 331, 671))
+        frame.setFrameShape(QtGui.QFrame.StyledPanel)
+        frame.setFrameShadow(QtGui.QFrame.Raised)
 
 #______________
 ###Icon bar
@@ -96,6 +87,20 @@ class gameWindow(QtGui.QMainWindow):
         extractActiongameWindow.triggered.connect(self.pageFive)
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(extractActiongameWindow)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -186,25 +191,13 @@ class dataRelease(QtGui.QMainWindow):
 #(Menubah)
 
 
-        self.myQMenuBar = QtGui.QMenuBar(self)
 
-        FileMenu = self.myQMenuBar.addMenu('File')
-        AboutMenu = self.myQMenuBar.addMenu('Help')
 
 #______________
 ###Actions
 
-        exitAction = QtGui.QAction('Exit', self)
-        exitAction.setShortcut('Ctrl+Q')
-        exitAction.setStatusTip('Quit Program')
-        exitAction.triggered.connect(QtGui.qApp.quit)
-
-        popupmsgAction = QtGui.QAction('ReportErrors', self)
-        popupmsgAction.setStatusTip('Popup')
-        popupmsgAction.triggered.connect(self.popupmsg)
 
 
-        AboutMenu.addAction(popupmsgAction)
 
 
 ###Icon bar
@@ -463,7 +456,7 @@ class dataRelease(QtGui.QMainWindow):
 
 class convertorPage(QtGui.QMainWindow):
     def __init__(self,parent = None):
-        QtGui.QMainWindow.__init__(self, parent)
+        QtGui.QWidget.__init__(self, parent)
 
         self.initUI()
 
@@ -479,23 +472,12 @@ class convertorPage(QtGui.QMainWindow):
 #(Menubah)
 
 
-        self.myQMenuBar = QtGui.QMenuBar(self)
+
         self.toolBar = QtGui.QToolBar(self)
-        FileMenu = self.myQMenuBar.addMenu('File')
-        AboutMenu = self.myQMenuBar.addMenu('Help')
 
 #______________
 ###Actions
 
-        exitAction = QtGui.QAction('Exit', self)
-        exitAction.setShortcut('Ctrl+Q')
-        exitAction.setStatusTip('Quit Program')
-        exitAction.triggered.connect(QtGui.qApp.quit)
-
-        popupmsgAction = QtGui.QAction('ReportErrors', self)
-        popupmsgAction.setStatusTip('Popup')
-        popupmsgAction.triggered.connect(self.popupmsg)
-        AboutMenu.addAction(popupmsgAction)
 
 ###Icon bar
 
@@ -544,7 +526,6 @@ class convertorPage(QtGui.QMainWindow):
 
 
 
-
 #Split Frames
 
 ##
@@ -567,8 +548,9 @@ class convertorPage(QtGui.QMainWindow):
 
 
         self.lbl = QtGui.QLabel(self)
-        self.lbl.setText("Page Two")
-        self.lbl.move(20,100)
+        self.lbl.setText("Data Release Made Easy")
+        self.lbl.move(550,20)
+        self.lbl.resize(250,70)
 
 
         self.button = QtGui.QPushButton('Home', self)
@@ -608,13 +590,16 @@ class convertorPage(QtGui.QMainWindow):
 # button move  (over, down)
 
 
+
+
+
         self.listWidget = QtGui.QListWidget(self)
-        self.listWidget.setObjectName(_fromUtf8("listWidget"))
+
         self.listWidget.move(360,300)
         self.listWidget.resize(300,300)
 
         self.listWidgetcomplete = QtGui.QListWidget(self)
-        self.listWidgetcomplete.setObjectName(_fromUtf8("listWidget"))
+
         self.listWidgetcomplete.move(780,300)
         self.listWidgetcomplete.resize(300,300)
 
@@ -634,18 +619,18 @@ class convertorPage(QtGui.QMainWindow):
         self.convertButton.clicked.connect(self.osconvertfilecsvtoxml)
 
 
-        self.show()
 
-    def popupmsg(self):
-        msg = QtGui.QMessageBox.question(self, "Error!",
-                                         "If you have any questions feel free to ask.  Email me at EdwinX.Eames@intel.com",
-                                         QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
-        if msg == QtGui.QMessageBox.Yes:
+        self.convertcsv = QtGui.QPushButton('Child Window', self)
+        self.convertcsv.clicked.connect(self.csvtoXmlconvertor)
+        self.convertcsv.setIconSize(QtCore.QSize(24,24))
+        self.convertcsv.move(200,300)
+        self.convertcsv.setFixedSize(200,75)
 
-            sys.exit()
-        else:
-            pass
-
+    def csvtoXmlconvertor(self):
+        self.hide()
+        self.FT = convertcsvTxml
+        print 'Button Pressed'
+        self.FT.show()
 
 
     def showDate(self, date):
@@ -775,10 +760,8 @@ class dataScience(QtGui.QMainWindow):
 #(Menubah)
 
 
-        self.myQMenuBar = QtGui.QMenuBar(self)
 
-        FileMenu = self.myQMenuBar.addMenu('File')
-        AboutMenu = self.myQMenuBar.addMenu('Help')
+
 
 #______________
 ###Actions
@@ -1023,10 +1006,7 @@ class mainWindow(QtGui.QMainWindow):
 #(Menubah)
 
 
-        self.myQMenuBar = QtGui.QMenuBar(self)
 
-        FileMenu = self.myQMenuBar.addMenu('File')
-        AboutMenu = self.myQMenuBar.addMenu('Help')
 
 #______________
 ###Actions
@@ -1085,6 +1065,7 @@ class mainWindow(QtGui.QMainWindow):
         cal = QtGui.QCalendarWidget(self)
         cal.setGridVisible(True)
         cal.move(20, 100)
+
         cal.resize(200,200)
         cal.clicked[QtCore.QDate].connect(self.showDate)
 ####
@@ -1244,8 +1225,12 @@ class mainWindow(QtGui.QMainWindow):
         pageFive.show()
         print ("Now Entering Page 5")
 
+
+
 def main():
     app = QtGui.QApplication(sys.argv)
+    childwindow =convertcsvTxml()
+    childwindow.show()
     main = mainWindow()
     main.show()
 
