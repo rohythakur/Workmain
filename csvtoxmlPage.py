@@ -4,6 +4,13 @@ import sys
 import os
 import subprocess
 import metaDataCreator
+import windows
+
+
+import windowDatascience
+import windowRemoteupload
+import windowGame
+
 
 
 from PyQt4 import QtGui, QtCore
@@ -16,7 +23,7 @@ except AttributeError:
 
 
 
-class convertcsvTxml(QtGui.QWidget):
+class convertocsvTxml(QtGui.QWidget):
     def __init__(self, parent = None):
         QtGui.QWidget.__init__(self, parent)
 
@@ -229,7 +236,7 @@ class convertcsvTxml(QtGui.QWidget):
 
 if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)
-    childwindow = convertorPage()
+    childwindow = convertocsvTxml()
     childwindow.show()
 
     sys.exit(app.exec_())

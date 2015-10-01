@@ -2,9 +2,16 @@ __author__ = 'ed'
 import sys
 import os
 import subprocess
-import metaDataCreator
 
-from csvtoxmlPage import convertcsvTxml
+
+import windows
+import csvtoxmlPage
+import windowConvertor
+import windowDatascience
+
+import windowGame
+
+
 from PyQt4 import QtGui, QtCore
 
 try:
@@ -295,4 +302,11 @@ class dataRelease(QtGui.QMainWindow):
         pageFive = gameWindow(self)
         pageFive.show()
         print ("Now Entering Page 5")
+
+if __name__ == "__main__":
+    app = QtGui.QApplication(sys.argv)
+    childwindow = dataRelease()
+    childwindow.show()
+
+    sys.exit(app.exec_())
 

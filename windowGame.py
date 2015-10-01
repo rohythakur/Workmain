@@ -2,9 +2,14 @@ __author__ = 'ed'
 import sys
 import os
 import subprocess
-import metaDataCreator
+import windows
+import csvtoxmlPage
+import windowConvertor
+import windowDatascience
+import windowRemoteupload
 
-from csvtoxmlPage import convertcsvTxml
+
+
 from PyQt4 import QtGui, QtCore
 
 try:
@@ -15,11 +20,7 @@ except AttributeError:
 
 
 
-
-#GameWindow Page
-
-
-class gameWindow(QtGui.QMainWindow):
+class gamerWindow(QtGui.QMainWindow):
     def __init__(self, parent):
         QtGui.QMainWindow.__init__(self, parent)
 
@@ -158,4 +159,13 @@ class gameWindow(QtGui.QMainWindow):
         pageFive = gameWindow(self)
         pageFive.show()
         print ("Now Entering Page 5")
+
+if __name__ == "__main__":
+    app = QtGui.QApplication(sys.argv)
+    childwindow = gamerWindow()
+    childwindow.show()
+
+    sys.exit(app.exec_())
+
+
 

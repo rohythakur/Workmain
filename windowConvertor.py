@@ -2,9 +2,14 @@ __author__ = 'ed'
 import sys
 import os
 import subprocess
-import metaDataCreator
+import windows
+import csvtoxmlPage
 
-from csvtoxmlPage import convertcsvTxml
+import windowDatascience
+import windowRemoteupload
+import windowGame
+
+
 from PyQt4 import QtGui, QtCore
 
 try:
@@ -16,7 +21,7 @@ except AttributeError:
 
 
 
-class convertorPage(QtGui.QMainWindow):
+class convertorPage(QtGui.QWidget):
     def __init__(self,parent = None):
         QtGui.QWidget.__init__(self, parent)
 
@@ -24,6 +29,7 @@ class convertorPage(QtGui.QMainWindow):
 
     def initUI(self):
 # button move  (over, down)
+        print "TYOU MADE IT"
         self.setGeometry(300,300,1280,800)
         self.setWindowTitle("Intel")
         self.setWindowIcon(QtGui.QIcon("Intel Converter"))
@@ -212,3 +218,11 @@ class convertorPage(QtGui.QMainWindow):
         pageFive = gameWindow(self)
         pageFive.show()
         print ("Now Entering Page 5")
+
+if __name__ == "__main__":
+    app = QtGui.QApplication(sys.argv)
+    childwindow = convertorPage()
+    childwindow.show()
+
+    sys.exit(app.exec_())
+
