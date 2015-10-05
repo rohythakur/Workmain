@@ -955,41 +955,35 @@ class filescleanupConvertorpage(QtGui.QMainWindow):
         self.listWidget.move(660,200)
         self.listWidget.resize(350,150)
 
-        self.selectFileButton = QtGui.QPushButton('Select Directory', self)
+        self.selectFileButton = QtGui.QPushButton('Clean files in a directory', self)
         self.selectFileButton.move(355, 250)
         self.selectFileButton.setFixedSize(250,50)
-        self.selectFileButton.clicked.connect(self.directoryChoice)
-
-
-        self.cleanButton = QtGui.QPushButton('Ready to Clean', self)
-        self.cleanButton.move(505, 400)
-        self.cleanButton.setFixedSize(250,50)
-        self.cleanButton.clicked.connect(self.cleanFiles)
+        self.selectFileButton.clicked.connect(self.cleanFiles)
 
 
         self.lblNamechange= QtGui.QLabel(self)
         self.lblNamechange.setText("Successfully changed names ")
         self.lblNamechange.resize(340, 50)
         self.lblNamechange.move(300,500)
-        #self.lblFailed.hide()
+        self.lblNamechange.hide()
 
         self.lblGroupfiles = QtGui.QLabel(self)
         self.lblGroupfiles.setText("Successfully Grouped Files ")
         self.lblGroupfiles.resize(340, 50)
         self.lblGroupfiles.move(550,500)
-        #self.lblFailed.hide()
+        self.lblGroupfiles.hide()
 
         self.lblRemovejunk = QtGui.QLabel(self)
         self.lblRemovejunk.setText("Successfully Removed junk ")
         self.lblRemovejunk.resize(340, 50)
         self.lblRemovejunk.move(800,500)
-        #self.lblFailed.hide()
+        self.lblRemovejunk.hide()
 
         self.lblSucess = QtGui.QLabel(self)
         self.lblSucess.setText("Ready to convert! ")
         self.lblSucess.resize(340, 50)
         self.lblSucess.move(600,600)
-        #self.lblFailed.hide()
+        self.lblSucess.hide()
 
 
         self.Namechange2 = QtGui.QLabel(self)
@@ -1005,7 +999,7 @@ class filescleanupConvertorpage(QtGui.QMainWindow):
         self.lblGroupfiles2.hide()
 
         self.lblRemovejunk2 = QtGui.QLabel(self)
-        self.lblRemovejunk2.setText("Failed to Remov junk ")
+        self.lblRemovejunk2.setText("Failed to Remove junk ")
         self.lblRemovejunk2.resize(340, 50)
         self.lblRemovejunk2.move(800,500)
         self.lblRemovejunk2.hide()
@@ -1019,22 +1013,38 @@ class filescleanupConvertorpage(QtGui.QMainWindow):
 
         self.show()
 
-    def cleanFiles(self):
-        pass
+
+
 
     def directoryChoice(self):
 
         self.listWidget.clear() # In case there are any existing elements in the list
-        directory = QtGui.QFileDialog.getExistingDirectory(self, "Pick a folder")
-        print directory
-
-
-        for file_name in os.listdir(directory):
-
-                self.listWidget.addItem(file_name)
-                print (file_name)
-        self.directory = directory
+        directory = QtGui.QFileDialog.getExistingDirectory(self, "    Pick a folder")
+        print directory + "     In directory Choice"
         return directory
+
+
+    def cleanFiles(self):
+        directoryChosen = self.directoryChoice()
+        print directoryChosen + "     you made it to files selected"
+
+        #for file_names in os.listdir(directoryChosen):
+            #self.listWidget.addItem(file_names)
+
+        try:
+
+            print file_names + "    In clean files"
+
+            [os.rename(f, f.replace('$', '#')) for f in os.listdir(directoryChosen) if not f.startswith('.')]
+
+            self.lblNamechange.show()
+        except Exception:
+            print "Failed or something..ask Stackoverflow"
+            self.Namechange2.show()
+
+
+
+
 
 
 
