@@ -4,7 +4,9 @@ import sys
 import os
 import subprocess
 import metaDataCreator
-
+import glob
+from collections import defaultdict
+from shutil import copyfile
 
 from PyQt4 import QtGui, QtCore
 
@@ -953,7 +955,7 @@ class filescleanupConvertorpage(QtGui.QMainWindow):
         self.listWidget = QtGui.QListWidget(self)
 
         self.listWidget.move(660,200)
-        self.listWidget.resize(350,150)
+        self.listWidget.resize(450,150)
 
         self.selectFileButton = QtGui.QPushButton('Clean files in a directory', self)
         self.selectFileButton.move(355, 250)
@@ -1025,29 +1027,52 @@ class filescleanupConvertorpage(QtGui.QMainWindow):
 
 
     def cleanFiles(self):
+
         directoryChosen = self.directoryChoice()
         print directoryChosen + "     you made it to files selected"
 
-        #for file_names in os.listdir(directoryChosen):
-            #self.listWidget.addItem(file_names)
+        for n in os.listdir(directoryChosen):
+            print n + "   made it here"
+            self.listWidget.addItem(n)
+            if os.path.isdir(directoryChosen):
 
-        try:
+                print directoryChosen + "   almost there"
+                newname =  n.replace('$', '#')
+                print newname + "    this is newname"
+                if newname != n:
+                    path = os.path.join(directoryChosen + '/' + n)
+                    print path
+                    target = os.path.join(directoryChosen + '/' + newname)
+                    print target
 
-            print file_names + "    In clean files"
+                    os.rename(path, target)
 
-            [os.rename(f, f.replace('$', '#')) for f in os.listdir(directoryChosen) if not f.startswith('.')]
-
-            self.lblNamechange.show()
-        except Exception:
-            print "Failed or something..ask Stackoverflow"
-            self.Namechange2.show()
+    def groupFiles(self):
+        self.filenames = cleanFiles()
+        print "made it here to groupFiles"
 
 
+        pat = r'(\d+)(?:_\d+)?_(\w+?)[\._].*'
+        print pat
+        from collections import defaultdict
+        dict_date = defaultdict(lambda : defaultdict(list))
+        print dict_date
+        for fil in os.listdir(path):
+            if os.path.isfile(os.path.join(path, fil)):
+                date, animal = re.match(pat, fil).groups()
+                print date
+                print animal
+                dict_date[date][animal].append(fil)
 
 
-
-
-
+        for date in dict_date:
+            for animal in dict_date[date]:
+                try:
+                    os.makedirs(os.path.join(path, date, animal))
+                except os.error:
+                    pass
+                for fil in dict_date[date][animal]:
+                    copyfile(os.path.join(path, fil), os.path.join(path, date, animal, fil))
 
     def csvtoXmlconvertor(self):
         self.hide()
