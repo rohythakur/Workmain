@@ -1,5 +1,4 @@
-__author__ = 'ed'
-
+__author__ = 'eeamesX'
 import os, sys
 import re
 import shutil
@@ -10,22 +9,41 @@ directoryChosen = sys.argv[1]
 
 
 
+
 for f in os.listdir(directoryChosen):
-    fname, fext = os.path.splitext(f)
+
     if not f.startswith('.'):
-        print f
+        print f + " this is the file"
 
-        print fname + " Is fname"
+        fname, fext = os.path.splitext(f)
+        print fname + "                  Is fname"
         dest_path = fname
-        print dest_path + " is dest path"
-        print fname + "this is fname"
-        if os.path.isdir(directoryChosen + '/' + fname):
+
+
+
+        source = directoryChosen + f
+        destination = directoryChosen + dest_path
+
+
+        print source + "                   this is source"
+        print destination + "             this is destination"
+        print dest_path + "               is dest path"
+        print fname + "                   this is fname"
+
+
+        if not os.path.isdir(destination):
+
+
+            os.mkdir(destination)
+            print " Path is created ..maiking directory here"
+            print " Path is created ..maiking directory here"
+            print " Path is created ..maiking directory here"
+            print " Path is created ..maiking directory here"
+
+
+            shutil.copy(source, dest_path)
+
+        if os.path.isdir(destination):
+
             print "Ended here/ Start work here"
-            shutil.copy2(directoryChosen + '/' + f, directoryChosen + '/' + dest_path)
-        if not os.path.isdir(directoryChosen + '/' + fname):
-            print "working here kind of..lets make directoriess"
-
-            os.mkdir(dest_path)
-            print " Path is created"
-
-            shutil.copy2(directoryChosen + '/' + f, directoryChosen + '/' + dest_path)
+            shutil.copy(source, destination)

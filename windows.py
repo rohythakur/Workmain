@@ -963,6 +963,12 @@ class filescleanupConvertorpage(QtGui.QMainWindow):
         self.selectFileButton.clicked.connect(self.cleanFiles)
 
 
+        self.lbl = QtGui.QLabel(self)
+        self.lbl.setText("Most likely the /continious folder")
+        self.lbl.move(365,280)
+        self.lbl.resize(250,70)
+
+
         self.lblNamechange= QtGui.QLabel(self)
         self.lblNamechange.setText("Successfully changed names ")
         self.lblNamechange.resize(340, 50)
@@ -1024,7 +1030,8 @@ class filescleanupConvertorpage(QtGui.QMainWindow):
         directory = QtGui.QFileDialog.getExistingDirectory(self, "    Pick a folder")
         print directory + "     In directory Choice"
         for file_name in os.listdir(directory):
-            if file_name:
+            if not file_name.startswith('.'):
+
                 self.listWidget.addItem(file_name)
                 print (file_name)
         return directory
@@ -1069,8 +1076,8 @@ class filescleanupConvertorpage(QtGui.QMainWindow):
             cmdRmfiles = ('python rmFiles.py '
                    +str(directoryChosen))
 
-            print cmdGroupfiles
-            #os.system(cmdRmfiles)
+            print cmdRmfiles
+            os.system(cmdRmfiles)
             self.lblRemovejunk.show()
 
 
@@ -1487,7 +1494,61 @@ class createedditConvertorpage(QtGui.QMainWindow):
 
 
 
+        self.listDirPath = QtGui.QLineEdit(self)
+        self.listDirPath.resize(500,50)
+        self.listDirPath.move(650,250)
+
+
+        self.selectFileButton = QtGui.QPushButton('Clean files in a directory', self)
+        self.selectFileButton.move(355, 250)
+        self.selectFileButton.setFixedSize(250,50)
+        self.selectFileButton.clicked.connect(self.convertDirectory)
+
+
+        self.lbl = QtGui.QLabel(self)
+        self.lbl.setText("Folder contains .csv, .xml, .wav")
+        self.lbl.move(365,280)
+        self.lbl.resize(250,70)
+
+
         self.show()
+
+
+
+    def selectFilecsvtoxml(self):
+
+
+
+        directory = QtGui.QFileDialog.getExistingDirectory(self, "Pick a folder")
+        print directory
+
+
+        for file_name in os.listdir(directory):
+            if not file_name.startswith("."):
+
+                print (file_name)
+        self.directory = directory
+        return directory
+
+
+
+
+
+    def convertDirectory(self):
+
+
+        directoryPath = self.selectFilecsvtoxml()
+        print directoryPath
+
+        cmd = ('python longXmlEditor.py '
+               +str(directoryPath))
+        print cmd
+        os.system(cmd)
+        for file_name in directoryPath:
+            pass
+
+
+
 
     def csvtoXmlconvertor(self):
         self.hide()
@@ -1560,6 +1621,10 @@ class createedditConvertorpage(QtGui.QMainWindow):
     def close_application(self):
         print("whooaaaa you quit!!")
         sys.exit()
+
+
+
+
 
 class convertorPage(QtGui.QMainWindow):
     def __init__(self,parent = None):
