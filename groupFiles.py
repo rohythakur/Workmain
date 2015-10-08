@@ -23,7 +23,7 @@ for f in os.listdir(directoryChosen):
             print "Ended here/ Start work here"
             shutil.copy2(directoryChosen + '/' + f, directoryChosen + '/' + dest_path)
         if not os.path.isdir(directoryChosen + '/' + fname):
-            print "working here kind of..lets make directories"
+            print "working here kind of..lets make directoriess"
 
             os.mkdir(dest_path)
             print " Path is created"
