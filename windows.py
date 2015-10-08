@@ -756,7 +756,7 @@ class filesdownloadConvertorpage(QtGui.QMainWindow):
 
                 self.lblWorked.show()
 
-            if ivrLang == 'IVR_GERMANY':
+            if ivrLang == 'IVR_Germany':
 
 
                 cmdIvr = ('rsync  -avp ' + str(username) +
@@ -1023,56 +1023,63 @@ class filescleanupConvertorpage(QtGui.QMainWindow):
         self.listWidget.clear() # In case there are any existing elements in the list
         directory = QtGui.QFileDialog.getExistingDirectory(self, "    Pick a folder")
         print directory + "     In directory Choice"
+        for file_name in os.listdir(directory):
+            if file_name:
+                self.listWidget.addItem(file_name)
+                print (file_name)
         return directory
 
 
     def cleanFiles(self):
 
         directoryChosen = self.directoryChoice()
-        print directoryChosen + "     you made it to files selected"
-
-        for n in os.listdir(directoryChosen):
-            print n + "   made it here"
-            self.listWidget.addItem(n)
-            if os.path.isdir(directoryChosen):
-
-                print directoryChosen + "   almost there"
-                newname =  n.replace('$', '#')
-                print newname + "    this is newname"
-                if newname != n:
-                    path = os.path.join(directoryChosen + '/' + n)
-                    print path
-                    target = os.path.join(directoryChosen + '/' + newname)
-                    print target
-
-                    os.rename(path, target)
-
-    def groupFiles(self):
-        self.filenames = cleanFiles()
-        print "made it here to groupFiles"
+        print directoryChosen + "     you made it to files selected \n \n \n \n"
 
 
-        pat = r'(\d+)(?:_\d+)?_(\w+?)[\._].*'
-        print pat
-        from collections import defaultdict
-        dict_date = defaultdict(lambda : defaultdict(list))
-        print dict_date
-        for fil in os.listdir(path):
-            if os.path.isfile(os.path.join(path, fil)):
-                date, animal = re.match(pat, fil).groups()
-                print date
-                print animal
-                dict_date[date][animal].append(fil)
+        try:
+            cmdDollartohash = ('python replaceDollartohash.py '
+                   +str(directoryChosen) + '/')
+            print cmdDollartohash
+            os.system(cmdDollartohash)
+            self.lblNamechange.show()
 
 
-        for date in dict_date:
-            for animal in dict_date[date]:
-                try:
-                    os.makedirs(os.path.join(path, date, animal))
-                except os.error:
-                    pass
-                for fil in dict_date[date][animal]:
-                    copyfile(os.path.join(path, fil), os.path.join(path, date, animal, fil))
+            print " change dollar to hash over boss \n \n \n \n"
+
+        except Exception:
+            print "Changeing dollar to hash failed**************"
+            self.Namechange2.show()
+
+
+
+        try:
+            cmdGroupfiles = ('python groupFiles.py '
+                   +str(directoryChosen) + '/')
+
+            print cmdGroupfiles
+            os.system(cmdGroupfiles)
+            self.lblGroupfiles.show()
+
+            print " grouped the files boss  \n \n \n \n"
+        except Exception:
+            print "Grouping Files Failed"
+            self.lblGroupfiles2.show()
+
+        try:
+            cmdRmfiles = ('python rmFiles.py '
+                   +str(directoryChosen))
+
+            print cmdGroupfiles
+            #os.system(cmdRmfiles)
+            self.lblRemovejunk.show()
+
+
+            print " removed junk files boss  \n \n \n \n"
+        except Exception:
+            print "Removing Files Failed"
+            self.lblRemovejunk2.show()
+
+
 
     def csvtoXmlconvertor(self):
         self.hide()
@@ -1373,7 +1380,7 @@ class convertcsvtoXml(QtGui.QMainWindow):
         directoryPath = self.directory
         print directoryPath
 
-        cmd = ('python createXMLFromCSV.py '
+        cmd = ('python createxmlFromcsv.py '
                +str(directoryPath))
         print cmd
         os.system(cmd)
