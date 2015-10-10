@@ -1499,7 +1499,7 @@ class createedditConvertorpage(QtGui.QMainWindow):
         self.listDirPath.move(650,250)
 
 
-        self.selectFileButton = QtGui.QPushButton('Clean files in a directory', self)
+        self.selectFileButton = QtGui.QPushButton('Create merged directory', self)
         self.selectFileButton.move(355, 250)
         self.selectFileButton.setFixedSize(250,50)
         self.selectFileButton.clicked.connect(self.convertDirectory)
@@ -1521,12 +1521,12 @@ class createedditConvertorpage(QtGui.QMainWindow):
 
         directory = QtGui.QFileDialog.getExistingDirectory(self, "Pick a folder")
         print directory
-
+        self.listDirPath.setText(directory)
 
         for file_name in os.listdir(directory):
             if not file_name.startswith("."):
 
-                print (file_name)
+                print (file_name) +  "   this is selectFilcestoxml"
         self.directory = directory
         return directory
 
@@ -1542,10 +1542,9 @@ class createedditConvertorpage(QtGui.QMainWindow):
 
         cmd = ('python longXmlEditor.py '
                +str(directoryPath))
-        print cmd
+        print cmd + "   this is executable command"
         os.system(cmd)
-        for file_name in directoryPath:
-            pass
+
 
 
 

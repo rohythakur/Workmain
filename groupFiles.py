@@ -6,10 +6,6 @@ from collections import defaultdict
 
 directoryChosen = sys.argv[1]
 
-
-
-
-
 for f in os.listdir(directoryChosen):
 
     if not f.startswith('.'):
@@ -20,26 +16,14 @@ for f in os.listdir(directoryChosen):
         dest_path = fname
 
 
-
         source = directoryChosen + f
         destination = directoryChosen + dest_path
-
-
-        print source + "                   this is source"
-        print destination + "             this is destination"
-        print dest_path + "               is dest path"
-        print fname + "                   this is fname"
-
 
         if not os.path.isdir(destination):
 
 
             os.mkdir(destination)
             print " Path is created ..maiking directory here"
-            print " Path is created ..maiking directory here"
-            print " Path is created ..maiking directory here"
-            print " Path is created ..maiking directory here"
-
 
             shutil.copy(source, dest_path)
 
