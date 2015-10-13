@@ -13,6 +13,7 @@ import os, os.path, shutil, argparse
 from prettytable import PrettyTable
 import UnicodeCSV
 import sys
+import shutil
 
 try:
     __import__('prettytable')
@@ -40,15 +41,17 @@ def timeFormatConverter(time):
 
 
 
-def spiderDirectory():
+
+
+def Main():
     allTranscriptionsFromCsv = []
     timeTranscriptionNoise = {}
     sameLineTimeStampingError = []
 
-
+    print "Hello again"
 
     for root, dirs, files in os.walk(directory):
-        if len(files) >= 4:
+        if len(files) >= 3:
             for f in files:
                 print(os.path.join(root, f))
 
@@ -97,7 +100,7 @@ def spiderDirectory():
 
 
     for root, dirs, files in os.walk(directory):
-            if len(files) >= 4:
+            if len(files) >= 3:
                 for f in files:
                     print(os.path.join(root, f))
 
@@ -105,24 +108,28 @@ def spiderDirectory():
                         print f + ' THIS WILL BE DATA FILE'
 
 
-                        output_file = directory + os.path.splitext(os.path.basename(f))[0] + "_edited.xml"
-
-
-
-
+                        output_file = directory + '/' + os.path.splitext(os.path.basename(f))[0] + "_edited.xml"
                         if os.path.exists(output_file):
                             os.remove(output_file)
                             print output_file + "  DELETED!!"
-                            continue
-                        else:
-                            pass
+
                         print " starting to copy info in"
-                        print f
-                        xmltoParse = directory + '/' + f
+                        print f + " this is f"
+                        print directory + " this is directory"
+                        fname, fext = os.path.splitext(f)
+                        print fname
+                        print files
+
+                        xmltoParse = directory + '/' + fname + '/' + f
                         output_file = open(output_file, 'w')
 
+
+
+
                         parser = etree.XMLParser(remove_blank_text=True)
+
                         tree = etree.parse(xmltoParse, parser)
+
                         root = tree.getroot()
 
                         multipleTranscriptionPrompts = []
@@ -141,8 +148,8 @@ def spiderDirectory():
 
                         "To handle duplicates and overflowing recordings"
                         listOfPromptStartMillis = []
-                        for y in root.findall("./Prompt/timeKeeping/promptStartMillis"):
-                            listOfPromptStartMillis.append(float(x.text))
+                        for fprompt in root.findall("./Prompt/timeKeeping/promptStartMillis"):
+                            listOfPromptStartMillis.append(float(fprompt.text))
                         listOfPromptStartMillis = sorted(listOfPromptStartMillis)
 
                         maxStart =  max(listOfPromptStartMillis)
@@ -254,15 +261,105 @@ def spiderDirectory():
                                     #reportInfo[utteranceTranscript.text] = xmlReportedTime
                                     addedTranscriptions.append(utteranceTranscript.text)
 
+
+
                             """ add language tag if missing """
+                            lan =  str(directory)
                             LANGUAGE = xmlElement.find('language')
                             if LANGUAGE is None:
-                                languageTag = etree.Element('language')
-                                languageTag.text = 'English'
-                                xmlElement.append(languageTag)
-                                languageCounter += 1
+
+
+
+
+                                if "FR" in lan:
+                                    languageTag = etree.Element('language')
+                                    languageTag.text = 'French'
+                                    xmlElement.append(languageTag)
+                                    languageCounter += 1
+                                    print "French!!!!!!"
+
+
+                                elif "DE" in lan:
+                                    languageTag = etree.Element('language')
+                                    languageTag.text = 'German'
+                                    xmlElement.append(languageTag)
+                                    languageCounter += 1
+                                    print "german!!!!!!"
+
+                                elif "IT" in lan:
+                                    languageTag = etree.Element('language')
+                                    languageTag.text = 'Italian'
+                                    xmlElement.append(languageTag)
+                                    languageCounter += 1
+                                    print "Italian!!!!!!"
+
+
+
+                                elif "ES" in lan:
+
+                                    languageTag = etree.Element('language')
+                                    languageTag.text = 'Spanish'
+                                    xmlElement.append(languageTag)
+                                    languageCounter += 1
+                                    print "Spanish!!!!!!"
+
+
+
+                                else:
+                                    languageTag = etree.Element('language')
+                                    languageTag.text = 'None'
+                                    xmlElement.append(languageTag)
+                                    languageCounter += 1
+                            """ DYNAMIC GENDER FINDING """
+
+                            GENDER = root.find(".//gender")
+
+
+
+                            if GENDER is None:
+                                print "Gender was None"
+
+                            elif GENDER.text == 'None':
+                                GENDER.text == 'None'
+
+
+
+                            #Italian
+                            elif GENDER.text == 'Donna':
+                                GENDER.text == 'Female'
+
+                            elif GENDER.text == 'Uomo':
+                                GENDER.text == 'Male'
+
+
+                            #France
+                            elif GENDER.text == 'Femme':
+                                GENDER.text == 'Female'
+
+                            elif GENDER.text == 'Homme':
+                                GENDER.text == 'Male'
+
+
+                            #Spanish
+                            elif GENDER.text == 'Donna':
+                                GENDER.text == 'Female'
+
+                            elif GENDER.text == 'Donna':
+                                GENDER.text == 'Male'
+
+
+                            #Germian
+                            elif GENDER.text == 'Donna':
+                                GENDER.text == 'Female'
+
+                            elif GENDER.text == 'Donna':
+                                GENDER.text == 'Male'
+
                             else:
-                                pass
+                                GENDER.text == "None"
+
+
+
 
                             """correct TetherStatus tag to tetherStatus if necessary"""
                             TETHER = xmlElement.find('TetherStatus')
@@ -307,7 +404,18 @@ def spiderDirectory():
 
                         tree = etree.ElementTree(root)
                         tree.write(output_file, pretty_print=True, encoding="utf-8")
+
+
                         output_file.close()
+                        print directory + "   go up one!!!"
+                        aEdit = directory + '/Edited'
+                        source = directory + '/' + f
+
+
+
+
+
+
 
                         if niceTable:
                             print "stamped start/end time(s) not within recording window"
@@ -406,7 +514,7 @@ def spiderDirectory():
                         if not niceTable:
                             print "(For better table formatting, download the prettytable module.)"
 
+                        return output_file
 
 
-
-spiderDirectory()
+Main()
