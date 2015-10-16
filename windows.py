@@ -1435,9 +1435,9 @@ class readoutWindow(QtGui.QDialog):
 
 
     def openTxt(self):
-        directoryFile = createedditConvertorpage()
-        directoryFile.openFile()
-        #self.textEdit.setText(directoryFile.openFile)
+        fileOpen = createedditConvertorpage()
+        #fileOpen.openFile()
+        #self.textEdit.setText(fileOpen.openFile)
 
 
 
@@ -1603,15 +1603,23 @@ class createedditConvertorpage(QtGui.QMainWindow):
 
         print "opening popup now .."
 
+
+
     def openFile(self):
         directoryPath = self.selectFilecsvtoxml()
         print " this is openfile"
         print directoryPath + " this is directory in openFile"
         for fileTxt in os.listdir(directoryPath):
             if fileTxt.endswith(".txt"):
-                print fileTxt
-                #f = open('fileTxt', 'w')
-                #self.textEdit.setText(f)
+                print fileTxt + " this is the file to be opened"
+                text = fileTxt.read()
+                self.textEdit.setText(text)
+
+
+
+
+
+
 
 
 
