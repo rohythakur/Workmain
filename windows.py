@@ -1396,6 +1396,67 @@ class convertcsvtoXml(QtGui.QMainWindow):
                 self.listWidgetcomplete.addItem(file_name)
                 print (file_name)
 
+
+
+class readoutWindow(QtGui.QDialog):
+
+    def __init__(self, parent=None):
+        super(readoutWindow, self).__init__(parent)
+
+    def notePad(self):
+        setGeometry(50, 50, 750, 700)
+        setWindowTitle("Edited XML Summary")
+
+        textEdit = QtGui.QTextEdit()
+        textEdit.resize(650,500)
+        textEdit.move(20,20)
+
+        textEdit.setReadOnly(1)
+
+
+
+        self.notePad()
+
+    def home(self):
+        btn = QtGui.QPushButton("Quit", self)
+        btn.clicked.connect(self.close_application)
+        btn.resize(btn.minimumSizeHint())
+        btn.move(600,600)
+
+
+        btnOpen = QtGui.QPushButton("Open", self)
+        btnOpen.clicked.connect(self.file_open)
+        btnOpen.resize(btn.minimumSizeHint())
+        btnOpen.move(400,600)
+        self.show()
+
+    def close_application(self):
+        print("Closes popup window!")
+        self.close()
+
+
+
+    def editor(self):
+        print "editor starting"
+
+        #self.setCentralWidget(self.textEdit)
+        return textEdit
+
+    def file_open(self):
+
+        name = QtGui.QFileDialog.getOpenFileName(self, 'Open File')
+        file = open(name,'r')
+        print file
+        print "opening editor"
+
+        self.editor()
+
+        with file:
+            text = file.read()
+            textEdit.setText(text)
+
+
+
 class createedditConvertorpage(QtGui.QMainWindow):
     def __init__(self,parent = None):
         QtGui.QWidget.__init__(self, parent)
@@ -1503,6 +1564,11 @@ class createedditConvertorpage(QtGui.QMainWindow):
         self.selectFileButton.move(355, 250)
         self.selectFileButton.setFixedSize(250,50)
         self.selectFileButton.clicked.connect(self.convertDirectory)
+        self.selectFileButton.clicked.connect(self.openReadout)
+
+
+
+
 
 
         self.lbl = QtGui.QLabel(self)
@@ -1511,7 +1577,21 @@ class createedditConvertorpage(QtGui.QMainWindow):
         self.lbl.resize(250,70)
 
 
+
+
+#text editor
+
+
+
+
+
+
+
+
         self.show()
+
+
+
 
 
 
@@ -1540,13 +1620,23 @@ class createedditConvertorpage(QtGui.QMainWindow):
         directoryPath = self.selectFilecsvtoxml()
         print directoryPath
 
+
         cmd = ('python longXmlEditor.py '
                +str(directoryPath))
         print cmd + "   this is executable command"
         os.system(cmd)
 
+        print "opening popup now .."
 
 
+
+
+
+    def openReadout(self):
+
+        readOut = readoutWindow(self)
+        readOut.show()
+        print ("Opening Readout")
 
 
     def csvtoXmlconvertor(self):
