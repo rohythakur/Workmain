@@ -1403,31 +1403,26 @@ class readoutWindow(QtGui.QDialog):
     def __init__(self, parent=None):
         super(readoutWindow, self).__init__(parent)
 
-    def notePad(self):
-        setGeometry(50, 50, 750, 700)
-        setWindowTitle("Edited XML Summary")
-
-        textEdit = QtGui.QTextEdit()
-        textEdit.resize(650,500)
-        textEdit.move(20,20)
-
-        textEdit.setReadOnly(1)
-
-
-
-        self.notePad()
-
+        self.home()
     def home(self):
-        btn = QtGui.QPushButton("Quit", self)
-        btn.clicked.connect(self.close_application)
-        btn.resize(btn.minimumSizeHint())
-        btn.move(600,600)
+        self.setGeometry(50, 50, 750, 700)
+        self.setWindowTitle("Edited XML Summary")
+
+        self.textEdit = QtGui.QTextEdit(self)
+        self.textEdit.resize(650,500)
+        self.textEdit.move(20,20)
+
+        self.textEdit.setReadOnly(1)
 
 
-        btnOpen = QtGui.QPushButton("Open", self)
-        btnOpen.clicked.connect(self.file_open)
-        btnOpen.resize(btn.minimumSizeHint())
-        btnOpen.move(400,600)
+
+
+
+
+        self.btn = QtGui.QPushButton("Quit", self)
+        self.btn.clicked.connect(self.close_application)
+        self.btn.move(600,600)
+        self.openTxt()
         self.show()
 
     def close_application(self):
@@ -1436,24 +1431,14 @@ class readoutWindow(QtGui.QDialog):
 
 
 
-    def editor(self):
-        print "editor starting"
 
-        #self.setCentralWidget(self.textEdit)
-        return textEdit
 
-    def file_open(self):
 
-        name = QtGui.QFileDialog.getOpenFileName(self, 'Open File')
-        file = open(name,'r')
-        print file
-        print "opening editor"
+    def openTxt(self):
+        directoryFile = createedditConvertorpage()
+        directoryFile.openFile()
+        #self.textEdit.setText(directoryFile.openFile)
 
-        self.editor()
-
-        with file:
-            text = file.read()
-            textEdit.setText(text)
 
 
 
@@ -1571,21 +1556,11 @@ class createedditConvertorpage(QtGui.QMainWindow):
 
 
 
+
         self.lbl = QtGui.QLabel(self)
         self.lbl.setText("Folder contains .csv, .xml, .wav")
         self.lbl.move(365,280)
         self.lbl.resize(250,70)
-
-
-
-
-#text editor
-
-
-
-
-
-
 
 
         self.show()
@@ -1627,6 +1602,25 @@ class createedditConvertorpage(QtGui.QMainWindow):
         os.system(cmd)
 
         print "opening popup now .."
+
+    def openFile(self):
+        directoryPath = self.selectFilecsvtoxml()
+        print " this is openfile"
+        print directoryPath + " this is directory in openFile"
+        for fileTxt in os.listdir(directoryPath):
+            if fileTxt.endswith(".txt"):
+                print fileTxt
+                #f = open('fileTxt', 'w')
+                #self.textEdit.setText(f)
+
+
+
+
+
+
+
+
+
 
 
 

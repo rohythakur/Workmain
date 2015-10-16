@@ -14,6 +14,8 @@ from prettytable import PrettyTable
 import UnicodeCSV
 import sys
 import shutil
+import unicodedata
+
 
 try:
     __import__('prettytable')
@@ -48,7 +50,7 @@ def Main():
     timeTranscriptionNoise = {}
     sameLineTimeStampingError = []
 
-    print "Hello again"
+    print "Hello again, lets make a edited xml file"
 
     for root, dirs, files in os.walk(directory):
         if len(files) >= 3:
@@ -108,7 +110,7 @@ def Main():
                         print f + ' THIS WILL BE DATA FILE'
 
 
-                        output_file = directory + '/' + os.path.splitext(os.path.basename(f))[0] + "_edited.xml"
+                        output_file = directory + '/' + os.path.splitext(os.path.basename(f))[0] + ".xml"
                         if os.path.exists(output_file):
                             os.remove(output_file)
                             print output_file + "  DELETED!!"
@@ -276,7 +278,10 @@ def Main():
                                     languageTag.text = 'French'
                                     xmlElement.append(languageTag)
                                     languageCounter += 1
-                                    print "French!!!!!!"
+
+                                    genderTag = etree.Element('gender')
+                                    if genderTag.text == 'Femme':
+                                        genderTag.text = 'Female'
 
 
                                 elif "DE" in lan:
@@ -284,14 +289,14 @@ def Main():
                                     languageTag.text = 'German'
                                     xmlElement.append(languageTag)
                                     languageCounter += 1
-                                    print "german!!!!!!"
+
 
                                 elif "IT" in lan:
                                     languageTag = etree.Element('language')
                                     languageTag.text = 'Italian'
                                     xmlElement.append(languageTag)
                                     languageCounter += 1
-                                    print "Italian!!!!!!"
+
 
 
 
@@ -301,7 +306,7 @@ def Main():
                                     languageTag.text = 'Spanish'
                                     xmlElement.append(languageTag)
                                     languageCounter += 1
-                                    print "Spanish!!!!!!"
+
 
 
 
@@ -310,55 +315,6 @@ def Main():
                                     languageTag.text = 'None'
                                     xmlElement.append(languageTag)
                                     languageCounter += 1
-                            """ DYNAMIC GENDER FINDING """
-
-                            GENDER = root.find(".//gender")
-
-
-
-                            if GENDER is None:
-                                print "Gender was None"
-
-                            elif GENDER.text == 'None':
-                                GENDER.text == 'None'
-
-
-
-                            #Italian
-                            elif GENDER.text == 'Donna':
-                                GENDER.text == 'Female'
-
-                            elif GENDER.text == 'Uomo':
-                                GENDER.text == 'Male'
-
-
-                            #France
-                            elif GENDER.text == 'Femme':
-                                GENDER.text == 'Female'
-
-                            elif GENDER.text == 'Homme':
-                                GENDER.text == 'Male'
-
-
-                            #Spanish
-                            elif GENDER.text == 'Donna':
-                                GENDER.text == 'Female'
-
-                            elif GENDER.text == 'Donna':
-                                GENDER.text == 'Male'
-
-
-                            #Germian
-                            elif GENDER.text == 'Donna':
-                                GENDER.text == 'Female'
-
-                            elif GENDER.text == 'Donna':
-                                GENDER.text == 'Male'
-
-                            else:
-                                GENDER.text == "None"
-
-
 
 
                             """correct TetherStatus tag to tetherStatus if necessary"""
@@ -407,17 +363,32 @@ def Main():
 
 
                         output_file.close()
-                        print directory + "   go up one!!!"
-                        aEdit = directory + '/Edited'
-                        source = directory + '/' + f
 
 
 
 
-
-
+                        textFile = fname + '.txt'
+                        print textFile
+                        textFileSource = os.getcwd() + '/' + textFile
+                        print textFileSource
+                        textFileDest = directory
+                        print textFileDest
+                        #if os.path.exists(textFileDest):
+                            #os.remove(textFile)
+                            #print textFile + "  DELETED!!"
+                        print " ...  Writing to txt file :  " + textFile
 
                         if niceTable:
+
+
+                            f = open(textFile, 'w')
+                            sys.stdout = f
+
+
+                            shutil.move(textFileSource, textFileDest)
+
+
+
                             print "stamped start/end time(s) not within recording window"
                             print report
                         else:
@@ -436,8 +407,13 @@ def Main():
                             print "\nPrompt(s) with no transcription:"
                             countY = 0
                             for y in  noTranscriptionPrompts:
-                                countY += 1
-                                print countY, y
+                                try:
+
+
+                                    countY += 1
+                                    print countY, y
+                                except UnicodeError:
+                                    pass
 
                         #print len(addedTranscriptions)
                         #print len(allTranscriptionsFromCsv)
@@ -468,8 +444,11 @@ def Main():
                         if len(previousErrors) > 0:
                             print "\nTime stamping inconsitencies were found in the csv file:"
                             for x in previousErrors:
-                                countPR += 1
-                                print countPR, x
+                                try:
+                                    countPR += 1
+                                    print countPR, x
+                                except UnicodeError:
+                                    pass
                         if len(sameLineTimeStampingError) > 0:
                             print "\nTime stamping inconsitencies were found in the csv file:"
                             for x in sameLineTimeStampingError:
@@ -514,6 +493,7 @@ def Main():
                         if not niceTable:
                             print "(For better table formatting, download the prettytable module.)"
 
+                        f.close()
                         return output_file
 
 
