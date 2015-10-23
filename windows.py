@@ -5,6 +5,7 @@ import os
 import subprocess
 import metaDataCreator
 import glob
+import time
 from collections import defaultdict
 from shutil import copyfile
 
@@ -183,26 +184,6 @@ class dataRelease(QtGui.QMainWindow):
 #(Menubah)
 
 
-        self.myQMenuBar = QtGui.QMenuBar(self)
-
-        FileMenu = self.myQMenuBar.addMenu('File')
-        AboutMenu = self.myQMenuBar.addMenu('Help')
-
-#______________
-###Actions
-
-        exitAction = QtGui.QAction('Exit', self)
-        exitAction.setShortcut('Ctrl+Q')
-        exitAction.setStatusTip('Quit Program')
-        exitAction.triggered.connect(QtGui.qApp.quit)
-
-        popupmsgAction = QtGui.QAction('ReportErrors', self)
-        popupmsgAction.setStatusTip('Popup')
-        popupmsgAction.triggered.connect(self.popupmsg)
-
-
-        AboutMenu.addAction(popupmsgAction)
-
 
 ###Icon bar
 
@@ -277,7 +258,7 @@ class dataRelease(QtGui.QMainWindow):
         self.button.setFixedSize(200,75)
 # button move  (over, down)
 
-        self.button2 = QtGui.QPushButton('Convertor Page', self)
+        self.button2 = QtGui.QPushButton('Data Release Page', self)
         self.button2.clicked.connect(self.pageTwo)
         self.button2.setIconSize(QtCore.QSize(24,24))
         self.button2.move(20, 535)
@@ -308,110 +289,67 @@ class dataRelease(QtGui.QMainWindow):
 # button move  (over, down)
 
         self.lbl = QtGui.QLabel(self)
-        self.lbl.setText("SSH Made Easy")
+        self.lbl.setText("Uploading Made Easy")
         self.lbl.resize(145, 125)
         self.lbl.move(600,20)
 
+        self.directoryButton = QtGui.QPushButton('Select Folder', self)
+        self.directoryButton.clicked.connect(self.directoryChoice)
+        self.directoryButton.setIconSize(QtCore.QSize(24,24))
+        self.directoryButton.move(400, 200)
 
-        #self.pixmap = QtGui.QPixmap("dotgreen.png")
+        self.fileButton = QtGui.QPushButton('Select File', self)
+        self.fileButton.clicked.connect(self.fileChoice)
+        self.fileButton.setIconSize(QtCore.QSize(24,24))
+        self.fileButton.move(400, 250)
 
-        #self.lbl2 = QtGui.QLabel(self)
-        #self.lbl2.setPixmap(self.pixmap)
-        #self.lbl2.move(1000,40)
-        #self.lbl2.resize(300,200)
+
 
 # button move  (over, down)
+        self.listWidget = QtGui.QListWidget(self)
 
-        self.lbl = QtGui.QLabel(self)
-        self.lbl.setText("Test SSH Connection")
-        self.lbl.resize(145, 205)
-        self.lbl.move(550,60)
+        self.listWidget.move(660,200)
+        self.listWidget.resize(450,150)
 
-        self.userl = QtGui.QLabel("Username: ",self)
-        self.userl.move(350,200)
-        self.user = QtGui.QLineEdit(self)
-        self.user.move(430,200)
-
-        self.sshaddl= QtGui.QLabel("SSH Address:",self)
-        self.sshaddl.move(550,200)
-
-        self.sshadd= QtGui.QLineEdit(self)
-        self.sshadd.setEchoMode(self.sshadd.Password)
-        self.sshadd.move(650,200)
-        self.sshadd.setText('10.127.235.151')
-
-
-        self.button7 = QtGui.QPushButton('Login', self)
-        self.button7.clicked.connect(self.sshTest)
-        self.button7.setIconSize(QtCore.QSize(24,24))
-        self.button7.move(550, 250)
-
-
-        self.echo = QtGui.QCheckBox("Show/Hide Adress",self)
-        self.echo.stateChanged.connect(self.Echo)
-        self.echo.move(550,300)
-        self.echo.resize(140,145)
-
-        self.pixmap = QtGui.QPixmap("dotred.png")
-
-        self.lbl2 = QtGui.QLabel(self)
-        self.lbl2.setPixmap(self.pixmap)
-        self.lbl2.move(775,170)
-        self.lbl2.resize(75,75)
-
-        self.show()
 
 
 
 #____________
 #
 
+    def directoryChoice(self):
+
+        self.listWidget.clear() # In case there are any existing elements in the list
+        directory = QtGui.QFileDialog.getExistingDirectory(self, "    Pick a folder")
+        print directory + "     In directory Choice"
+        for file_name in os.listdir(directory):
+            if not file_name.startswith('.'):
+
+                self.listWidget.addItem(file_name)
+                print (file_name)
+        return directory
+
+    def fileChoice(self):
+
+        self.listWidget.clear() # In case there are any existing elements in the list
+        fileselected = QtGui.QFileDialog.getOpenFileName(self, "    Pick a file" "/home")
+        print fileselected + "     In directory Choice"
 
 
-    def sshTest(self):
+        self.listWidget.addItem(fileselected)
 
-        HOST="10.127.235.151"
-        # Ports are handled in ~/.ssh/config since we use OpenSSH
-        COMMAND="uname -a"
-
-        USERNAME= self.sshadd.text()
-
-        ssh = subprocess.Popen(["ssh", USERNAME % HOST, COMMAND],
-                               shell=False,
-                               stdout=subprocess.PIPE,
-                               stderr=subprocess.PIPE)
-        print ssh
-        result = ssh.stdout.readlines()
-        print result
-        if result == []:
-            error = ssh.stderr.readlines()
-            print >>sys.stderr, "ERROR: %s" % error
-
-        else:
-            print result
+        return fileselected
 
 
-    def Echo(self,state):
-        if state == QtCore.Qt.Checked:
-            self.sshadd.setEchoMode(self.sshadd.Normal)
-        else:
-            self.sshadd.setEchoMode(self.sshadd.Password)
+    def uploadssh(self):
 
+        cmd = ('rsync' + directory + 'eeamesx@10.127.235.151:' + path)
+        print cmd
 
     def showDate(self, date):
 
         self.lbl.setText(date.toString())
 
-
-    def popupmsg(self):
-        msg = QtGui.QMessageBox.question(self, "Error!",
-                                         "If you have any questions feel free to ask.  Email me at EdwinX.Eames@intel.com",
-                                         QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
-        if msg == QtGui.QMessageBox.Yes:
-
-            sys.exit()
-        else:
-            pass
 
 
     def close_application(self):
@@ -493,7 +431,7 @@ class filesdownloadConvertorpage(QtGui.QMainWindow):
         self.button.setFixedSize(200,75)
 # button move  (over, down)
 
-        self.button2 = QtGui.QPushButton('Convertor Page', self)
+        self.button2 = QtGui.QPushButton('Data Release Page', self)
         self.button2.clicked.connect(self.pageTwo)
         self.button2.setIconSize(QtCore.QSize(24,24))
         self.button2.move(20, 535)
@@ -528,29 +466,29 @@ class filesdownloadConvertorpage(QtGui.QMainWindow):
 
 
 
-        self.convertpageOne = QtGui.QPushButton('CSV -> XML', self)
-        self.convertpageOne.clicked.connect(self.csvtoXmlconvertor)
-        self.convertpageOne.setIconSize(QtCore.QSize(24,24))
-        self.convertpageOne.move(200,70)
-        self.convertpageOne.setFixedSize(250,50)
-
         self.convertpageTwo = QtGui.QPushButton('IVR DATA DOWNLOAD', self)
         self.convertpageTwo.clicked.connect(self.filesdownloaderconvertor)
         self.convertpageTwo.setIconSize(QtCore.QSize(24,24))
-        self.convertpageTwo.move(450,70)
+        self.convertpageTwo.move(250,70)
         self.convertpageTwo.setFixedSize(250,50)
 
         self.convertpageThree = QtGui.QPushButton('IVR CLEANUP', self)
         self.convertpageThree.clicked.connect(self.filescleanupconvertor)
         self.convertpageThree.setIconSize(QtCore.QSize(24,24))
-        self.convertpageThree.move(700,70)
+        self.convertpageThree.move(500,70)
         self.convertpageThree.setFixedSize(250,50)
 
         self.convertpageFour = QtGui.QPushButton('IVR CONVERSION', self)
         self.convertpageFour.clicked.connect(self.createedditconvertor)
         self.convertpageFour.setIconSize(QtCore.QSize(24,24))
-        self.convertpageFour.move(950,70)
+        self.convertpageFour.move(750,70)
         self.convertpageFour.setFixedSize(250,50)
+
+        self.convertpageFive = QtGui.QPushButton('FINAL CHECK', self)
+        self.convertpageFive.clicked.connect(self.checkFile)
+        self.convertpageFive.setIconSize(QtCore.QSize(24,24))
+        self.convertpageFive.move(1000,70)
+        self.convertpageFive.setFixedSize(250,50)
 
 
 
@@ -654,6 +592,12 @@ class filesdownloadConvertorpage(QtGui.QMainWindow):
         self.show()
 
 
+    def checkFile(self):
+        self.hide()
+        convert1 = finalCheck(self)
+        convert1.show()
+        print 'Button Pressed'
+
     def languageChoice(self, text):
 
         self.languageLbl.setText(text)
@@ -672,7 +616,7 @@ class filesdownloadConvertorpage(QtGui.QMainWindow):
 
 
 
-    def download_button(self, text):
+    def download_button(self):
         directoryUser = self.directory
         ivrNum = self.lblNumber.text()
         username = self.userName.text()
@@ -893,7 +837,7 @@ class filescleanupConvertorpage(QtGui.QMainWindow):
         self.button.setFixedSize(200,75)
 # button move  (over, down)
 
-        self.button2 = QtGui.QPushButton('Convertor Page', self)
+        self.button2 = QtGui.QPushButton('Data Release Page', self)
         self.button2.clicked.connect(self.pageTwo)
         self.button2.setIconSize(QtCore.QSize(24,24))
         self.button2.move(20, 535)
@@ -926,29 +870,31 @@ class filescleanupConvertorpage(QtGui.QMainWindow):
 
 
 
-        self.convertpageOne = QtGui.QPushButton('CSV -> XML', self)
-        self.convertpageOne.clicked.connect(self.csvtoXmlconvertor)
-        self.convertpageOne.setIconSize(QtCore.QSize(24,24))
-        self.convertpageOne.move(200,70)
-        self.convertpageOne.setFixedSize(250,50)
 
         self.convertpageTwo = QtGui.QPushButton('IVR DATA DOWNLOAD', self)
         self.convertpageTwo.clicked.connect(self.filesdownloaderconvertor)
         self.convertpageTwo.setIconSize(QtCore.QSize(24,24))
-        self.convertpageTwo.move(450,70)
+        self.convertpageTwo.move(250,70)
         self.convertpageTwo.setFixedSize(250,50)
 
         self.convertpageThree = QtGui.QPushButton('IVR CLEANUP', self)
         self.convertpageThree.clicked.connect(self.filescleanupconvertor)
         self.convertpageThree.setIconSize(QtCore.QSize(24,24))
-        self.convertpageThree.move(700,70)
+        self.convertpageThree.move(500,70)
         self.convertpageThree.setFixedSize(250,50)
 
         self.convertpageFour = QtGui.QPushButton('IVR CONVERSION', self)
         self.convertpageFour.clicked.connect(self.createedditconvertor)
         self.convertpageFour.setIconSize(QtCore.QSize(24,24))
-        self.convertpageFour.move(950,70)
+        self.convertpageFour.move(750,70)
         self.convertpageFour.setFixedSize(250,50)
+
+
+        self.convertpageFive = QtGui.QPushButton('FINAL CHECK', self)
+        self.convertpageFive.clicked.connect(self.checkFile)
+        self.convertpageFive.setIconSize(QtCore.QSize(24,24))
+        self.convertpageFive.move(1000,70)
+        self.convertpageFive.setFixedSize(250,50)
 
 
 
@@ -1022,7 +968,11 @@ class filescleanupConvertorpage(QtGui.QMainWindow):
         self.show()
 
 
-
+    def checkFile(self):
+        self.hide()
+        convert1 = finalCheck(self)
+        convert1.show()
+        print 'Button Pressed'
 
     def directoryChoice(self):
 
@@ -1194,7 +1144,7 @@ class convertcsvtoXml(QtGui.QMainWindow):
         self.button.setFixedSize(200,75)
 # button move  (over, down)
 
-        self.button2 = QtGui.QPushButton('Convertor Page', self)
+        self.button2 = QtGui.QPushButton('Data Release Page', self)
         self.button2.clicked.connect(self.pageTwo)
         self.button2.setIconSize(QtCore.QSize(24,24))
         self.button2.move(20, 535)
@@ -1258,39 +1208,38 @@ class convertcsvtoXml(QtGui.QMainWindow):
 
 
 
-        self.convertpageOne = QtGui.QPushButton('CSV -> XML', self)
-        self.convertpageOne.clicked.connect(self.csvtoXmlconvertor)
-        self.convertpageOne.setIconSize(QtCore.QSize(24,24))
-        self.convertpageOne.move(200,70)
-        self.convertpageOne.setFixedSize(250,50)
-
         self.convertpageTwo = QtGui.QPushButton('IVR DATA DOWNLOAD', self)
         self.convertpageTwo.clicked.connect(self.filesdownloaderconvertor)
         self.convertpageTwo.setIconSize(QtCore.QSize(24,24))
-        self.convertpageTwo.move(450,70)
+        self.convertpageTwo.move(250,70)
         self.convertpageTwo.setFixedSize(250,50)
 
         self.convertpageThree = QtGui.QPushButton('IVR CLEANUP', self)
         self.convertpageThree.clicked.connect(self.filescleanupconvertor)
         self.convertpageThree.setIconSize(QtCore.QSize(24,24))
-        self.convertpageThree.move(700,70)
+        self.convertpageThree.move(500,70)
         self.convertpageThree.setFixedSize(250,50)
 
         self.convertpageFour = QtGui.QPushButton('IVR CONVERSION', self)
         self.convertpageFour.clicked.connect(self.createedditconvertor)
         self.convertpageFour.setIconSize(QtCore.QSize(24,24))
-        self.convertpageFour.move(950,70)
+        self.convertpageFour.move(750,70)
         self.convertpageFour.setFixedSize(250,50)
 
-
-
+        self.convertpageFive = QtGui.QPushButton('FINAL CHECK', self)
+        self.convertpageFive.clicked.connect(self.checkFile)
+        self.convertpageFive.setIconSize(QtCore.QSize(24,24))
+        self.convertpageFive.move(1000,70)
+        self.convertpageFive.setFixedSize(250,50)
 
 
         self.show()
 
-    def csvtoXmlconvertor(self):
+
+
+    def checkFile(self):
         self.hide()
-        convert1 = convertcsvtoXml(self)
+        convert1 = finalCheck(self)
         convert1.show()
         print 'Button Pressed'
 
@@ -1405,6 +1354,7 @@ class readoutWindow(QtGui.QDialog):
 
         self.home()
     def home(self):
+
         self.setGeometry(50, 50, 750, 700)
         self.setWindowTitle("Edited XML Summary")
 
@@ -1438,9 +1388,9 @@ class readoutWindow(QtGui.QDialog):
         directoryFile = createedditConvertorpage()
         dir1=directoryFile.selectFilecsvtoxml()
         print "this s open text"
-        print str(dir1) + "this is directorry of opentxt"
+        print str(dir1) + "   this is directory of opentxt"
         os.chdir(dir1)
-        print os.getcwd()+ " this is directory before looking for txt"
+        print os.getcwd()+ "    this is directory before looking for txt"
         files = [f for f in os.listdir('.') if os.path.isfile(f)]
         for file_name in files:
 
@@ -1486,7 +1436,7 @@ class createedditConvertorpage(QtGui.QMainWindow):
         self.button.setFixedSize(200,75)
 # button move  (over, down)
 
-        self.button2 = QtGui.QPushButton('Convertor Page', self)
+        self.button2 = QtGui.QPushButton('Data Release Page', self)
         self.button2.clicked.connect(self.pageTwo)
         self.button2.setIconSize(QtCore.QSize(24,24))
         self.button2.move(20, 535)
@@ -1524,29 +1474,30 @@ class createedditConvertorpage(QtGui.QMainWindow):
 
 
 
-        self.convertpageOne = QtGui.QPushButton('CSV -> XML', self)
-        self.convertpageOne.clicked.connect(self.csvtoXmlconvertor)
-        self.convertpageOne.setIconSize(QtCore.QSize(24,24))
-        self.convertpageOne.move(200,70)
-        self.convertpageOne.setFixedSize(250,50)
-
         self.convertpageTwo = QtGui.QPushButton('IVR DATA DOWNLOAD', self)
         self.convertpageTwo.clicked.connect(self.filesdownloaderconvertor)
         self.convertpageTwo.setIconSize(QtCore.QSize(24,24))
-        self.convertpageTwo.move(450,70)
+        self.convertpageTwo.move(250,70)
         self.convertpageTwo.setFixedSize(250,50)
 
         self.convertpageThree = QtGui.QPushButton('IVR CLEANUP', self)
         self.convertpageThree.clicked.connect(self.filescleanupconvertor)
         self.convertpageThree.setIconSize(QtCore.QSize(24,24))
-        self.convertpageThree.move(700,70)
+        self.convertpageThree.move(500,70)
         self.convertpageThree.setFixedSize(250,50)
 
         self.convertpageFour = QtGui.QPushButton('IVR CONVERSION', self)
         self.convertpageFour.clicked.connect(self.createedditconvertor)
         self.convertpageFour.setIconSize(QtCore.QSize(24,24))
-        self.convertpageFour.move(950,70)
+        self.convertpageFour.move(750,70)
         self.convertpageFour.setFixedSize(250,50)
+
+
+        self.convertpageFive = QtGui.QPushButton('FINAL CHECK', self)
+        self.convertpageFive.clicked.connect(self.checkFile)
+        self.convertpageFive.setIconSize(QtCore.QSize(24,24))
+        self.convertpageFive.move(1000,70)
+        self.convertpageFive.setFixedSize(250,50)
 
 
 
@@ -1572,28 +1523,41 @@ class createedditConvertorpage(QtGui.QMainWindow):
         self.lbl.move(365,280)
         self.lbl.resize(250,70)
 
-
+        self.directory =None
         self.show()
 
 
 
-
+    def checkFile(self):
+        self.hide()
+        convert1 = finalCheck(self)
+        convert1.show()
+        print 'Button Pressed'
 
 
     def selectFilecsvtoxml(self):
 
 
+        directory = QtGui.QFileDialog.getExistingDirectory(self, caption="Pick a folder", directory=QtCore.QDir.currentPath())
 
-        directory = QtGui.QFileDialog.getExistingDirectory(self, "Pick a folder")
-        print directory
+
+        print directory + " this si dirrrrectory"
         self.listDirPath.setText(directory)
 
         for file_name in os.listdir(directory):
             if not file_name.startswith("."):
 
                 print (file_name) +  "   this is selectFilcestoxml"
-        self.directory = directory
+
         return directory
+
+
+    def showDirectory(self):
+
+        showDir = self.selectFilecsvtoxml
+
+        print showDir + " this is the files from this class which makes dumbpop"
+        return showDir
 
 
 
@@ -1604,7 +1568,6 @@ class createedditConvertorpage(QtGui.QMainWindow):
 
         directoryPath = self.selectFilecsvtoxml()
         print directoryPath
-
 
         cmd = ('python longXmlEditor.py '
                +str(directoryPath))
@@ -1776,7 +1739,7 @@ class convertorPage(QtGui.QMainWindow):
         self.button.setFixedSize(200,75)
 # button move  (over, down)
 
-        self.button2 = QtGui.QPushButton('Convertor Page', self)
+        self.button2 = QtGui.QPushButton('Data Release Page', self)
         self.button2.clicked.connect(self.pageTwo)
         self.button2.setIconSize(QtCore.QSize(24,24))
         self.button2.move(20, 535)
@@ -1807,36 +1770,41 @@ class convertorPage(QtGui.QMainWindow):
 
 
 
-        self.convertpageOne = QtGui.QPushButton('CSV -> XML', self)
-        self.convertpageOne.clicked.connect(self.csvtoXmlconvertor)
-        self.convertpageOne.setIconSize(QtCore.QSize(24,24))
-        self.convertpageOne.move(200,70)
-        self.convertpageOne.setFixedSize(250,50)
 
         self.convertpageTwo = QtGui.QPushButton('IVR DATA DOWNLOAD', self)
         self.convertpageTwo.clicked.connect(self.filesdownloaderconvertor)
         self.convertpageTwo.setIconSize(QtCore.QSize(24,24))
-        self.convertpageTwo.move(450,70)
+        self.convertpageTwo.move(250,70)
         self.convertpageTwo.setFixedSize(250,50)
 
         self.convertpageThree = QtGui.QPushButton('IVR CLEANUP', self)
         self.convertpageThree.clicked.connect(self.filescleanupconvertor)
         self.convertpageThree.setIconSize(QtCore.QSize(24,24))
-        self.convertpageThree.move(700,70)
+        self.convertpageThree.move(500,70)
         self.convertpageThree.setFixedSize(250,50)
 
         self.convertpageFour = QtGui.QPushButton('IVR CONVERSION', self)
         self.convertpageFour.clicked.connect(self.createedditconvertor)
         self.convertpageFour.setIconSize(QtCore.QSize(24,24))
-        self.convertpageFour.move(950,70)
+        self.convertpageFour.move(750,70)
         self.convertpageFour.setFixedSize(250,50)
+
+        self.convertpageFive = QtGui.QPushButton('FINAL CHECK', self)
+        self.convertpageFive.clicked.connect(self.checkFile)
+        self.convertpageFive.setIconSize(QtCore.QSize(24,24))
+        self.convertpageFive.move(1000,70)
+        self.convertpageFive.setFixedSize(250,50)
 
 
         self.show()
 
 
 
-
+    def checkFile(self):
+        self.hide()
+        convert1 = finalCheck(self)
+        convert1.show()
+        print 'Button Pressed'
 
 
     def csvtoXmlconvertor(self):
@@ -1930,6 +1898,296 @@ class convertorPage(QtGui.QMainWindow):
         print("whooaaaa you quit!!")
         sys.exit()
 
+
+
+
+
+
+class finalCheck(QtGui.QMainWindow):
+    def __init__(self,parent = None):
+        QtGui.QMainWindow.__init__(self, parent)
+
+        self.initUI()
+
+    def initUI(self):
+# button move  (over, down)
+        self.setGeometry(300,300,1280,800)
+        self.setWindowTitle("Intel")
+        self.setWindowIcon(QtGui.QIcon("Intel Converter"))
+        self.setStyleSheet("font-size:15px")
+
+
+#_________________________________________________________________________
+#(Menubah)
+
+
+
+
+
+#______________
+###Actions
+
+
+
+###Icon bar
+
+        extractActionHome = QtGui.QAction(QtGui.QIcon('homelogo.png'), 'Home Page', self)
+        extractActionHome.triggered.connect(self.startPage)
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractActionHome)
+
+
+
+        extractActionConvert = QtGui.QAction(QtGui.QIcon('convertlogo.png'), 'Convert Page', self)
+        extractActionConvert.triggered.connect(self.pageTwo)
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractActionConvert)
+
+
+
+
+        extractActiondataScience = QtGui.QAction(QtGui.QIcon('graphlogo.png'), 'Data Page', self)
+        extractActiondataScience.triggered.connect(self.pageThree)
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractActiondataScience)
+
+        extractActiondataRelease = QtGui.QAction(QtGui.QIcon('dataRelease.png'), 'Data Release', self)
+        extractActiondataRelease.triggered.connect(self.pageFour)
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractActiondataRelease)
+
+        extractActiongameWindow = QtGui.QAction(QtGui.QIcon('gamelogo.png'), 'Game Page', self)
+        extractActiongameWindow.triggered.connect(self.pageFive)
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractActiongameWindow)
+
+
+#Canvas------------------
+# button move  (over, down)
+
+
+
+
+
+
+
+
+
+        self.button = QtGui.QPushButton('Home', self)
+        self.button.clicked.connect(self.startPage)
+        self.button.setIconSize(QtCore.QSize(24,24))
+        self.button.move(20, 480)
+        self.button.setFixedSize(200,75)
+# button move  (over, down)
+
+        self.button2 = QtGui.QPushButton('Data Release Page', self)
+        self.button2.clicked.connect(self.pageTwo)
+        self.button2.setIconSize(QtCore.QSize(24,24))
+        self.button2.move(20, 535)
+        self.button2.setFixedSize(200,75)
+
+
+        self.button3 = QtGui.QPushButton('Data Science', self)
+        self.button3.clicked.connect(self.pageThree)
+        self.button3.setIconSize(QtCore.QSize(24,24))
+        self.button3.move(20, 590)
+        self.button3.setFixedSize(200,75)
+
+
+
+        self.button5 = QtGui.QPushButton('Remote File Upload', self)
+        self.button5.clicked.connect(self.pageFour)
+        self.button5.setIconSize(QtCore.QSize(24,24))
+        self.button5.move(20, 645)
+        self.button5.setFixedSize(200,75)
+
+        self.button6 = QtGui.QPushButton('Game Page', self)
+        self.button6.clicked.connect(self.pageFive)
+        self.button6.setIconSize(QtCore.QSize(24,24))
+        self.button6.move(20, 700)
+        self.button6.setFixedSize(200,75)
+
+# button move  (over, down)
+
+
+
+
+        self.convertpageTwo = QtGui.QPushButton('IVR DATA DOWNLOAD', self)
+        self.convertpageTwo.clicked.connect(self.filesdownloaderconvertor)
+        self.convertpageTwo.setIconSize(QtCore.QSize(24,24))
+        self.convertpageTwo.move(250,70)
+        self.convertpageTwo.setFixedSize(250,50)
+
+        self.convertpageThree = QtGui.QPushButton('IVR CLEANUP', self)
+        self.convertpageThree.clicked.connect(self.filescleanupconvertor)
+        self.convertpageThree.setIconSize(QtCore.QSize(24,24))
+        self.convertpageThree.move(500,70)
+        self.convertpageThree.setFixedSize(250,50)
+
+        self.convertpageFour = QtGui.QPushButton('IVR CONVERSION', self)
+        self.convertpageFour.clicked.connect(self.createedditconvertor)
+        self.convertpageFour.setIconSize(QtCore.QSize(24,24))
+        self.convertpageFour.move(750,70)
+        self.convertpageFour.setFixedSize(250,50)
+
+
+
+
+        self.convertpageFive = QtGui.QPushButton('FINAL CHECK', self)
+        self.convertpageFive.clicked.connect(self.checkFile)
+        self.convertpageFive.setIconSize(QtCore.QSize(24,24))
+        self.convertpageFive.move(1000,70)
+        self.convertpageFive.setFixedSize(250,50)
+
+
+        self.fileButton = QtGui.QPushButton('Select Txt', self)
+        self.fileButton.clicked.connect(self.selectTxt)
+        self.fileButton.setIconSize(QtCore.QSize(24,24))
+        self.fileButton.move(400, 250)
+
+        self.xmlButton = QtGui.QPushButton('Select XML', self)
+        self.xmlButton.clicked.connect(self.selectXml)
+        self.xmlButton.setIconSize(QtCore.QSize(24,24))
+        self.xmlButton.move(900, 250)
+
+
+
+# button move  (over, down)
+        self.textEdit = QtGui.QTextEdit(self)
+        self.textEdit.resize(450,500)
+        self.textEdit.move(250,300)
+
+        self.textEdit.setReadOnly(1)
+
+        self.xmlEdit = QtGui.QTextEdit(self)
+        self.xmlEdit.resize(450,500)
+        self.xmlEdit.move(750,300)
+
+        self.xmlEdit.setReadOnly(1)
+
+        self.show()
+
+    def selectTxt(self):
+
+        name = QtGui.QFileDialog.getOpenFileName(self, 'Open File')
+        file = open(name,'r')
+
+
+
+        with file:
+            text = file.read()
+
+            self.textEdit.setText(text)
+
+    def selectXml(self):
+        name2 = QtGui.QFileDialog.getOpenFileName(self, 'Open File')
+        file = open(name2,'r')
+
+
+
+        with file:
+            text = file.read()
+
+            self.xmlEdit.setText(text)
+
+
+    def checkFile(self):
+        self.hide()
+        convert1 = finalCheck(self)
+        convert1.show()
+        print 'Button Pressed'
+
+
+    def csvtoXmlconvertor(self):
+        self.hide()
+        convert1 = convertcsvtoXml(self)
+        convert1.show()
+        print 'Button Pressed'
+
+
+    def filesdownloaderconvertor(self):
+        self.hide()
+        convert1 = filesdownloadConvertorpage(self)
+        convert1.show()
+        print 'Button Pressed'
+
+    def filescleanupconvertor(self):
+        self.hide()
+        convert1 = filescleanupConvertorpage(self)
+        convert1.show()
+        print 'Button Pressed'
+
+    def createedditconvertor(self):
+        self.hide()
+        convert1 = createedditConvertorpage(self)
+        convert1.show()
+        print 'Button Pressed'
+
+
+
+
+
+
+
+
+
+
+    def startPage(self):
+
+        self.hide()
+        startpage = mainWindow(self)
+        startpage.show()
+        print ("Now Entering Start Page")
+
+
+    def pageTwo(self):
+
+        self.hide()
+        pagetwo = convertorPage(self)
+        pagetwo.show()
+        print ("Now Entering Page Two")
+
+    def pageThree(self):
+        self.hide()
+        pagethree = dataScience(self)
+        pagethree.show()
+        print ("Now Entering Page Three")
+
+
+    def pageFour(self):
+
+        self.hide()
+        pageFour = dataRelease(self)
+        pageFour.show()
+        print ("Now Entering Page 4")
+
+    def pageFive(self):
+        self.hide()
+        pageFive = gameWindow(self)
+        pageFive.show()
+        print ("Now Entering Page 5")
+
+    def popupmsg(self):
+        msg = QtGui.QMessageBox.question(self, "Error!",
+                                         "If you have any questions feel free to ask.  Email me at EdwinX.Eames@intel.com",
+                                         QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+        if msg == QtGui.QMessageBox.Yes:
+
+            sys.exit()
+        else:
+            pass
+
+
+
+    def showDate(self, date):
+
+        self.lbl.setText(date.toString())
+
+
+
+    def close_application(self):
+        print("whooaaaa you quit!!")
+        sys.exit()
 
 
 
@@ -2060,7 +2318,7 @@ class dataScience(QtGui.QMainWindow):
         self.button.setFixedSize(200,75)
 # button move  (over, down)
 
-        self.button2 = QtGui.QPushButton('Convertor Page', self)
+        self.button2 = QtGui.QPushButton('Data Release Page', self)
         self.button2.clicked.connect(self.pageTwo)
         self.button2.setIconSize(QtCore.QSize(24,24))
         self.button2.move(20, 535)
@@ -2293,7 +2551,7 @@ class mainWindow(QtGui.QMainWindow):
         self.button.setFixedSize(200,75)
 # button move  (over, down)
 
-        self.button2 = QtGui.QPushButton('Convertor Page', self)
+        self.button2 = QtGui.QPushButton('Data Release Page', self)
         self.button2.clicked.connect(self.pageTwo)
         self.button2.setIconSize(QtCore.QSize(24,24))
         self.button2.move(20, 535)
