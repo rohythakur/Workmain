@@ -21,7 +21,8 @@ except AttributeError:
 
 
 
-
+abspath = os.path.abspath(__file__)
+dname = os.path.dirname(abspath)
 
 class gameWindow(QtGui.QMainWindow):
     def __init__(self, parent=None):
@@ -218,32 +219,22 @@ class dataRelease(QtGui.QMainWindow):
         self.toolBar.addAction(extractActiongameWindow)
 
 ##Calnder
-        cal = QtGui.QCalendarWidget(self)
-        cal.setGridVisible(True)
-        cal.move(20, 100)
-        cal.resize(200,200)
-        cal.clicked[QtCore.QDate].connect(self.showDate)
-####
+        self.cal = QtGui.QCalendarWidget(self)
 
-
-
-
-
-
-
-
-#________________________
-
-#Canvas------------------
-# button move  (over, down)
+        self.cal.move(20, 100)
+        self.cal.resize(200,200)
+        self.cal.setGridVisible(0)
+        self.cal.clicked[QtCore.QDate].connect(self.showDate)
 
 
 
 
         self.lbl = QtGui.QLabel(self)
-        date = cal.selectedDate()
-        self.lbl.setText(date.toString())
+        self.date = self.cal.selectedDate()
+        self.lbl.setText(self.date.toString())
         self.lbl.move(70, 300)
+
+
 
 
 
@@ -258,7 +249,7 @@ class dataRelease(QtGui.QMainWindow):
         self.button.setFixedSize(200,75)
 # button move  (over, down)
 
-        self.button2 = QtGui.QPushButton('Data Release Page', self)
+        self.button2 = QtGui.QPushButton('Data Processing', self)
         self.button2.clicked.connect(self.pageTwo)
         self.button2.setIconSize(QtCore.QSize(24,24))
         self.button2.move(20, 535)
@@ -416,6 +407,22 @@ class filesdownloadConvertorpage(QtGui.QMainWindow):
 
 
 
+        self.cal = QtGui.QCalendarWidget(self)
+
+        self.cal.move(20, 100)
+        self.cal.resize(200,200)
+        self.cal.setGridVisible(0)
+        self.cal.clicked[QtCore.QDate].connect(self.showDate)
+
+
+
+
+        self.lbl = QtGui.QLabel(self)
+        self.date = self.cal.selectedDate()
+        self.lbl.setText(self.date.toString())
+        self.lbl.move(70, 300)
+
+
 
 
         self.lbl = QtGui.QLabel(self)
@@ -431,14 +438,14 @@ class filesdownloadConvertorpage(QtGui.QMainWindow):
         self.button.setFixedSize(200,75)
 # button move  (over, down)
 
-        self.button2 = QtGui.QPushButton('Data Release Page', self)
+        self.button2 = QtGui.QPushButton('Data Processing', self)
         self.button2.clicked.connect(self.pageTwo)
         self.button2.setIconSize(QtCore.QSize(24,24))
         self.button2.move(20, 535)
         self.button2.setFixedSize(200,75)
 
 
-        self.button3 = QtGui.QPushButton('Data Science', self)
+        self.button3 = QtGui.QPushButton('Data Release ', self)
         self.button3.clicked.connect(self.pageThree)
         self.button3.setIconSize(QtCore.QSize(24,24))
         self.button3.move(20, 590)
@@ -821,6 +828,21 @@ class filescleanupConvertorpage(QtGui.QMainWindow):
 #(Menubah)
 
 
+        self.cal = QtGui.QCalendarWidget(self)
+
+        self.cal.move(20, 100)
+        self.cal.resize(200,200)
+        self.cal.setGridVisible(0)
+        self.cal.clicked[QtCore.QDate].connect(self.showDate)
+
+
+
+
+        self.lbl = QtGui.QLabel(self)
+        self.date = self.cal.selectedDate()
+        self.lbl.setText(self.date.toString())
+        self.lbl.move(70, 300)
+
 
 
 
@@ -837,14 +859,14 @@ class filescleanupConvertorpage(QtGui.QMainWindow):
         self.button.setFixedSize(200,75)
 # button move  (over, down)
 
-        self.button2 = QtGui.QPushButton('Data Release Page', self)
+        self.button2 = QtGui.QPushButton('Data Processing', self)
         self.button2.clicked.connect(self.pageTwo)
         self.button2.setIconSize(QtCore.QSize(24,24))
         self.button2.move(20, 535)
         self.button2.setFixedSize(200,75)
 
 
-        self.button3 = QtGui.QPushButton('Data Science', self)
+        self.button3 = QtGui.QPushButton('Data Release ', self)
         self.button3.clicked.connect(self.pageThree)
         self.button3.setIconSize(QtCore.QSize(24,24))
         self.button3.move(20, 590)
@@ -910,7 +932,7 @@ class filescleanupConvertorpage(QtGui.QMainWindow):
 
 
         self.lbl = QtGui.QLabel(self)
-        self.lbl.setText("Most likely the /continious folder")
+        self.lbl.setText("Most likely the /continuous folder")
         self.lbl.move(365,280)
         self.lbl.resize(250,70)
 
@@ -965,6 +987,22 @@ class filescleanupConvertorpage(QtGui.QMainWindow):
         self.lblFailed.hide()
 
 
+
+        self.lblPage = QtGui.QLabel(self)
+        self.lblPage.setText("Under the data you download, select the continuous folder.  All files and folders")
+
+        self.lblPage.resize(640, 50)
+        self.lblPage.move(400,130)
+
+        self.lblPage = QtGui.QLabel(self)
+        self.lblPage.setText("will be cleaned and grouped together magically")
+        self.lblPage.resize(640, 50)
+        self.lblPage.move(450,150)
+
+        self.lbl = QtGui.QLabel(self)
+        self.lbl.setText("***  There has to be 3 or more files in this box to successfully transform this data***")
+        self.lbl.move(605,350)
+        self.lbl.resize(850,70)
         self.show()
 
 
@@ -994,7 +1032,10 @@ class filescleanupConvertorpage(QtGui.QMainWindow):
 
 
         try:
-            cmdDollartohash = ('python replaceDollartohash.py '
+            os.chdir(dname)
+            os.getcwd()
+            print (os.getcwd()) + " this is the current directory"
+            cmdDollartohash = ('python fixFiles/replaceDollartohash.py '
                    +str(directoryChosen) + '/')
             print cmdDollartohash
             os.system(cmdDollartohash)
@@ -1010,7 +1051,8 @@ class filescleanupConvertorpage(QtGui.QMainWindow):
 
 
         try:
-            cmdGroupfiles = ('python groupFiles.py '
+            os.chdir(dname)
+            cmdGroupfiles = ('python fixFiles/groupFiles.py '
                    +str(directoryChosen) + '/')
 
             print cmdGroupfiles
@@ -1023,7 +1065,8 @@ class filescleanupConvertorpage(QtGui.QMainWindow):
             self.lblGroupfiles2.show()
 
         try:
-            cmdRmfiles = ('python rmFiles.py '
+            os.chdir(dname)
+            cmdRmfiles = ('python fixFiles/rmFiles.py '
                    +str(directoryChosen))
 
             print cmdRmfiles
@@ -1128,6 +1171,22 @@ class convertcsvtoXml(QtGui.QMainWindow):
 #(Menubah)
 
 
+        self.cal = QtGui.QCalendarWidget(self)
+
+        self.cal.move(20, 100)
+        self.cal.resize(200,200)
+        self.cal.setGridVisible(0)
+        self.cal.clicked[QtCore.QDate].connect(self.showDate)
+
+
+
+
+        self.lbl = QtGui.QLabel(self)
+        self.date = self.cal.selectedDate()
+        self.lbl.setText(self.date.toString())
+        self.lbl.move(70, 300)
+
+
 
 
 
@@ -1144,14 +1203,14 @@ class convertcsvtoXml(QtGui.QMainWindow):
         self.button.setFixedSize(200,75)
 # button move  (over, down)
 
-        self.button2 = QtGui.QPushButton('Data Release Page', self)
+        self.button2 = QtGui.QPushButton('Data Processing', self)
         self.button2.clicked.connect(self.pageTwo)
         self.button2.setIconSize(QtCore.QSize(24,24))
         self.button2.move(20, 535)
         self.button2.setFixedSize(200,75)
 
 
-        self.button3 = QtGui.QPushButton('Data Science', self)
+        self.button3 = QtGui.QPushButton('Data Release ', self)
         self.button3.clicked.connect(self.pageThree)
         self.button3.setIconSize(QtCore.QSize(24,24))
         self.button3.move(20, 590)
@@ -1232,7 +1291,16 @@ class convertcsvtoXml(QtGui.QMainWindow):
         self.convertpageFive.move(1000,70)
         self.convertpageFive.setFixedSize(250,50)
 
+        self.lblPage1 = QtGui.QLabel(self)
+        self.lblPage1.setText("Under the data you download, select the continous folder.  All files and folders")
 
+        self.lblPage1.resize(640, 50)
+        self.lblPage1.move(400,130)
+
+        self.lblPage = QtGui.QLabel(self)
+        self.lblPage.setText("will be converted ready to check")
+        self.lblPage.resize(640, 50)
+        self.lblPage.move(450,150)
         self.show()
 
 
@@ -1267,9 +1335,10 @@ class convertcsvtoXml(QtGui.QMainWindow):
     def startPage(self):
 
         self.hide()
-        startpage = mainWindow()
+        startpage = mainWindow(self)
         startpage.show()
         print ("Now Entering Start Page")
+
 
 
     def pageTwo(self):
@@ -1420,6 +1489,22 @@ class createedditConvertorpage(QtGui.QMainWindow):
 #(Menubah)
 
 
+        self.cal = QtGui.QCalendarWidget(self)
+
+        self.cal.move(20, 100)
+        self.cal.resize(200,200)
+        self.cal.setGridVisible(0)
+        self.cal.clicked[QtCore.QDate].connect(self.showDate)
+
+
+
+
+        self.lbl = QtGui.QLabel(self)
+        self.date = self.cal.selectedDate()
+        self.lbl.setText(self.date.toString())
+        self.lbl.move(70, 300)
+
+
 
 
 
@@ -1436,14 +1521,14 @@ class createedditConvertorpage(QtGui.QMainWindow):
         self.button.setFixedSize(200,75)
 # button move  (over, down)
 
-        self.button2 = QtGui.QPushButton('Data Release Page', self)
+        self.button2 = QtGui.QPushButton('Data Processing', self)
         self.button2.clicked.connect(self.pageTwo)
         self.button2.setIconSize(QtCore.QSize(24,24))
         self.button2.move(20, 535)
         self.button2.setFixedSize(200,75)
 
 
-        self.button3 = QtGui.QPushButton('Data Science', self)
+        self.button3 = QtGui.QPushButton('Data Release ', self)
         self.button3.clicked.connect(self.pageThree)
         self.button3.setIconSize(QtCore.QSize(24,24))
         self.button3.move(20, 590)
@@ -1515,7 +1600,16 @@ class createedditConvertorpage(QtGui.QMainWindow):
 
 
 
+        self.lblPage = QtGui.QLabel(self)
+        self.lblPage.setText("Under the data you download, select the continous folder.  All files and folders")
 
+        self.lblPage.resize(640, 50)
+        self.lblPage.move(400,130)
+
+        self.lblPage = QtGui.QLabel(self)
+        self.lblPage.setText("will be cleaned and grouped together magically")
+        self.lblPage.resize(640, 50)
+        self.lblPage.move(450,150)
 
 
         self.lbl = QtGui.QLabel(self)
@@ -1615,9 +1709,10 @@ class createedditConvertorpage(QtGui.QMainWindow):
     def startPage(self):
 
         self.hide()
-        startpage = mainWindow()
+        startpage = mainWindow(self)
         startpage.show()
         print ("Now Entering Start Page")
+
 
 
     def pageTwo(self):
@@ -1679,8 +1774,21 @@ class convertorPage(QtGui.QMainWindow):
 #(Menubah)
 
 
-        self.myQMenuBar = QtGui.QMenuBar(self)
-        self.toolBar = QtGui.QToolBar(self)
+        self.cal = QtGui.QCalendarWidget(self)
+
+        self.cal.move(20, 100)
+        self.cal.resize(200,200)
+        self.cal.setGridVisible(0)
+        self.cal.clicked[QtCore.QDate].connect(self.showDate)
+
+
+
+
+        self.lbl = QtGui.QLabel(self)
+        self.date = self.cal.selectedDate()
+        self.lbl.setText(self.date.toString())
+        self.lbl.move(70, 300)
+
 
 
 #______________
@@ -1739,14 +1847,14 @@ class convertorPage(QtGui.QMainWindow):
         self.button.setFixedSize(200,75)
 # button move  (over, down)
 
-        self.button2 = QtGui.QPushButton('Data Release Page', self)
+        self.button2 = QtGui.QPushButton('Data Processing', self)
         self.button2.clicked.connect(self.pageTwo)
         self.button2.setIconSize(QtCore.QSize(24,24))
         self.button2.move(20, 535)
         self.button2.setFixedSize(200,75)
 
 
-        self.button3 = QtGui.QPushButton('Data Science', self)
+        self.button3 = QtGui.QPushButton('Data Release ', self)
         self.button3.clicked.connect(self.pageThree)
         self.button3.setIconSize(QtCore.QSize(24,24))
         self.button3.move(20, 590)
@@ -1796,6 +1904,42 @@ class convertorPage(QtGui.QMainWindow):
         self.convertpageFive.setFixedSize(250,50)
 
 
+        self.lblPage = QtGui.QLabel(self)
+        self.lblPage.setText("Data Processing Center ")
+        self.lblPage.resize(340, 50)
+        self.lblPage.move(600,150)
+
+
+
+        self.lbl1Page = QtGui.QLabel(self)
+        self.lbl1Page.setText("This page will download Foreign Language Data and convert it to clean XML Files. ")
+        self.lbl1Page.resize(640, 50)
+        self.lbl1Page.move(300,200)
+
+        self.lblPage = QtGui.QLabel(self)
+        self.lblPage.setText("1.  Download the language folder and this will include all necessary files automatically.")
+        self.lblPage.resize(640, 50)
+        self.lblPage.move(300,250)
+
+
+        self.lblPage = QtGui.QLabel(self)
+        self.lblPage.setText("2. The file cleaner will properly format names, remove wrong punctuation in files, and group files in folders by name")
+        self.lblPage.resize(640, 50)
+        self.lblPage.move(300,300)
+
+
+        self.lblPage = QtGui.QLabel(self)
+        self.lblPage.setText("3.  This will merge the csv transcript and xml data into one long file.  If successful a text file be made and display any errors.")
+        self.lblPage.resize(640, 50)
+        self.lblPage.move(300,350)
+
+
+
+        self.lblPage = QtGui.QLabel(self)
+        self.lblPage.setText("4.  The last step is to check the file for any errors, and ensure the timestamps match the wav file..")
+        self.lblPage.resize(640, 50)
+        self.lblPage.move(300,400)
+
         self.show()
 
 
@@ -1833,14 +1977,6 @@ class convertorPage(QtGui.QMainWindow):
         print 'Button Pressed'
 
 
-
-
-
-
-
-
-
-
     def startPage(self):
 
         self.hide()
@@ -1876,15 +2012,7 @@ class convertorPage(QtGui.QMainWindow):
         pageFive.show()
         print ("Now Entering Page 5")
 
-    def popupmsg(self):
-        msg = QtGui.QMessageBox.question(self, "Error!",
-                                         "If you have any questions feel free to ask.  Email me at EdwinX.Eames@intel.com",
-                                         QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
-        if msg == QtGui.QMessageBox.Yes:
 
-            sys.exit()
-        else:
-            pass
 
 
 
@@ -1920,6 +2048,21 @@ class finalCheck(QtGui.QMainWindow):
 #_________________________________________________________________________
 #(Menubah)
 
+
+        self.cal = QtGui.QCalendarWidget(self)
+
+        self.cal.move(20, 100)
+        self.cal.resize(200,200)
+        self.cal.setGridVisible(0)
+        self.cal.clicked[QtCore.QDate].connect(self.showDate)
+
+
+
+
+        self.lbl = QtGui.QLabel(self)
+        self.date = self.cal.selectedDate()
+        self.lbl.setText(self.date.toString())
+        self.lbl.move(70, 300)
 
 
 
@@ -1980,14 +2123,14 @@ class finalCheck(QtGui.QMainWindow):
         self.button.setFixedSize(200,75)
 # button move  (over, down)
 
-        self.button2 = QtGui.QPushButton('Data Release Page', self)
+        self.button2 = QtGui.QPushButton('Data Processing', self)
         self.button2.clicked.connect(self.pageTwo)
         self.button2.setIconSize(QtCore.QSize(24,24))
         self.button2.move(20, 535)
         self.button2.setFixedSize(200,75)
 
 
-        self.button3 = QtGui.QPushButton('Data Science', self)
+        self.button3 = QtGui.QPushButton('Data Release ', self)
         self.button3.clicked.connect(self.pageThree)
         self.button3.setIconSize(QtCore.QSize(24,24))
         self.button3.move(20, 590)
@@ -2045,25 +2188,104 @@ class finalCheck(QtGui.QMainWindow):
         self.fileButton.setIconSize(QtCore.QSize(24,24))
         self.fileButton.move(400, 250)
 
-        self.xmlButton = QtGui.QPushButton('Select XML', self)
-        self.xmlButton.clicked.connect(self.selectXml)
-        self.xmlButton.setIconSize(QtCore.QSize(24,24))
-        self.xmlButton.move(900, 250)
 
 
 
 # button move  (over, down)
         self.textEdit = QtGui.QTextEdit(self)
-        self.textEdit.resize(450,500)
+        self.textEdit.resize(450,400)
         self.textEdit.move(250,300)
 
         self.textEdit.setReadOnly(1)
 
-        self.xmlEdit = QtGui.QTextEdit(self)
-        self.xmlEdit.resize(450,500)
-        self.xmlEdit.move(750,300)
+        self.lblPage = QtGui.QLabel(self)
+        self.lblPage.setText("Select the txt in the /continous folder")
 
-        self.xmlEdit.setReadOnly(1)
+        self.lblPage.resize(440, 50)
+        self.lblPage.move(320,130)
+
+
+        self.lblPage = QtGui.QLabel(self)
+        self.lblPage.setText("Open the .wav using media player")
+
+        self.lblPage.resize(440, 50)
+        self.lblPage.move(320,150)
+
+
+
+
+
+
+
+
+        self.lblPage2 = QtGui.QLabel(self)
+        self.lblPage2.setText("What the text file says:")
+
+        self.lblPage2.resize(440, 50)
+        self.lblPage2.move(750,140)
+
+
+        self.lblPage3 = QtGui.QLabel(self)
+        self.lblPage3.setText("-No Txt File:  The data doesnt contain a csv and xml file.")
+        self.lblPage3.resize(440, 50)
+        self.lblPage3.move(750,180)
+        self.lblPage4 = QtGui.QLabel(self)
+        self.lblPage4.setText("                      Incorrect conversion during cleanup.")
+        self.lblPage4.resize(440, 50)
+        self.lblPage4.move(750,200)
+
+
+
+
+        self.lblPage5 = QtGui.QLabel(self)
+        self.lblPage5.setText("-Blank Txt File:  There was an error in the xml or csv conversion.")
+        self.lblPage5.resize(440, 50)
+        self.lblPage5.move(750,250)
+
+
+
+
+        self.lblPage6 = QtGui.QLabel(self)
+        self.lblPage6.setText("-Txt file didnt complete processing:  Most likely conversion worked.  Usually caused by weird characters in data.")
+        self.lblPage6.resize(440, 50)
+        self.lblPage6.move(750,300)
+        self.lblPage7 = QtGui.QLabel(self)
+        self.lblPage7.setText("                       Usually caused by weird characters in data.")
+        self.lblPage7.resize(440, 50)
+        self.lblPage7.move(750,320)
+
+
+
+        self.lblPage7 = QtGui.QLabel(self)
+        self.lblPage7.setText("Last check:  Open audacity and .wav file under /continous.")
+        self.lblPage7.resize(440, 50)
+        self.lblPage7.move(750,420)
+        self.lblPage8 = QtGui.QLabel(self)
+        self.lblPage8.setText("                     * Check timestamps match the .xml")
+        self.lblPage8.resize(440, 50)
+        self.lblPage8.move(750,440)
+
+        self.lblPage8 = QtGui.QLabel(self)
+        self.lblPage8.setText("                     * Ensure Male / Female Labels in .xml")
+        self.lblPage8.resize(440, 50)
+        self.lblPage8.move(750,460)
+
+
+        self.lblPage9 = QtGui.QLabel(self)
+        self.lblPage9.setText("                     ** Often times blank/none transcript lines are caused ")
+        self.lblPage9.resize(440, 50)
+        self.lblPage9.move(750,480)
+        self.lblPage10 = QtGui.QLabel(self)
+        self.lblPage10.setText("                       by the person not saying anything.  Double check,   ")
+        self.lblPage10.resize(440, 50)
+        self.lblPage10.move(750,500)
+        self.lblPage11 = QtGui.QLabel(self)
+        self.lblPage11.setText("                       using .wav player.  Usually ignore this... ")
+        self.lblPage11.resize(440, 50)
+        self.lblPage11.move(750,520)
+
+
+
 
         self.show()
 
@@ -2079,16 +2301,7 @@ class finalCheck(QtGui.QMainWindow):
 
             self.textEdit.setText(text)
 
-    def selectXml(self):
-        name2 = QtGui.QFileDialog.getOpenFileName(self, 'Open File')
-        file = open(name2,'r')
 
-
-
-        with file:
-            text = file.read()
-
-            self.xmlEdit.setText(text)
 
 
     def checkFile(self):
@@ -2140,6 +2353,7 @@ class finalCheck(QtGui.QMainWindow):
         print ("Now Entering Start Page")
 
 
+
     def pageTwo(self):
 
         self.hide()
@@ -2167,15 +2381,6 @@ class finalCheck(QtGui.QMainWindow):
         pageFive.show()
         print ("Now Entering Page 5")
 
-    def popupmsg(self):
-        msg = QtGui.QMessageBox.question(self, "Error!",
-                                         "If you have any questions feel free to ask.  Email me at EdwinX.Eames@intel.com",
-                                         QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
-        if msg == QtGui.QMessageBox.Yes:
-
-            sys.exit()
-        else:
-            pass
 
 
 
@@ -2212,27 +2417,6 @@ class dataScience(QtGui.QMainWindow):
                            #"border:1px solid rgb(0, 131, 195);")
 
 
-
-#_________________________________________________________________________
-#(Menubah)
-
-
-        self.myQMenuBar = QtGui.QMenuBar(self)
-
-        FileMenu = self.myQMenuBar.addMenu('File')
-        AboutMenu = self.myQMenuBar.addMenu('Help')
-
-#______________
-###Actions
-
-        exitAction = QtGui.QAction('Exit', self)
-        exitAction.setShortcut('Ctrl+Q')
-        exitAction.setStatusTip('Quit Program')
-        exitAction.triggered.connect(QtGui.qApp.quit)
-
-        popupmsgAction = QtGui.QAction('ReportErrors', self)
-        popupmsgAction.setStatusTip('Popup')
-        popupmsgAction.triggered.connect(self.popupmsg)
 
 
 
@@ -2276,11 +2460,22 @@ class dataScience(QtGui.QMainWindow):
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(extractActiongameWindow)
 ##Calnder
-        cal = QtGui.QCalendarWidget(self)
-        cal.setGridVisible(True)
-        cal.move(20, 100)
-        cal.resize(200,200)
-        cal.clicked[QtCore.QDate].connect(self.showDate)
+        self.cal = QtGui.QCalendarWidget(self)
+
+        self.cal.move(20, 100)
+        self.cal.resize(200,200)
+        self.cal.setGridVisible(0)
+        self.cal.clicked[QtCore.QDate].connect(self.showDate)
+
+
+
+
+        self.lbl = QtGui.QLabel(self)
+        self.date = self.cal.selectedDate()
+        self.lbl.setText(self.date.toString())
+        self.lbl.move(70, 300)
+
+
 ####
 
 
@@ -2301,12 +2496,21 @@ class dataScience(QtGui.QMainWindow):
 # button move  (over, down)
 
 
+        self.emailpage = QtGui.QPushButton('Email Formatter', self)
+        self.emailpage.clicked.connect(self.emailformatPage)
+        self.emailpage.setIconSize(QtCore.QSize(24,24))
+        self.emailpage.move(350,100)
+        self.emailpage.setFixedSize(250,50)
+
+        self.ldsPage = QtGui.QPushButton('Upload LDS', self)
+        self.ldsPage.clicked.connect(self.ldsformatPage)
+        self.ldsPage.setIconSize(QtCore.QSize(24,24))
+        self.ldsPage.move(700,100)
+        self.ldsPage.setFixedSize(250,50)
 
 
-        self.lbl = QtGui.QLabel(self)
-        date = cal.selectedDate()
-        self.lbl.setText(date.toString())
-        self.lbl.move(70, 300)
+
+
 
 
 
@@ -2318,14 +2522,14 @@ class dataScience(QtGui.QMainWindow):
         self.button.setFixedSize(200,75)
 # button move  (over, down)
 
-        self.button2 = QtGui.QPushButton('Data Release Page', self)
+        self.button2 = QtGui.QPushButton('Data Processing', self)
         self.button2.clicked.connect(self.pageTwo)
         self.button2.setIconSize(QtCore.QSize(24,24))
         self.button2.move(20, 535)
         self.button2.setFixedSize(200,75)
 
 
-        self.button3 = QtGui.QPushButton('Data Science', self)
+        self.button3 = QtGui.QPushButton('Data Release ', self)
         self.button3.clicked.connect(self.pageThree)
         self.button3.setIconSize(QtCore.QSize(24,24))
         self.button3.move(20, 590)
@@ -2350,17 +2554,41 @@ class dataScience(QtGui.QMainWindow):
 
 
         self.lbl = QtGui.QLabel(self)
-        self.lbl.setText("Data Science")
+        self.lbl.setText("Data Release ")
         self.lbl.resize(145, 25)
         self.lbl.move(580,40)
 
 
-        self.pixmap = QtGui.QPixmap("intelmed.png")
+        self.lblPage = QtGui.QLabel(self)
+        self.lblPage.setText("Data Release Uploading Center ")
+        self.lblPage.resize(340, 50)
+        self.lblPage.move(570,150)
 
-        self.lbl2 = QtGui.QLabel(self)
-        self.lbl2.setPixmap(self.pixmap)
-        self.lbl2.move(1000,40)
-        self.lbl2.resize(300,200)
+
+
+        self.lbl1Page = QtGui.QLabel(self)
+        self.lbl1Page.setText("This page will generate an email for outlook, and directly release data to LDS. ")
+        self.lbl1Page.resize(640, 50)
+        self.lbl1Page.move(300,200)
+
+        self.lblPage = QtGui.QLabel(self)
+        self.lblPage.setText("1.  All .xml/.wav files are to be placed into one folder.")
+        self.lblPage.resize(640, 50)
+        self.lblPage.move(300,250)
+
+
+        self.lblPage = QtGui.QLabel(self)
+        self.lblPage.setText("2. Under email formatter, select that folder, and a template for outlook is generated.")
+        self.lblPage.resize(640, 50)
+        self.lblPage.move(300,300)
+
+
+        self.lblPage = QtGui.QLabel(self)
+        self.lblPage.setText("3.  Under LDS upload, select the folder with the .xml/.wav files.  Enter in information and upload! (takes ~30 mins)")
+        self.lblPage.resize(690, 50)
+        self.lblPage.move(300,350)
+
+
 
 
 
@@ -2370,15 +2598,7 @@ class dataScience(QtGui.QMainWindow):
 
 #_________________________________________________________________________
 #
-    def popupmsg(self):
-        msg = QtGui.QMessageBox.question(self, "Error!",
-                                         "If you have any questions feel free to ask.  Email me at EdwinX.Eames@intel.com",
-                                         QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
-        if msg == QtGui.QMessageBox.Yes:
 
-            sys.exit()
-        else:
-            pass
 
 
 
@@ -2392,6 +2612,18 @@ class dataScience(QtGui.QMainWindow):
         print("whooaaaa so custom!!!")
         sys.exit()
 
+
+    def ldsformatPage(self):
+        self.hide()
+        convert1 = ldsuploadformatPage(self)
+        convert1.show()
+        print 'Button Pressed'
+
+    def emailformatPage (self):
+        self.hide()
+        convert1 = emaildataUpload(self)
+        convert1.show()
+        print 'Button Pressed'
 
     def startPage(self):
 
@@ -2433,6 +2665,552 @@ class dataScience(QtGui.QMainWindow):
 
 
 
+class ldsuploadformatPage(QtGui.QMainWindow):
+    def __init__(self,parent = None):
+        QtGui.QWidget.__init__(self, parent)
+
+        self.initUI()
+
+    def initUI(self):
+# button move  (over, down)
+        self.setGeometry(300,300,1280,800)
+        self.setWindowTitle("Intel")
+        self.setWindowIcon(QtGui.QIcon("Intel Converter"))
+        self.setStyleSheet("font-size:15px")
+
+
+#_________________________________________________________________________
+#(Menubah)
+
+
+
+
+
+        self.lbl = QtGui.QLabel(self)
+        self.lbl.setText("Data Release Made Easy")
+        self.lbl.move(550,20)
+        self.lbl.resize(250,70)
+
+
+        self.button = QtGui.QPushButton('Home', self)
+        self.button.clicked.connect(self.startPage)
+        self.button.setIconSize(QtCore.QSize(24,24))
+        self.button.move(20, 480)
+        self.button.setFixedSize(200,75)
+# button move  (over, down)
+
+        self.button2 = QtGui.QPushButton('Data Processing', self)
+        self.button2.clicked.connect(self.pageTwo)
+        self.button2.setIconSize(QtCore.QSize(24,24))
+        self.button2.move(20, 535)
+        self.button2.setFixedSize(200,75)
+
+
+        self.button3 = QtGui.QPushButton('Data Release ', self)
+        self.button3.clicked.connect(self.pageThree)
+        self.button3.setIconSize(QtCore.QSize(24,24))
+        self.button3.move(20, 590)
+        self.button3.setFixedSize(200,75)
+
+
+
+        self.button5 = QtGui.QPushButton('Remote File Upload', self)
+        self.button5.clicked.connect(self.pageFour)
+        self.button5.setIconSize(QtCore.QSize(24,24))
+        self.button5.move(20, 645)
+        self.button5.setFixedSize(200,75)
+
+        self.button6 = QtGui.QPushButton('Game Page', self)
+        self.button6.clicked.connect(self.pageFive)
+        self.button6.setIconSize(QtCore.QSize(24,24))
+        self.button6.move(20, 700)
+        self.button6.setFixedSize(200,75)
+
+# button move  (over, down)
+
+
+
+
+
+
+
+
+
+
+
+        self.emailpage = QtGui.QPushButton('Email Formatter', self)
+        self.emailpage.clicked.connect(self.emailformatPage)
+        self.emailpage.setIconSize(QtCore.QSize(24,24))
+        self.emailpage.move(350,100)
+        self.emailpage.setFixedSize(250,50)
+
+        self.ldsPage = QtGui.QPushButton('Upload LDS', self)
+        self.ldsPage.clicked.connect(self.ldsformatPage)
+        self.ldsPage.setIconSize(QtCore.QSize(24,24))
+        self.ldsPage.move(700,100)
+        self.ldsPage.setFixedSize(250,50)
+
+
+
+
+
+
+
+
+        self.selectFileButton = QtGui.QPushButton('Select Folder', self)
+        self.selectFileButton.move(345, 250)
+        self.selectFileButton.setFixedSize(250,50)
+        self.selectFileButton.clicked.connect(self.selectFolder)
+
+
+        self.listDirPath = QtGui.QLineEdit(self)
+        self.listDirPath.resize(500,50)
+        self.listDirPath.move(650,250)
+
+
+
+        self.lbl = QtGui.QLabel(self)
+        self.lbl.setText("Enter the log name")
+        self.lbl.resize(250,70)
+        self.lbl.move(350,350)
+
+
+
+        self.logPath = QtGui.QLineEdit(self)
+        self.logPath.resize(350,50)
+        self.logPath.move(650,350)
+
+
+
+
+        self.lbl = QtGui.QLabel(self)
+        self.lbl.setText("Enter the transaction id")
+        self.lbl.resize(250,70)
+        self.lbl.move(350,450)
+
+        self.transidPath = QtGui.QLineEdit(self)
+        self.transidPath.resize(350,50)
+        self.transidPath.move(650,450)
+
+
+
+
+
+
+
+
+
+
+
+        self.lbl = QtGui.QLabel(self)
+        self.lbl.setText("Remove Directory Path")
+        self.lbl.resize(250,70)
+        self.lbl.move(350,550)
+
+
+
+        self.listremovePath = QtGui.QLineEdit(self)
+        self.listremovePath.resize(350,50)
+        self.listremovePath.move(650,550)
+
+
+
+
+
+
+
+
+
+
+
+
+
+        self.selectFileButton = QtGui.QPushButton('Upload', self)
+        self.selectFileButton.move(555, 650)
+        self.selectFileButton.clicked.connect(self.uploadLds)
+
+
+
+
+
+
+        self.directory =None
+        self.show()
+
+
+    def uploadLds(self):
+
+
+        tranID = self.transidPath.text()
+        logLocation = self.logPath.text()
+        pathRemover = self.listremovePath.text()
+
+        directoryPath = self.listDirPath.text()
+
+
+        cmd = ('python ingest_audio.py -c -p ' + str(pathRemover) +' -t ' + str(tranID) + ' -l ' + str(logLocation) + ' ingest --audio_files ' + str(directoryPath) + '*.wav '  '--xml_metadata' + str(directoryPath)  + '*.xml'+ ' -d'   )
+        print cmd + "   this is executable command"
+        #os.system(cmd)
+
+
+
+
+        print "Worked .."
+
+
+
+
+    def selectFolder(self):
+
+
+        directory = QtGui.QFileDialog.getExistingDirectory(self, caption="Pick a folder", directory=QtCore.QDir.currentPath())
+
+
+        print directory + " this si dirrrrectory"
+        self.listDirPath.setText(directory)
+
+        for file_name in os.listdir(directory):
+            if not file_name.startswith("."):
+
+                print (file_name) +  "   this is selectFilcestoxml"
+
+        return directory
+
+
+    def checkFile(self):
+        self.hide()
+        convert1 = finalCheck(self)
+        convert1.show()
+        print 'Button Pressed'
+
+
+    def ldsformatPage(self):
+        self.hide()
+        convert1 = ldsuploadformatPage(self)
+        convert1.show()
+        print 'Button Pressed'
+
+    def emailformatPage (self):
+        self.hide()
+        convert1 = emaildataUpload(self)
+        convert1.show()
+        print 'Button Pressed'
+
+
+    def startPage(self):
+
+        self.hide()
+        startpage = mainWindow()
+        startpage.show()
+        print ("Now Entering Start Page")
+
+
+    def pageTwo(self):
+
+        self.hide()
+        pagetwo = convertorPage(self)
+        pagetwo.show()
+        print ("Now Entering Page Two")
+
+    def pageThree(self):
+        self.hide()
+        pagethree = dataScience(self)
+        pagethree.show()
+        print ("Now Entering Page Three")
+
+
+    def pageFour(self):
+
+        self.hide()
+        pageFour = dataRelease(self)
+        pageFour.show()
+        print ("Now Entering Page 4")
+
+    def pageFive(self):
+        self.hide()
+        pageFive = gameWindow(self)
+        pageFive.show()
+        print ("Now Entering Page 5")
+
+    def showDate(self, date):
+
+        self.lbl.setText(date.toString())
+
+
+
+    def close_application(self):
+        print("whooaaaa you quit!!")
+        sys.exit()
+
+
+
+
+
+
+class emaildataUpload(QtGui.QMainWindow):
+    def __init__(self,parent = None):
+        QtGui.QWidget.__init__(self, parent)
+
+        self.initUI()
+
+    def initUI(self):
+# button move  (over, down)
+        self.setGeometry(300,300,1280,800)
+        self.setWindowTitle("Intel")
+        self.setWindowIcon(QtGui.QIcon("Intel Converter"))
+        self.setStyleSheet("font-size:15px")
+
+
+#_________________________________________________________________________
+#(Menubah)
+
+
+
+
+
+        self.lbl = QtGui.QLabel(self)
+        self.lbl.setText("Data Release Made Easy")
+        self.lbl.move(550,20)
+        self.lbl.resize(250,70)
+
+
+        self.button = QtGui.QPushButton('Home', self)
+        self.button.clicked.connect(self.startPage)
+        self.button.setIconSize(QtCore.QSize(24,24))
+        self.button.move(20, 480)
+        self.button.setFixedSize(200,75)
+# button move  (over, down)
+
+        self.button2 = QtGui.QPushButton('Data Processing', self)
+        self.button2.clicked.connect(self.pageTwo)
+        self.button2.setIconSize(QtCore.QSize(24,24))
+        self.button2.move(20, 535)
+        self.button2.setFixedSize(200,75)
+
+
+        self.button3 = QtGui.QPushButton('Data Release ', self)
+        self.button3.clicked.connect(self.pageThree)
+        self.button3.setIconSize(QtCore.QSize(24,24))
+        self.button3.move(20, 590)
+        self.button3.setFixedSize(200,75)
+
+
+
+        self.button5 = QtGui.QPushButton('Remote File Upload', self)
+        self.button5.clicked.connect(self.pageFour)
+        self.button5.setIconSize(QtCore.QSize(24,24))
+        self.button5.move(20, 645)
+        self.button5.setFixedSize(200,75)
+
+        self.button6 = QtGui.QPushButton('Game Page', self)
+        self.button6.clicked.connect(self.pageFive)
+        self.button6.setIconSize(QtCore.QSize(24,24))
+        self.button6.move(20, 700)
+        self.button6.setFixedSize(200,75)
+
+# button move  (over, down)
+
+
+
+
+
+
+
+
+
+
+        self.emailpage = QtGui.QPushButton('Email Formatter', self)
+        self.emailpage.clicked.connect(self.emailformatPage)
+        self.emailpage.setIconSize(QtCore.QSize(24,24))
+        self.emailpage.move(350,100)
+        self.emailpage.setFixedSize(250,50)
+
+        self.ldsPage = QtGui.QPushButton('Upload LDS', self)
+        self.ldsPage.clicked.connect(self.ldsformatPage)
+        self.ldsPage.setIconSize(QtCore.QSize(24,24))
+        self.ldsPage.move(700,100)
+        self.ldsPage.setFixedSize(250,50)
+
+
+        self.listDirPath = QtGui.QLineEdit(self)
+        self.listDirPath.resize(500,50)
+        self.listDirPath.move(650,210)
+
+
+        self.selectFileButton = QtGui.QPushButton('Select Folder', self)
+        self.selectFileButton.move(355, 210)
+        self.selectFileButton.setFixedSize(250,50)
+        self.selectFileButton.clicked.connect(self.convertDirectory)
+        #self.selectFileButton.clicked.connect(self.openTxt)
+
+
+
+        self.textEdit = QtGui.QTextEdit(self)
+        self.textEdit.resize(600,400)
+        self.textEdit.move(450,360)
+
+        #self.textEdit.setReadOnly(1)
+
+
+        self.lbl = QtGui.QLabel(self)
+        self.lbl.setText("Folder contains .xml, .wav")
+        self.lbl.move(385,235)
+        self.lbl.resize(250,70)
+
+        self.lblEmail = QtGui.QLabel(self)
+        self.lblEmail.setText("Copy and paste this output into outlook.")
+        self.lblEmail.move(600,305)
+        self.lblEmail.resize(300,70)
+
+        self.directory =None
+        self.show()
+
+
+
+    def checkFile(self):
+        self.hide()
+        convert1 = finalCheck(self)
+        convert1.show()
+        print 'Button Pressed'
+
+
+    def selectFilecsvtoxml(self):
+
+
+        directory = QtGui.QFileDialog.getExistingDirectory(self, caption="Pick a folder", directory=QtCore.QDir.currentPath())
+
+
+        print directory + " this si dirrrrectory"
+        x = str(directory)
+        print x + " this is string of directory"
+        self.listDirPath.setText(directory)
+
+        for file_name in os.listdir(directory):
+            if not file_name.startswith("."):
+
+                print (file_name) +  "   this is the file "
+
+
+
+
+
+
+        return directory
+
+
+    def convertDirectory(self):
+
+
+        directoryPath = self.selectFilecsvtoxml()
+
+
+        cmd = ('python loginformationExtractor.py '
+               +str(directoryPath))
+        print cmd + "   this is executable command"
+        os.system(cmd)
+
+        for file_name in os.listdir(directoryPath):
+            print (directoryPath) + "****" + file_name
+
+            if file_name.endswith(".txt"):
+                f = file_name
+                print f + "  this needs to go in textedit"
+                os.chdir(directoryPath)
+                print os.getcwd()
+
+                readMe = open(f,'r').read()
+                self.textEdit.setText(readMe)
+
+
+        print "opening popup now .."
+
+
+
+    def openTxt(self):
+        directoryFile = emaildataUpload()
+        dir1=directoryFile.selectFilecsvtoxml()
+
+        print "this s open text"
+        print str(dir1) + "   this is directory of opentxt"
+        os.chdir(dir1)
+        print os.getcwd()+ "    this is directory before looking for txt"
+        files = [f for f in os.listdir('.') if os.path.isfile(f)]
+        for file_name in files:
+
+            if file_name.endswith(".txt"):
+                print dir1 + "/" + (file_name)  + "   this is txt file"
+                readMe = open(file_name,'r').read()
+                self.textEdit.setText(readMe)
+
+
+
+
+
+
+    def ldsformatPage(self):
+        self.hide()
+        convert1 = ldsuploadformatPage(self)
+        convert1.show()
+        print 'Button Pressed'
+
+    def emailformatPage (self):
+        self.hide()
+        convert1 = emaildataUpload(self)
+        convert1.show()
+        print 'Button Pressed'
+
+
+
+    def startPage(self):
+
+        self.hide()
+        startpage = mainWindow()
+        startpage.show()
+        print ("Now Entering Start Page")
+
+
+    def pageTwo(self):
+
+        self.hide()
+        pagetwo = convertorPage(self)
+        pagetwo.show()
+        print ("Now Entering Page Two")
+
+    def pageThree(self):
+        self.hide()
+        pagethree = dataScience(self)
+        pagethree.show()
+        print ("Now Entering Page Three")
+
+
+    def pageFour(self):
+
+        self.hide()
+        pageFour = dataRelease(self)
+        pageFour.show()
+        print ("Now Entering Page 4")
+
+    def pageFive(self):
+        self.hide()
+        pageFive = gameWindow(self)
+        pageFive.show()
+        print ("Now Entering Page 5")
+
+    def showDate(self, date):
+
+        self.lbl.setText(date.toString())
+
+
+
+    def close_application(self):
+        print("whooaaaa you quit!!")
+        sys.exit()
+
+
+
+
+
+
 
 class mainWindow(QtGui.QMainWindow):
 
@@ -2455,13 +3233,24 @@ class mainWindow(QtGui.QMainWindow):
 #(Menubah)
 
 
-        self.myQMenuBar = QtGui.QMenuBar(self)
-
-
 
 #______________
 ###Actions
 
+        self.cal = QtGui.QCalendarWidget(self)
+
+        self.cal.move(20, 100)
+        self.cal.resize(200,200)
+        self.cal.setGridVisible(0)
+        self.cal.clicked[QtCore.QDate].connect(self.showDate)
+
+
+
+
+        self.lbl = QtGui.QLabel(self)
+        self.date = self.cal.selectedDate()
+        self.lbl.setText(self.date.toString())
+        self.lbl.move(70, 300)
 
 
 
@@ -2504,39 +3293,6 @@ class mainWindow(QtGui.QMainWindow):
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(extractActiongameWindow)
 ##Calnder
-        cal = QtGui.QCalendarWidget(self)
-        cal.setGridVisible(True)
-        cal.move(20, 100)
-        cal.resize(200,200)
-        cal.clicked[QtCore.QDate].connect(self.showDate)
-####
-
-
-
-
-
-
-
-
-#Split Frames
-
-##
-
-#_________________________________________________________________________
-#
-
-#Canvas------------------
-# button move  (over, down)
-
-
-
-
-        self.lbl = QtGui.QLabel(self)
-        date = cal.selectedDate()
-        self.lbl.setText(date.toString())
-        self.lbl.move(70, 300)
-
-
 
 
 
@@ -2551,14 +3307,14 @@ class mainWindow(QtGui.QMainWindow):
         self.button.setFixedSize(200,75)
 # button move  (over, down)
 
-        self.button2 = QtGui.QPushButton('Data Release Page', self)
+        self.button2 = QtGui.QPushButton('Data Processing', self)
         self.button2.clicked.connect(self.pageTwo)
         self.button2.setIconSize(QtCore.QSize(24,24))
         self.button2.move(20, 535)
         self.button2.setFixedSize(200,75)
 
 
-        self.button3 = QtGui.QPushButton('Data Science', self)
+        self.button3 = QtGui.QPushButton('Data Release ', self)
         self.button3.clicked.connect(self.pageThree)
         self.button3.setIconSize(QtCore.QSize(24,24))
         self.button3.move(20, 590)
@@ -2624,16 +3380,7 @@ class mainWindow(QtGui.QMainWindow):
 
         self.show()
 #_________________________________________________________________________
-#
-    def popupmsg(self):
-        msg = QtGui.QMessageBox.question(self, "Error!",
-                                         "If you have any questions feel free to ask.  Email me at EdwinX.Eames@intel.com",
-                                         QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
-        if msg == QtGui.QMessageBox.Yes:
 
-            sys.exit()
-        else:
-            pass
 
 
 
@@ -2644,6 +3391,7 @@ class mainWindow(QtGui.QMainWindow):
     def showDate(self, date):
 
         self.lbl.setText(date.toString())
+
     def close_application(self):
         print("whooaaaa so custom!!!")
         sys.exit()
@@ -2679,6 +3427,8 @@ class mainWindow(QtGui.QMainWindow):
         print ("Now Entering Page 4")
 
     def pageFive(self):
+
+
         self.hide()
         pageFive = gameWindow(self)
         pageFive.show()
