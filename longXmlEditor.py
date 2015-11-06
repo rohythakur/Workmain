@@ -27,6 +27,18 @@ except ImportError:
 
 directory = sys.argv[1]
 
+def resetToZero(root):
+	allPromptStartNodes = root.findall(".//promptStartMillis")
+	allPromptStartValues = map((lambda x : int(x.text)), allPromptStartNodes)
+
+	lowestPromptStart = min(allPromptStartValues)
+	if lowestPromptStart != 0:
+		for xmlElement in root.xpath("//*[contains(local-name(), 'Millis')]"):
+			nodeValue = int(xmlElement.text)
+			newValue = nodeValue - lowestPromptStart
+			xmlElement.text = str(int(newValue))
+
+
 
 
 """time format converter """
@@ -133,6 +145,17 @@ def Main():
                         tree = etree.parse(xmltoParse, parser)
 
                         root = tree.getroot()
+
+                        allPromptStartNodes = root.findall(".//promptStartMillis")
+                        allPromptStartValues = map((lambda x : int(x.text)), allPromptStartNodes)
+
+                        lowestPromptStart = min(allPromptStartValues)
+                        if lowestPromptStart != 0:
+                            for xmlElement in root.xpath("//*[contains(local-name(), 'Millis')]"):
+                                nodeValue = int(xmlElement.text)
+                                newValue = nodeValue - lowestPromptStart
+                                xmlElement.text = str(int(newValue))
+
 
                         multipleTranscriptionPrompts = []
                         noTranscriptionPrompts = []
@@ -357,39 +380,43 @@ def Main():
                                 totalExtraPrompts += numberOfTranscriptionPerPrompt
                             elif numberOfTranscriptionPerPrompt < 1:
                                 noTranscriptionPrompts.append("<%s> has no transcription" %(literalPrompt))
-
+                        import subprocess
                         tree = etree.ElementTree(root)
                         tree.write(output_file, pretty_print=True, encoding="utf-8")
 
 
                         output_file.close()
 
+                        opencmd = "open " + directory + '/' + fname +'.xml'
+                        print opencmd + " this needs to work*******!"
+                        os.system(opencmd)
 
 
-
-                        textFile = fname + '.txt'
+                        #subprocess.Popen("open " + str(output_file),shell=True)
+                        textFile = fname + '_Edited.txt'
                         print textFile
                         textFileSource = os.getcwd() + '/' + textFile
-                        print textFileSource
+                        print textFileSource + " this is text file source"
                         textFileDest = directory
-                        print textFileDest
-                        #if os.path.exists(textFileDest):
-                            #os.remove(textFile)
-                            #print textFile + "  DELETED!!"
-                        print " ...  Writing to txt file :  " + textFile
+                        print textFileDest + " this is text file destination"
+                        if os.path.exists(textFileSource):
+                            os.remove(textFileSource)
+                            print textFile + "  DELETED!!"
+                        #print "stamped start/end time(s) not within recording window"
 
                         if niceTable:
 
 
                             f = open(textFile, 'w')
                             sys.stdout = f
+                            print " ...  Writing to txt file :  " + textFile
 
 
                             shutil.move(textFileSource, textFileDest)
 
 
 
-                            print "stamped start/end time(s) not within recording window"
+
                             print report
                         else:
                             pass
@@ -437,8 +464,12 @@ def Main():
                         if len(listOfDifferences) > 0:
                             print "\n[!!!] ATTENTION transcriptions not used were found:"
                             for x in listOfDifferences:
-                                countR += 1
-                                print countR, x
+                                try:
+                                    countR += 1
+                                    print countR, x
+                                except UnicodeError:
+                                    pass
+
 
                         countPR = 0
                         if len(previousErrors) > 0:

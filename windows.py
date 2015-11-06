@@ -46,31 +46,6 @@ class gameWindow(QtGui.QMainWindow):
 #_________________________________________________________________________
 #(Menubah)
 
-
-        self.myQMenuBar = QtGui.QMenuBar(self)
-
-        FileMenu = self.myQMenuBar.addMenu('File')
-        AboutMenu = self.myQMenuBar.addMenu('Help')
-
-#______________
-###Actions
-
-        exitAction = QtGui.QAction('Exit', self)
-        exitAction.setShortcut('Ctrl+Q')
-        exitAction.setStatusTip('Quit Program')
-        exitAction.triggered.connect(QtGui.qApp.quit)
-
-
-
-
-
-
-
-
-
-#______________
-###Icon bar
-
         extractActionHome = QtGui.QAction(QtGui.QIcon('homelogo.png'), 'Home Page', self)
         extractActionHome.triggered.connect(self.startPage)
         self.toolBar = self.addToolBar("Extraction")
@@ -96,29 +71,83 @@ class gameWindow(QtGui.QMainWindow):
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(extractActiondataRelease)
 
-        extractActiongameWindow = QtGui.QAction(QtGui.QIcon('gamelogo.png'), 'Game Page', self)
+        extractActiongameWindow = QtGui.QAction(QtGui.QIcon('gamelogo.png'), 'Tools', self)
         extractActiongameWindow.triggered.connect(self.pageFive)
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(extractActiongameWindow)
-
-
-
-    def popupmsg(self):
-        msg = QtGui.QMessageBox.question(self, "Error!",
-                                         "If you have any questions feel free to ask.  Email me at EdwinX.Eames@intel.com",
-                                         QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
-        if msg == QtGui.QMessageBox.Yes:
-
-            sys.exit()
-        else:
-            pass
+##Calnder
 
 
 
 
-    def showDate(self, date):
 
-        self.lbl.setText(date.toString())
+
+
+        self.button = QtGui.QPushButton('Home', self)
+        self.button.clicked.connect(self.startPage)
+        self.button.setIconSize(QtCore.QSize(24,24))
+        self.button.move(20, 480)
+        self.button.setFixedSize(200,75)
+# button move  (over, down)
+
+        self.button2 = QtGui.QPushButton('Data Processing', self)
+        self.button2.clicked.connect(self.pageTwo)
+        self.button2.setIconSize(QtCore.QSize(24,24))
+        self.button2.move(20, 535)
+        self.button2.setFixedSize(200,75)
+
+
+        self.button3 = QtGui.QPushButton('Data Release ', self)
+        self.button3.clicked.connect(self.pageThree)
+        self.button3.setIconSize(QtCore.QSize(24,24))
+        self.button3.move(20, 590)
+        self.button3.setFixedSize(200,75)
+
+
+
+        self.button5 = QtGui.QPushButton('Remote File Upload', self)
+        self.button5.clicked.connect(self.pageFour)
+        self.button5.setIconSize(QtCore.QSize(24,24))
+        self.button5.move(20, 645)
+        self.button5.setFixedSize(200,75)
+
+        self.button6 = QtGui.QPushButton('Tools', self)
+        self.button6.clicked.connect(self.pageFive)
+        self.button6.setIconSize(QtCore.QSize(24,24))
+        self.button6.move(20, 700)
+        self.button6.setFixedSize(200,75)
+
+
+
+
+
+        self.lbl = QtGui.QLabel(self)
+        self.lbl.setText("Data Team Program")
+        self.lbl.resize(145, 25)
+        self.lbl.move(580,40)
+
+
+        self.pixmap = QtGui.QPixmap("intelmed.png")
+
+        self.lbl2 = QtGui.QLabel(self)
+        self.lbl2.setPixmap(self.pixmap)
+        self.lbl2.move(10,50)
+        self.lbl2.resize(300,200)
+
+
+
+
+
+
+
+
+        self.show()
+#_________________________________________________________________________
+
+
+
+
+
     def close_application(self):
         print("whooaaaa so custom!!!")
         sys.exit()
@@ -154,6 +183,8 @@ class gameWindow(QtGui.QMainWindow):
         print ("Now Entering Page 4")
 
     def pageFive(self):
+
+
         self.hide()
         pageFive = gameWindow(self)
         pageFive.show()
@@ -219,20 +250,12 @@ class dataRelease(QtGui.QMainWindow):
         self.toolBar.addAction(extractActiongameWindow)
 
 ##Calnder
-        self.cal = QtGui.QCalendarWidget(self)
+        self.pixmap = QtGui.QPixmap("intelmed.png")
 
-        self.cal.move(20, 100)
-        self.cal.resize(200,200)
-        self.cal.setGridVisible(0)
-        self.cal.clicked[QtCore.QDate].connect(self.showDate)
-
-
-
-
-        self.lbl = QtGui.QLabel(self)
-        self.date = self.cal.selectedDate()
-        self.lbl.setText(self.date.toString())
-        self.lbl.move(70, 300)
+        self.lbl2 = QtGui.QLabel(self)
+        self.lbl2.setPixmap(self.pixmap)
+        self.lbl2.move(10,50)
+        self.lbl2.resize(300,200)
 
 
 
@@ -256,7 +279,7 @@ class dataRelease(QtGui.QMainWindow):
         self.button2.setFixedSize(200,75)
 
 
-        self.button3 = QtGui.QPushButton('Data Science', self)
+        self.button3 = QtGui.QPushButton('Data Release', self)
         self.button3.clicked.connect(self.pageThree)
         self.button3.setIconSize(QtCore.QSize(24,24))
         self.button3.move(20, 590)
@@ -270,7 +293,7 @@ class dataRelease(QtGui.QMainWindow):
         self.button5.move(20, 645)
         self.button5.setFixedSize(200,75)
 
-        self.button6 = QtGui.QPushButton('Game Page', self)
+        self.button6 = QtGui.QPushButton('Tools', self)
         self.button6.clicked.connect(self.pageFive)
         self.button6.setIconSize(QtCore.QSize(24,24))
         self.button6.move(20, 700)
@@ -407,20 +430,12 @@ class filesdownloadConvertorpage(QtGui.QMainWindow):
 
 
 
-        self.cal = QtGui.QCalendarWidget(self)
+        self.pixmap = QtGui.QPixmap("intelmed.png")
 
-        self.cal.move(20, 100)
-        self.cal.resize(200,200)
-        self.cal.setGridVisible(0)
-        self.cal.clicked[QtCore.QDate].connect(self.showDate)
-
-
-
-
-        self.lbl = QtGui.QLabel(self)
-        self.date = self.cal.selectedDate()
-        self.lbl.setText(self.date.toString())
-        self.lbl.move(70, 300)
+        self.lbl2 = QtGui.QLabel(self)
+        self.lbl2.setPixmap(self.pixmap)
+        self.lbl2.move(10,50)
+        self.lbl2.resize(300,200)
 
 
 
@@ -459,7 +474,7 @@ class filesdownloadConvertorpage(QtGui.QMainWindow):
         self.button5.move(20, 645)
         self.button5.setFixedSize(200,75)
 
-        self.button6 = QtGui.QPushButton('Game Page', self)
+        self.button6 = QtGui.QPushButton('Tools', self)
         self.button6.clicked.connect(self.pageFive)
         self.button6.setIconSize(QtCore.QSize(24,24))
         self.button6.move(20, 700)
@@ -828,21 +843,12 @@ class filescleanupConvertorpage(QtGui.QMainWindow):
 #(Menubah)
 
 
-        self.cal = QtGui.QCalendarWidget(self)
+        self.pixmap = QtGui.QPixmap("intelmed.png")
 
-        self.cal.move(20, 100)
-        self.cal.resize(200,200)
-        self.cal.setGridVisible(0)
-        self.cal.clicked[QtCore.QDate].connect(self.showDate)
-
-
-
-
-        self.lbl = QtGui.QLabel(self)
-        self.date = self.cal.selectedDate()
-        self.lbl.setText(self.date.toString())
-        self.lbl.move(70, 300)
-
+        self.lbl2 = QtGui.QLabel(self)
+        self.lbl2.setPixmap(self.pixmap)
+        self.lbl2.move(10,50)
+        self.lbl2.resize(300,200)
 
 
 
@@ -880,7 +886,7 @@ class filescleanupConvertorpage(QtGui.QMainWindow):
         self.button5.move(20, 645)
         self.button5.setFixedSize(200,75)
 
-        self.button6 = QtGui.QPushButton('Game Page', self)
+        self.button6 = QtGui.QPushButton('Tools', self)
         self.button6.clicked.connect(self.pageFive)
         self.button6.setIconSize(QtCore.QSize(24,24))
         self.button6.move(20, 700)
@@ -985,6 +991,11 @@ class filescleanupConvertorpage(QtGui.QMainWindow):
         self.lblFailed.resize(340, 50)
         self.lblFailed.move(600,600)
         self.lblFailed.hide()
+
+
+
+
+
 
 
 
@@ -1171,20 +1182,12 @@ class convertcsvtoXml(QtGui.QMainWindow):
 #(Menubah)
 
 
-        self.cal = QtGui.QCalendarWidget(self)
+        self.pixmap = QtGui.QPixmap("intelmed.png")
 
-        self.cal.move(20, 100)
-        self.cal.resize(200,200)
-        self.cal.setGridVisible(0)
-        self.cal.clicked[QtCore.QDate].connect(self.showDate)
-
-
-
-
-        self.lbl = QtGui.QLabel(self)
-        self.date = self.cal.selectedDate()
-        self.lbl.setText(self.date.toString())
-        self.lbl.move(70, 300)
+        self.lbl2 = QtGui.QLabel(self)
+        self.lbl2.setPixmap(self.pixmap)
+        self.lbl2.move(10,50)
+        self.lbl2.resize(300,200)
 
 
 
@@ -1224,7 +1227,7 @@ class convertcsvtoXml(QtGui.QMainWindow):
         self.button5.move(20, 645)
         self.button5.setFixedSize(200,75)
 
-        self.button6 = QtGui.QPushButton('Game Page', self)
+        self.button6 = QtGui.QPushButton('Tools', self)
         self.button6.clicked.connect(self.pageFive)
         self.button6.setIconSize(QtCore.QSize(24,24))
         self.button6.move(20, 700)
@@ -1489,22 +1492,12 @@ class createedditConvertorpage(QtGui.QMainWindow):
 #(Menubah)
 
 
-        self.cal = QtGui.QCalendarWidget(self)
+        self.pixmap = QtGui.QPixmap("intelmed.png")
 
-        self.cal.move(20, 100)
-        self.cal.resize(200,200)
-        self.cal.setGridVisible(0)
-        self.cal.clicked[QtCore.QDate].connect(self.showDate)
-
-
-
-
-        self.lbl = QtGui.QLabel(self)
-        self.date = self.cal.selectedDate()
-        self.lbl.setText(self.date.toString())
-        self.lbl.move(70, 300)
-
-
+        self.lbl2 = QtGui.QLabel(self)
+        self.lbl2.setPixmap(self.pixmap)
+        self.lbl2.move(10,50)
+        self.lbl2.resize(300,200)
 
 
 
@@ -1542,7 +1535,7 @@ class createedditConvertorpage(QtGui.QMainWindow):
         self.button5.move(20, 645)
         self.button5.setFixedSize(200,75)
 
-        self.button6 = QtGui.QPushButton('Game Page', self)
+        self.button6 = QtGui.QPushButton('Tools', self)
         self.button6.clicked.connect(self.pageFive)
         self.button6.setIconSize(QtCore.QSize(24,24))
         self.button6.move(20, 700)
@@ -1588,34 +1581,73 @@ class createedditConvertorpage(QtGui.QMainWindow):
 
         self.listDirPath = QtGui.QLineEdit(self)
         self.listDirPath.resize(500,50)
-        self.listDirPath.move(650,250)
+        self.listDirPath.move(650,300)
 
 
-        self.selectFileButton = QtGui.QPushButton('Create merged directory', self)
-        self.selectFileButton.move(355, 250)
+        self.selectFileButton = QtGui.QPushButton('Create merged file', self)
+        self.selectFileButton.move(355, 300)
         self.selectFileButton.setFixedSize(250,50)
         self.selectFileButton.clicked.connect(self.convertDirectory)
-        self.selectFileButton.clicked.connect(self.openReadout)
+        self.selectFileButton.clicked.connect(self.openTxt)
 
 
 
 
-        self.lblPage = QtGui.QLabel(self)
-        self.lblPage.setText("Under the data you download, select the continous folder.  All files and folders")
+        #self.lblPage = QtGui.QLabel(self)
+        #self.lblPage.setText("Under the data you download, select the continous folder.  All files and folders")
 
-        self.lblPage.resize(640, 50)
-        self.lblPage.move(400,130)
+        #self.lblPage.resize(640, 50)
+        #self.lblPage.move(400,130)
 
-        self.lblPage = QtGui.QLabel(self)
-        self.lblPage.setText("will be cleaned and grouped together magically")
-        self.lblPage.resize(640, 50)
-        self.lblPage.move(450,150)
+        #self.lblPage = QtGui.QLabel(self)
+        #self.lblPage.setText("will be cleaned and grouped together magically")
+        #self.lblPage.resize(640, 50)
+        #self.lblPage.move(450,150)
 
 
         self.lbl = QtGui.QLabel(self)
         self.lbl.setText("Folder contains .csv, .xml, .wav")
-        self.lbl.move(365,280)
+        self.lbl.move(365,330)
         self.lbl.resize(250,70)
+
+        self.pixmap = QtGui.QPixmap("xmlLogo.png")
+
+        self.lblxml = QtGui.QLabel(self)
+        self.lblxml.setPixmap(self.pixmap)
+        self.lblxml.move(450,130)
+        self.lblxml.resize(150,150)
+
+        self.pixmap = QtGui.QPixmap("addIcon.png")
+
+        self.lblplus = QtGui.QLabel(self)
+        self.lblplus.setPixmap(self.pixmap)
+        self.lblplus.move(650,130)
+        self.lblplus.resize(150,150)
+
+        self.pixmap = QtGui.QPixmap("csvLogo.png")
+
+        self.lblcsv = QtGui.QLabel(self)
+        self.lblcsv.setPixmap(self.pixmap)
+        self.lblcsv.move(850,130)
+        self.lblcsv.resize(150,150)
+
+
+
+
+
+
+
+
+
+
+        self.textEdit = QtGui.QTextEdit(self)
+        self.textEdit.resize(500,350)
+        self.textEdit.move(500,400)
+
+        self.textEdit.setReadOnly(1)
+
+
+
 
         self.directory =None
         self.show()
@@ -1646,20 +1678,14 @@ class createedditConvertorpage(QtGui.QMainWindow):
         return directory
 
 
-    def showDirectory(self):
-
-        showDir = self.selectFilecsvtoxml
-
-        print showDir + " this is the files from this class which makes dumbpop"
-        return showDir
-
-
 
 
 
     def convertDirectory(self):
 
-
+        os.chdir(dname)
+        os.getcwd()
+        print (os.getcwd()) + " this is the current directory"
         directoryPath = self.selectFilecsvtoxml()
         print directoryPath
 
@@ -1667,8 +1693,21 @@ class createedditConvertorpage(QtGui.QMainWindow):
                +str(directoryPath))
         print cmd + "   this is executable command"
         os.system(cmd)
+        os.chdir(directoryPath)
+        files = [f for f in os.listdir('.') if os.path.isfile(f)]
+        print str(files) + '********'
+        for file_name in files:
 
-        print "opening popup now .."
+            if file_name.endswith(".txt"):
+                print file_name + " this is txt"
+                readMe = open(file_name,'r').read()
+                self.textEdit.setText(readMe)
+
+
+    def openTxt(self):
+
+
+        pass
 
 
 
@@ -1774,21 +1813,12 @@ class convertorPage(QtGui.QMainWindow):
 #(Menubah)
 
 
-        self.cal = QtGui.QCalendarWidget(self)
+        self.pixmap = QtGui.QPixmap("intelmed.png")
 
-        self.cal.move(20, 100)
-        self.cal.resize(200,200)
-        self.cal.setGridVisible(0)
-        self.cal.clicked[QtCore.QDate].connect(self.showDate)
-
-
-
-
-        self.lbl = QtGui.QLabel(self)
-        self.date = self.cal.selectedDate()
-        self.lbl.setText(self.date.toString())
-        self.lbl.move(70, 300)
-
+        self.lbl2 = QtGui.QLabel(self)
+        self.lbl2.setPixmap(self.pixmap)
+        self.lbl2.move(10,50)
+        self.lbl2.resize(300,200)
 
 
 #______________
@@ -1823,7 +1853,7 @@ class convertorPage(QtGui.QMainWindow):
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(extractActiondataRelease)
 
-        extractActiongameWindow = QtGui.QAction(QtGui.QIcon('gamelogo.png'), 'Game Page', self)
+        extractActiongameWindow = QtGui.QAction(QtGui.QIcon('gamelogo.png'), 'Tools', self)
         extractActiongameWindow.triggered.connect(self.pageFive)
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(extractActiongameWindow)
@@ -1868,7 +1898,7 @@ class convertorPage(QtGui.QMainWindow):
         self.button5.move(20, 645)
         self.button5.setFixedSize(200,75)
 
-        self.button6 = QtGui.QPushButton('Game Page', self)
+        self.button6 = QtGui.QPushButton('Tools', self)
         self.button6.clicked.connect(self.pageFive)
         self.button6.setIconSize(QtCore.QSize(24,24))
         self.button6.move(20, 700)
@@ -2049,20 +2079,12 @@ class finalCheck(QtGui.QMainWindow):
 #(Menubah)
 
 
-        self.cal = QtGui.QCalendarWidget(self)
+        self.pixmap = QtGui.QPixmap("intelmed.png")
 
-        self.cal.move(20, 100)
-        self.cal.resize(200,200)
-        self.cal.setGridVisible(0)
-        self.cal.clicked[QtCore.QDate].connect(self.showDate)
-
-
-
-
-        self.lbl = QtGui.QLabel(self)
-        self.date = self.cal.selectedDate()
-        self.lbl.setText(self.date.toString())
-        self.lbl.move(70, 300)
+        self.lbl2 = QtGui.QLabel(self)
+        self.lbl2.setPixmap(self.pixmap)
+        self.lbl2.move(10,50)
+        self.lbl2.resize(300,200)
 
 
 
@@ -2099,7 +2121,7 @@ class finalCheck(QtGui.QMainWindow):
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(extractActiondataRelease)
 
-        extractActiongameWindow = QtGui.QAction(QtGui.QIcon('gamelogo.png'), 'Game Page', self)
+        extractActiongameWindow = QtGui.QAction(QtGui.QIcon('gamelogo.png'), 'Tools', self)
         extractActiongameWindow.triggered.connect(self.pageFive)
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(extractActiongameWindow)
@@ -2144,7 +2166,7 @@ class finalCheck(QtGui.QMainWindow):
         self.button5.move(20, 645)
         self.button5.setFixedSize(200,75)
 
-        self.button6 = QtGui.QPushButton('Game Page', self)
+        self.button6 = QtGui.QPushButton('Tools', self)
         self.button6.clicked.connect(self.pageFive)
         self.button6.setIconSize(QtCore.QSize(24,24))
         self.button6.move(20, 700)
@@ -2455,25 +2477,17 @@ class dataScience(QtGui.QMainWindow):
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(extractActiondataRelease)
 
-        extractActiongameWindow = QtGui.QAction(QtGui.QIcon('gamelogo.png'), 'Game Page', self)
+        extractActiongameWindow = QtGui.QAction(QtGui.QIcon('gamelogo.png'), 'Tools', self)
         extractActiongameWindow.triggered.connect(self.pageFive)
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(extractActiongameWindow)
 ##Calnder
-        self.cal = QtGui.QCalendarWidget(self)
+        self.pixmap = QtGui.QPixmap("intelmed.png")
 
-        self.cal.move(20, 100)
-        self.cal.resize(200,200)
-        self.cal.setGridVisible(0)
-        self.cal.clicked[QtCore.QDate].connect(self.showDate)
-
-
-
-
-        self.lbl = QtGui.QLabel(self)
-        self.date = self.cal.selectedDate()
-        self.lbl.setText(self.date.toString())
-        self.lbl.move(70, 300)
+        self.lbl2 = QtGui.QLabel(self)
+        self.lbl2.setPixmap(self.pixmap)
+        self.lbl2.move(10,50)
+        self.lbl2.resize(300,200)
 
 
 ####
@@ -2543,7 +2557,7 @@ class dataScience(QtGui.QMainWindow):
         self.button5.move(20, 645)
         self.button5.setFixedSize(200,75)
 
-        self.button6 = QtGui.QPushButton('Game Page', self)
+        self.button6 = QtGui.QPushButton('Tools', self)
         self.button6.clicked.connect(self.pageFive)
         self.button6.setIconSize(QtCore.QSize(24,24))
         self.button6.move(20, 700)
@@ -2681,6 +2695,12 @@ class ldsuploadformatPage(QtGui.QMainWindow):
 
 #_________________________________________________________________________
 #(Menubah)
+        self.pixmap = QtGui.QPixmap("intelmed.png")
+
+        self.lbl2 = QtGui.QLabel(self)
+        self.lbl2.setPixmap(self.pixmap)
+        self.lbl2.move(10,50)
+        self.lbl2.resize(300,200)
 
 
 
@@ -2720,7 +2740,7 @@ class ldsuploadformatPage(QtGui.QMainWindow):
         self.button5.move(20, 645)
         self.button5.setFixedSize(200,75)
 
-        self.button6 = QtGui.QPushButton('Game Page', self)
+        self.button6 = QtGui.QPushButton('Tools', self)
         self.button6.clicked.connect(self.pageFive)
         self.button6.setIconSize(QtCore.QSize(24,24))
         self.button6.move(20, 700)
@@ -2848,7 +2868,7 @@ class ldsuploadformatPage(QtGui.QMainWindow):
         directoryPath = self.listDirPath.text()
 
 
-        cmd = ('python ingest_audio.py -c -p ' + str(pathRemover) +' -t ' + str(tranID) + ' -l ' + str(logLocation) + ' ingest --audio_files ' + str(directoryPath) + '*.wav '  '--xml_metadata' + str(directoryPath)  + '*.xml'+ ' -d'   )
+        cmd = ('python ingest_audio.py -c -p ' + "'" + str(pathRemover) + "'" + ' -t' + "'" + str(tranID) + "'" + '-l' + "'" + str(logLocation)  + "'" + ' ingest --audio_files' + str(directoryPath)+ '*.wav'   '--xml_metadata' + str(directoryPath) + '*.xml'+ ' -d')
         print cmd + "   this is executable command"
         #os.system(cmd)
 
@@ -2963,6 +2983,12 @@ class emaildataUpload(QtGui.QMainWindow):
 
 #_________________________________________________________________________
 #(Menubah)
+        self.pixmap = QtGui.QPixmap("intelmed.png")
+
+        self.lbl2 = QtGui.QLabel(self)
+        self.lbl2.setPixmap(self.pixmap)
+        self.lbl2.move(10,50)
+        self.lbl2.resize(300,200)
 
 
 
@@ -3002,7 +3028,7 @@ class emaildataUpload(QtGui.QMainWindow):
         self.button5.move(20, 645)
         self.button5.setFixedSize(200,75)
 
-        self.button6 = QtGui.QPushButton('Game Page', self)
+        self.button6 = QtGui.QPushButton('Tools', self)
         self.button6.clicked.connect(self.pageFive)
         self.button6.setIconSize(QtCore.QSize(24,24))
         self.button6.move(20, 700)
@@ -3087,6 +3113,8 @@ class emaildataUpload(QtGui.QMainWindow):
 
         for file_name in os.listdir(directory):
             if not file_name.startswith("."):
+                if file_name.endswith('.txt'):
+                    os.remove(file_name)
 
                 print (file_name) +  "   this is the file "
 
@@ -3102,15 +3130,17 @@ class emaildataUpload(QtGui.QMainWindow):
 
 
         directoryPath = self.selectFilecsvtoxml()
+        os.chdir(dname)
+        os.getcwd()
+        print (os.getcwd()) + " this is the current directory"
 
-
-        cmd = ('python loginformationExtractor.py '
+        cmd = ('python log.py '
                +str(directoryPath))
         print cmd + "   this is executable command"
         os.system(cmd)
 
         for file_name in os.listdir(directoryPath):
-            print (directoryPath) + "****" + file_name
+            print (directoryPath) + "XXXXXXXXXXXX" + file_name
 
             if file_name.endswith(".txt"):
                 f = file_name
@@ -3120,6 +3150,8 @@ class emaildataUpload(QtGui.QMainWindow):
 
                 readMe = open(f,'r').read()
                 self.textEdit.setText(readMe)
+
+
 
 
         print "opening popup now .."
@@ -3237,20 +3269,6 @@ class mainWindow(QtGui.QMainWindow):
 #______________
 ###Actions
 
-        self.cal = QtGui.QCalendarWidget(self)
-
-        self.cal.move(20, 100)
-        self.cal.resize(200,200)
-        self.cal.setGridVisible(0)
-        self.cal.clicked[QtCore.QDate].connect(self.showDate)
-
-
-
-
-        self.lbl = QtGui.QLabel(self)
-        self.date = self.cal.selectedDate()
-        self.lbl.setText(self.date.toString())
-        self.lbl.move(70, 300)
 
 
 
@@ -3288,7 +3306,7 @@ class mainWindow(QtGui.QMainWindow):
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(extractActiondataRelease)
 
-        extractActiongameWindow = QtGui.QAction(QtGui.QIcon('gamelogo.png'), 'Game Page', self)
+        extractActiongameWindow = QtGui.QAction(QtGui.QIcon('gamelogo.png'), 'Tools', self)
         extractActiongameWindow.triggered.connect(self.pageFive)
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(extractActiongameWindow)
@@ -3328,7 +3346,7 @@ class mainWindow(QtGui.QMainWindow):
         self.button5.move(20, 645)
         self.button5.setFixedSize(200,75)
 
-        self.button6 = QtGui.QPushButton('Game Page', self)
+        self.button6 = QtGui.QPushButton('Tools', self)
         self.button6.clicked.connect(self.pageFive)
         self.button6.setIconSize(QtCore.QSize(24,24))
         self.button6.move(20, 700)
@@ -3348,7 +3366,7 @@ class mainWindow(QtGui.QMainWindow):
 
         self.lbl2 = QtGui.QLabel(self)
         self.lbl2.setPixmap(self.pixmap)
-        self.lbl2.move(1000,40)
+        self.lbl2.move(10,50)
         self.lbl2.resize(300,200)
 
 
@@ -3356,8 +3374,8 @@ class mainWindow(QtGui.QMainWindow):
 
         self.lbl2 = QtGui.QLabel(self)
         self.lbl2.setPixmap(self.pixmap)
-        self.lbl2.move(300,200)
-        self.lbl2.resize(600,600)
+        self.lbl2.move(500,100)
+        self.lbl2.resize(600,700)
 
 
 
