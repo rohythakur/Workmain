@@ -8,7 +8,7 @@ import glob
 import time
 from collections import defaultdict
 from shutil import copyfile
-
+import shutil
 from PyQt4 import QtGui, QtCore
 
 try:
@@ -938,8 +938,8 @@ class filescleanupConvertorpage(QtGui.QMainWindow):
 
 
         self.lbl = QtGui.QLabel(self)
-        self.lbl.setText("Most likely the /continuous folder")
-        self.lbl.move(365,280)
+        self.lbl.setText("Select Folder")
+        self.lbl.move(435,280)
         self.lbl.resize(250,70)
 
 
@@ -1000,19 +1000,16 @@ class filescleanupConvertorpage(QtGui.QMainWindow):
 
 
         self.lblPage = QtGui.QLabel(self)
-        self.lblPage.setText("Under the data you download, select the continuous folder.  All files and folders")
+        self.lblPage.setText("Select the data folder you downloaded ex: IT_044")
 
         self.lblPage.resize(640, 50)
         self.lblPage.move(400,130)
 
-        self.lblPage = QtGui.QLabel(self)
-        self.lblPage.setText("will be cleaned and grouped together magically")
-        self.lblPage.resize(640, 50)
-        self.lblPage.move(450,150)
+
 
         self.lbl = QtGui.QLabel(self)
-        self.lbl.setText("***  There has to be 3 or more files in this box to successfully transform this data***")
-        self.lbl.move(605,350)
+        self.lbl.setText("***  Folder created appears above ***")
+        self.lbl.move(755,350)
         self.lbl.resize(850,70)
         self.show()
 
@@ -1028,11 +1025,8 @@ class filescleanupConvertorpage(QtGui.QMainWindow):
         self.listWidget.clear() # In case there are any existing elements in the list
         directory = QtGui.QFileDialog.getExistingDirectory(self, "    Pick a folder")
         print directory + "     In directory Choice"
-        for file_name in os.listdir(directory):
-            if not file_name.startswith('.'):
 
-                self.listWidget.addItem(file_name)
-                print (file_name)
+
         return directory
 
 
@@ -1040,6 +1034,28 @@ class filescleanupConvertorpage(QtGui.QMainWindow):
 
         directoryChosen = self.directoryChoice()
         print directoryChosen + "     you made it to files selected \n \n \n \n"
+        findFolder = directoryChosen + '/continuous'
+        print findFolder
+
+
+
+
+
+
+        try:
+            os.chdir(directoryChosen)
+            os.getcwd()
+            print (os.getcwd()) + " this is the current directory"
+            cmdremoveJunk = ('rm *')
+            print cmdremoveJunk
+            os.system(cmdremoveJunk)
+
+
+
+            print " removed excess files \n \n \n \n"
+
+        except Exception:
+            print "failed tp remove files**************"
 
 
         try:
@@ -1047,7 +1063,7 @@ class filescleanupConvertorpage(QtGui.QMainWindow):
             os.getcwd()
             print (os.getcwd()) + " this is the current directory"
             cmdDollartohash = ('python fixFiles/replaceDollartohash.py '
-                   +str(directoryChosen) + '/')
+                   +str(findFolder) + '/')
             print cmdDollartohash
             os.system(cmdDollartohash)
             self.lblNamechange.show()
@@ -1064,7 +1080,7 @@ class filescleanupConvertorpage(QtGui.QMainWindow):
         try:
             os.chdir(dname)
             cmdGroupfiles = ('python fixFiles/groupFiles.py '
-                   +str(directoryChosen) + '/')
+                   +str(findFolder) + '/')
 
             print cmdGroupfiles
             os.system(cmdGroupfiles)
@@ -1078,7 +1094,7 @@ class filescleanupConvertorpage(QtGui.QMainWindow):
         try:
             os.chdir(dname)
             cmdRmfiles = ('python fixFiles/rmFiles.py '
-                   +str(directoryChosen))
+                   +str(findFolder))
 
             print cmdRmfiles
             os.system(cmdRmfiles)
@@ -1090,7 +1106,27 @@ class filescleanupConvertorpage(QtGui.QMainWindow):
             print "Removing Files Failed"
             self.lblRemovejunk2.show()
 
+        for file_names in os.listdir(findFolder):
+            if not file_names.startswith('.'):
+                print file_names
+                self.listWidget.addItem(file_names)
 
+                print (findFolder)
+        try:
+            os.chdir(findFolder)
+            moveSource = '-v ' + str(findFolder) + str('/*')
+
+            print str(os.getcwd())
+            print moveSource
+            moveDest = str(directoryChosen)
+            print directoryChosen
+            cmdMove = ('mv -v ' + str(moveSource) + ' ' + str(moveDest))
+            cmdremoveC = ('rm -r continuous')
+            os.system(cmdMove)
+            os.chdir(directoryChosen)
+            os.system(cmdremoveC)
+        except Exception as e:
+            print str(e)
 
     def csvtoXmlconvertor(self):
         self.hide()
@@ -1588,21 +1624,8 @@ class createedditConvertorpage(QtGui.QMainWindow):
         self.selectFileButton.move(355, 300)
         self.selectFileButton.setFixedSize(250,50)
         self.selectFileButton.clicked.connect(self.convertDirectory)
-        self.selectFileButton.clicked.connect(self.openTxt)
+        #self.selectFileButton.clicked.connect(self.openTxt)
 
-
-
-
-        #self.lblPage = QtGui.QLabel(self)
-        #self.lblPage.setText("Under the data you download, select the continous folder.  All files and folders")
-
-        #self.lblPage.resize(640, 50)
-        #self.lblPage.move(400,130)
-
-        #self.lblPage = QtGui.QLabel(self)
-        #self.lblPage.setText("will be cleaned and grouped together magically")
-        #self.lblPage.resize(640, 50)
-        #self.lblPage.move(450,150)
 
 
         self.lbl = QtGui.QLabel(self)
@@ -1707,7 +1730,9 @@ class createedditConvertorpage(QtGui.QMainWindow):
     def openTxt(self):
 
 
-        pass
+        txtWindow = readoutWindow(self)
+        txtWindow.show()
+
 
 
 
@@ -3111,16 +3136,6 @@ class emaildataUpload(QtGui.QMainWindow):
         print x + " this is string of directory"
         self.listDirPath.setText(directory)
 
-        for file_name in os.listdir(directory):
-            if not file_name.startswith("."):
-                if file_name.endswith('.txt'):
-                    os.remove(file_name)
-
-                print (file_name) +  "   this is the file "
-
-
-
-
 
 
         return directory
@@ -3156,23 +3171,6 @@ class emaildataUpload(QtGui.QMainWindow):
 
         print "opening popup now .."
 
-
-
-    def openTxt(self):
-        directoryFile = emaildataUpload()
-        dir1=directoryFile.selectFilecsvtoxml()
-
-        print "this s open text"
-        print str(dir1) + "   this is directory of opentxt"
-        os.chdir(dir1)
-        print os.getcwd()+ "    this is directory before looking for txt"
-        files = [f for f in os.listdir('.') if os.path.isfile(f)]
-        for file_name in files:
-
-            if file_name.endswith(".txt"):
-                print dir1 + "/" + (file_name)  + "   this is txt file"
-                readMe = open(file_name,'r').read()
-                self.textEdit.setText(readMe)
 
 
 

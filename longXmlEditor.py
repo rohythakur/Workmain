@@ -122,7 +122,7 @@ def Main():
                         print f + ' THIS WILL BE DATA FILE'
 
 
-                        output_file = directory + '/' + os.path.splitext(os.path.basename(f))[0] + ".xml"
+                        output_file = directory + '/' + os.path.splitext(os.path.basename(f))[0] + "_Edited.xml"
                         if os.path.exists(output_file):
                             os.remove(output_file)
                             print output_file + "  DELETED!!"
@@ -134,7 +134,7 @@ def Main():
                         print fname
                         print files
 
-                        xmltoParse = directory + '/' + fname + '/' + f
+                        xmltoParse = directory + '/' + f
                         output_file = open(output_file, 'w')
 
 
@@ -387,9 +387,12 @@ def Main():
 
                         output_file.close()
 
-                        opencmd = "open " + directory + '/' + fname +'.xml'
-                        print opencmd + " this needs to work*******!"
+                        opencmd = "open " + directory + '/' + fname +'_Edited.xml'
+                        openwavcmd = "open " + directory + '/' + fname +'.wav'
                         os.system(opencmd)
+                        print "running open edited xml"
+                        os.system(openwavcmd)
+                        print " running open wav"
 
 
                         #subprocess.Popen("open " + str(output_file),shell=True)
