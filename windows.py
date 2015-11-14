@@ -37,7 +37,7 @@ class gameWindow(QtGui.QMainWindow):
     def initUI(self):
         self.setGeometry(300,300,1280,800)
         self.setWindowTitle("Intel")
-        self.setWindowIcon(QtGui.QIcon("Intel.png"))
+        #self.setWindowIcon(QtGui.QIcon("images/Intelmed.png"))
         #self.setStyleSheet("background-color: rgb(255, 255, 255);\n")
                            #"border:1px solid rgb(0, 131, 195);")
 
@@ -46,14 +46,15 @@ class gameWindow(QtGui.QMainWindow):
 #_________________________________________________________________________
 #(Menubah)
 
-        extractActionHome = QtGui.QAction(QtGui.QIcon('homelogo.png'), 'Home Page', self)
+        extractActionHome = QtGui.QAction(QtGui.QIcon('images/homelogo.png'), 'Home Page', self)
         extractActionHome.triggered.connect(self.startPage)
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(extractActionHome)
 
 
 
-        extractActionConvert = QtGui.QAction(QtGui.QIcon('convertlogo.png'), 'Convert Page', self)
+
+        extractActionConvert = QtGui.QAction(QtGui.QIcon('images/convertlogo.png'), 'Convert Page', self)
         extractActionConvert.triggered.connect(self.pageTwo)
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(extractActionConvert)
@@ -61,17 +62,17 @@ class gameWindow(QtGui.QMainWindow):
 
 
 
-        extractActiondataScience = QtGui.QAction(QtGui.QIcon('graphlogo.png'), 'Data Page', self)
+        extractActiondataScience = QtGui.QAction(QtGui.QIcon('images/graphlogo.png'), 'Data Page', self)
         extractActiondataScience.triggered.connect(self.pageThree)
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(extractActiondataScience)
 
-        extractActiondataRelease = QtGui.QAction(QtGui.QIcon('dataRelease.png'), 'Data Release', self)
+        extractActiondataRelease = QtGui.QAction(QtGui.QIcon('images/dataRelease.png'), 'Data Release', self)
         extractActiondataRelease.triggered.connect(self.pageFour)
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(extractActiondataRelease)
 
-        extractActiongameWindow = QtGui.QAction(QtGui.QIcon('gamelogo.png'), 'Tools', self)
+        extractActiongameWindow = QtGui.QAction(QtGui.QIcon('images/gamelogo.png'), 'Tools', self)
         extractActiongameWindow.triggered.connect(self.pageFive)
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(extractActiongameWindow)
@@ -127,7 +128,7 @@ class gameWindow(QtGui.QMainWindow):
         self.lbl.move(580,40)
 
 
-        self.pixmap = QtGui.QPixmap("intelmed.png")
+        self.pixmap = QtGui.QPixmap("images/intelmed.png")
 
         self.lbl2 = QtGui.QLabel(self)
         self.lbl2.setPixmap(self.pixmap)
@@ -136,6 +137,34 @@ class gameWindow(QtGui.QMainWindow):
 
 
 
+
+        self.buttonMove = QtGui.QPushButton('Group Files', self)
+        self.buttonMove.clicked.connect(self.moveFiles)
+        self.buttonMove.setIconSize(QtCore.QSize(24,24))
+        self.buttonMove.move(250, 250)
+        self.buttonMove.setFixedSize(200,75)
+
+        self.buttonMove = QtGui.QPushButton('CSV to XML', self)
+        self.buttonMove.clicked.connect(self.csvtoXml)
+        self.buttonMove.setIconSize(QtCore.QSize(24,24))
+        self.buttonMove.move(250, 350)
+        self.buttonMove.setFixedSize(200,75)
+
+
+
+        self.buttonMove = QtGui.QPushButton('Future Tool', self)
+        self.buttonMove.clicked.connect(self.moveFiles)
+        self.buttonMove.setIconSize(QtCore.QSize(24,24))
+        self.buttonMove.move(250, 450)
+        self.buttonMove.setFixedSize(200,75)
+
+
+
+        self.buttonMove = QtGui.QPushButton('Future Tool', self)
+        self.buttonMove.clicked.connect(self.moveFiles)
+        self.buttonMove.setIconSize(QtCore.QSize(24,24))
+        self.buttonMove.move(250, 550)
+        self.buttonMove.setFixedSize(200,75)
 
 
 
@@ -146,6 +175,28 @@ class gameWindow(QtGui.QMainWindow):
 
 
 
+    def moveFiles(self):
+        from tools.moveFiles import moveWindow
+        movePage = moveWindow()
+        movePage.show()
+        print cmd
+        QtGui.qApp.processEvents()
+        #os.system(cmd)
+        QtGui.qApp.processEvents()
+
+        #Improve this section
+
+
+    def csvtoXml(self):
+        from tools.csvmaker import csvWindow
+        csvPage = csvWindow()
+        csvPage.show()
+        print cmd
+        QtGui.qApp.processEvents()
+        #os.system(cmd)
+        QtGui.qApp.processEvents()
+
+        #Improve this section
 
 
     def close_application(self):
@@ -155,21 +206,47 @@ class gameWindow(QtGui.QMainWindow):
 
     def startPage(self):
 
-        self.hide()
+        self.close()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed********************** on self.close")
         startpage = mainWindow(self)
         startpage.show()
+
         print ("Now Entering Start Page")
 
 
     def pageTwo(self):
 
-        self.hide()
+        self.close()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed********************** on self.close")
+
         pagetwo = convertorPage(self)
         pagetwo.show()
         print ("Now Entering Page Two")
 
     def pageThree(self):
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
         pagethree = dataScience(self)
         pagethree.show()
         print ("Now Entering Page Three")
@@ -178,6 +255,14 @@ class gameWindow(QtGui.QMainWindow):
     def pageFour(self):
 
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
         pageFour = dataRelease(self)
         pageFour.show()
         print ("Now Entering Page 4")
@@ -186,10 +271,17 @@ class gameWindow(QtGui.QMainWindow):
 
 
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
         pageFive = gameWindow(self)
         pageFive.show()
         print ("Now Entering Page 5")
-
 
 
 
@@ -206,7 +298,7 @@ class dataRelease(QtGui.QMainWindow):
     def initUI(self):
         self.setGeometry(300,300,1280,800)
         self.setWindowTitle("Intel")
-        self.setWindowIcon(QtGui.QIcon("Intel.png"))
+        self.setWindowIcon(QtGui.QIcon("images/Intel.png"))
         #self.setStyleSheet("background-color: rgb(255, 255, 255);\n")
                            #"border:1px solid rgb(0, 131, 195);")
 
@@ -219,14 +311,14 @@ class dataRelease(QtGui.QMainWindow):
 
 ###Icon bar
 
-        extractActionHome = QtGui.QAction(QtGui.QIcon('homelogo.png'), 'Home Page', self)
+        extractActionHome = QtGui.QAction(QtGui.QIcon('images/homelogo.png'), 'Home Page', self)
         extractActionHome.triggered.connect(self.startPage)
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(extractActionHome)
 
 
 
-        extractActionConvert = QtGui.QAction(QtGui.QIcon('convertlogo.png'), 'Convert Page', self)
+        extractActionConvert = QtGui.QAction(QtGui.QIcon('images/convertlogo.png'), 'Convert Page', self)
         extractActionConvert.triggered.connect(self.pageTwo)
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(extractActionConvert)
@@ -234,23 +326,23 @@ class dataRelease(QtGui.QMainWindow):
 
 
 
-        extractActiondataScience = QtGui.QAction(QtGui.QIcon('graphlogo.png'), 'Data Page', self)
+        extractActiondataScience = QtGui.QAction(QtGui.QIcon('images/graphlogo.png'), 'Data Page', self)
         extractActiondataScience.triggered.connect(self.pageThree)
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(extractActiondataScience)
 
-        extractActiondataRelease = QtGui.QAction(QtGui.QIcon('dataRelease.png'), 'Data Release', self)
+        extractActiondataRelease = QtGui.QAction(QtGui.QIcon('images/dataRelease.png'), 'Data Release', self)
         extractActiondataRelease.triggered.connect(self.pageFour)
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(extractActiondataRelease)
 
-        extractActiongameWindow = QtGui.QAction(QtGui.QIcon('gamelogo.png'), 'Game Page', self)
+        extractActiongameWindow = QtGui.QAction(QtGui.QIcon('images/gamelogo.png'), 'Game Page', self)
         extractActiongameWindow.triggered.connect(self.pageFive)
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(extractActiongameWindow)
 
 ##Calnder
-        self.pixmap = QtGui.QPixmap("intelmed.png")
+        self.pixmap = QtGui.QPixmap("images/intelmed.png")
 
         self.lbl2 = QtGui.QLabel(self)
         self.lbl2.setPixmap(self.pixmap)
@@ -303,66 +395,43 @@ class dataRelease(QtGui.QMainWindow):
 # button move  (over, down)
 
         self.lbl = QtGui.QLabel(self)
-        self.lbl.setText("Uploading Made Easy")
-        self.lbl.resize(145, 125)
+        self.lbl.setText("Uploading/ Downloading Made Easy")
+        self.lbl.resize(245, 125)
         self.lbl.move(600,20)
 
-        self.directoryButton = QtGui.QPushButton('Select Folder', self)
-        self.directoryButton.clicked.connect(self.directoryChoice)
-        self.directoryButton.setIconSize(QtCore.QSize(24,24))
-        self.directoryButton.move(400, 200)
-
-        self.fileButton = QtGui.QPushButton('Select File', self)
-        self.fileButton.clicked.connect(self.fileChoice)
-        self.fileButton.setIconSize(QtCore.QSize(24,24))
-        self.fileButton.move(400, 250)
 
 
+
+
+
+        self.button = QtGui.QPushButton('Upload', self)
+        self.button.clicked.connect(self.uploadPage)
+        self.button.setIconSize(QtCore.QSize(24,24))
+        self.button.move(450, 120)
 
 # button move  (over, down)
-        self.listWidget = QtGui.QListWidget(self)
 
-        self.listWidget.move(660,200)
-        self.listWidget.resize(450,150)
-
-
-
-
-#____________
-#
-
-    def directoryChoice(self):
-
-        self.listWidget.clear() # In case there are any existing elements in the list
-        directory = QtGui.QFileDialog.getExistingDirectory(self, "    Pick a folder")
-        print directory + "     In directory Choice"
-        for file_name in os.listdir(directory):
-            if not file_name.startswith('.'):
-
-                self.listWidget.addItem(file_name)
-                print (file_name)
-        return directory
-
-    def fileChoice(self):
-
-        self.listWidget.clear() # In case there are any existing elements in the list
-        fileselected = QtGui.QFileDialog.getOpenFileName(self, "    Pick a file" "/home")
-        print fileselected + "     In directory Choice"
+        self.button2 = QtGui.QPushButton('Download', self)
+        self.button2.clicked.connect(self.downloadPage)
+        self.button2.setIconSize(QtCore.QSize(24,24))
+        self.button2.move(850, 120)
 
 
-        self.listWidget.addItem(fileselected)
-
-        return fileselected
 
 
-    def uploadssh(self):
+#_--------
 
-        cmd = ('rsync' + directory + 'eeamesx@10.127.235.151:' + path)
-        print cmd
 
-    def showDate(self, date):
 
-        self.lbl.setText(date.toString())
+
+
+        self.show()
+
+
+
+#_________________________________________________________________________
+
+
 
 
 
@@ -371,23 +440,128 @@ class dataRelease(QtGui.QMainWindow):
         sys.exit()
 
 
+
+
+    def directoryChoice(self):
+        self.listWidget.clear()
+
+        directoryChoice = QtGui.QFileDialog.getExistingDirectory(self, "Pick a folder")
+
+        self.listWidget.addItem(directoryChoice)
+        print directoryChoice
+        return directoryChoice
+
+    def fileChoice(self):
+        self.listWidget.clear()
+        fileChoice = QtGui.QFileDialog.getOpenFileName(self, "Pick a folder")
+        self.listWidget.addItem(fileChoice)
+
+        print fileChoice
+        return fileChoice
+
+
+
+
+
+
+    def upload_button(self):
+        directoryUser = self.directoryChoice()
+
+        username = self.userName.text()
+        filepath = self.listWidgetdest.text()
+
+
+
+
+        cmdIvr = ('rsync  -av --progress ' +                                                                                                                                                                                                                                                 str(directoryUser)+ ' ' + str(username) +
+                '@10.127.235.151:' + str(filepath))
+
+
+
+
+        print cmdIvr
+        print "button 1"
+
+        os.system(cmdIvr)
+
+
+
+
+
+
+
+    def downloadPage(self):
+        self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
+        startpage = downloadWindow(self)
+        startpage.show()
+        print ("Now Entering download Page")
+
+    def uploadPage(self):
+        self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
+        startpage = uploadWindow(self)
+        startpage.show()
+        print ("Now Entering upload Page")
+
+
     def startPage(self):
 
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
         startpage = mainWindow(self)
         startpage.show()
+
         print ("Now Entering Start Page")
 
 
     def pageTwo(self):
 
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
+
         pagetwo = convertorPage(self)
         pagetwo.show()
         print ("Now Entering Page Two")
 
     def pageThree(self):
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
         pagethree = dataScience(self)
         pagethree.show()
         print ("Now Entering Page Three")
@@ -396,17 +570,699 @@ class dataRelease(QtGui.QMainWindow):
     def pageFour(self):
 
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
         pageFour = dataRelease(self)
         pageFour.show()
         print ("Now Entering Page 4")
 
     def pageFive(self):
+
+
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
         pageFive = gameWindow(self)
         pageFive.show()
         print ("Now Entering Page 5")
 
 
+
+
+class uploadWindow(QtGui.QMainWindow):
+    def __init__(self, parent=None):
+        QtGui.QMainWindow.__init__(self, parent)
+
+        self.initUI()
+
+
+
+
+
+    def initUI(self):
+        self.setGeometry(300,300,1280,800)
+        self.setWindowTitle("Intel")
+        self.setWindowIcon(QtGui.QIcon("images/Intel.png"))
+        #self.setStyleSheet("background-color: rgb(255, 255, 255);\n")
+                           #"border:1px solid rgb(0, 131, 195);")
+
+
+
+#_________________________________________________________________________
+#(Menubah)
+
+
+
+###Icon bar
+
+        extractActionHome = QtGui.QAction(QtGui.QIcon('images/homelogo.png'), 'Home Page', self)
+        extractActionHome.triggered.connect(self.startPage)
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractActionHome)
+
+
+
+        extractActionConvert = QtGui.QAction(QtGui.QIcon('images/convertlogo.png'), 'Convert Page', self)
+        extractActionConvert.triggered.connect(self.pageTwo)
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractActionConvert)
+
+
+
+
+        extractActiondataScience = QtGui.QAction(QtGui.QIcon('images/graphlogo.png'), 'Data Page', self)
+        extractActiondataScience.triggered.connect(self.pageThree)
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractActiondataScience)
+
+        extractActiondataRelease = QtGui.QAction(QtGui.QIcon('images/dataRelease.png'), 'Data Release', self)
+        extractActiondataRelease.triggered.connect(self.pageFour)
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractActiondataRelease)
+
+        extractActiongameWindow = QtGui.QAction(QtGui.QIcon('images/gamelogo.png'), 'Game Page', self)
+        extractActiongameWindow.triggered.connect(self.pageFive)
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractActiongameWindow)
+
+##Calnder
+        self.pixmap = QtGui.QPixmap("images/intelmed.png")
+
+        self.lbl2 = QtGui.QLabel(self)
+        self.lbl2.setPixmap(self.pixmap)
+        self.lbl2.move(10,50)
+        self.lbl2.resize(300,200)
+
+
+
+
+
+
+
+
+
+        self.button = QtGui.QPushButton('Home', self)
+        self.button.clicked.connect(self.startPage)
+        self.button.setIconSize(QtCore.QSize(24,24))
+        self.button.move(20, 480)
+        self.button.setFixedSize(200,75)
+# button move  (over, down)
+
+        self.button2 = QtGui.QPushButton('Data Processing', self)
+        self.button2.clicked.connect(self.pageTwo)
+        self.button2.setIconSize(QtCore.QSize(24,24))
+        self.button2.move(20, 535)
+        self.button2.setFixedSize(200,75)
+
+
+        self.button3 = QtGui.QPushButton('Data Release', self)
+        self.button3.clicked.connect(self.pageThree)
+        self.button3.setIconSize(QtCore.QSize(24,24))
+        self.button3.move(20, 590)
+        self.button3.setFixedSize(200,75)
+
+
+
+        self.button5 = QtGui.QPushButton('Remote File Upload', self)
+        self.button5.clicked.connect(self.pageFour)
+        self.button5.setIconSize(QtCore.QSize(24,24))
+        self.button5.move(20, 645)
+        self.button5.setFixedSize(200,75)
+
+        self.button6 = QtGui.QPushButton('Tools', self)
+        self.button6.clicked.connect(self.pageFive)
+        self.button6.setIconSize(QtCore.QSize(24,24))
+        self.button6.move(20, 700)
+        self.button6.setFixedSize(200,75)
+
+
+# button move  (over, down)
+
+        self.lbl = QtGui.QLabel(self)
+        self.lbl.setText("Uploading/ Downloading Made Easy")
+        self.lbl.resize(245, 125)
+        self.lbl.move(600,20)
+
+
+
+
+
+        self.button = QtGui.QPushButton('Upload', self)
+        self.button.clicked.connect(self.uploadPage)
+        self.button.setIconSize(QtCore.QSize(24,24))
+        self.button.move(450, 120)
+
+# button move  (over, down)
+
+        self.button2 = QtGui.QPushButton('Download', self)
+        self.button2.clicked.connect(self.downloadPage)
+        self.button2.setIconSize(QtCore.QSize(24,24))
+        self.button2.move(850, 120)
+
+
+
+
+
+
+        self.btnFolder = QtGui.QPushButton('Select Folder', self)
+        self.btnFolder.move(320, 390)
+        self.btnFolder.clicked.connect(self.directoryChoice)
+
+
+        self.btnFile = QtGui.QPushButton('Select File', self)
+        self.btnFile.move(420, 390)
+        self.btnFile.clicked.connect(self.fileChoice)
+
+        self.listWidget = QtGui.QListWidget(self)
+        self.listWidget.move(550,390)
+        self.listWidget.resize(300,30)
+
+
+
+
+
+
+        self.btnDest = QtGui.QPushButton('Destination', self)
+        self.btnDest.move(420, 500)
+        self.btnDest.clicked.connect(self.fileChoice)
+
+        self.listWidgetdest = QtGui.QListWidget(self)
+        self.listWidgetdest.move(550,500)
+        self.listWidgetdest.resize(300,30)
+
+
+
+
+
+        self.lbl = QtGui.QLabel(self)
+        self.lbl.setText("ssh username")
+        self.lbl.resize(345, 25)
+        self.lbl.move(410,280)
+
+
+        self.userName = QtGui.QLineEdit(self)
+        self.userName.setPlaceholderText('Username')
+        self.userName.move(550,280)
+
+
+        self.lbl = QtGui.QLabel(self)
+        self.lbl.setText("IP Address")
+        self.lbl.resize(145, 25)
+        self.lbl.move(700,280)
+
+
+        self.address = QtGui.QLineEdit(self)
+        self.address.setPlaceholderText('10.127.235.151')
+        self.address.move(800,280)
+
+
+
+
+
+
+        self.btnFolder = QtGui.QPushButton('Upload', self)
+        self.btnFolder.move(650, 620)
+        self.btnFolder.clicked.connect(self.upload_button)
+
+
+
+
+
+
+#_--------
+
+
+
+
+
+        self.show()
+
+
+
+#_________________________________________________________________________
+
+
+
+
+    def downloadPage(self):
+        self.hide()
+        startpage = downloadWindow(self)
+        startpage.show()
+        print ("Now Entering download Page")
+
+    def uploadPage(self):
+        self.hide()
+        startpage = uploadWindow(self)
+        startpage.show()
+        print ("Now Entering upload Page")
+
+    def close_application(self):
+        print("whooaaaa so custom!!!")
+        sys.exit()
+
+
+
+
+    def directoryChoice(self):
+        self.listWidget.clear()
+
+        directoryChoice = QtGui.QFileDialog.getExistingDirectory(self, "Pick a folder")
+
+        self.listWidget.addItem(directoryChoice)
+        print directoryChoice
+        return directoryChoice
+
+    def fileChoice(self):
+        self.listWidget.clear()
+        fileChoice = QtGui.QFileDialog.getOpenFileName(self, "Pick a folder")
+        self.listWidget.addItem(fileChoice)
+
+        print fileChoice
+        return fileChoice
+
+
+
+
+
+
+    def upload_button(self):
+        directoryUser = self.directoryChoice()
+
+        username = self.userName.text()
+        filepath = self.listWidgetdest.text()
+
+
+
+
+        cmdIvr = ('rsync  -av --progress ' +                                                                                                                                                                                                                                                 str(directoryUser)+ ' ' + str(username) +
+                '@10.127.235.151:' + str(filepath))
+
+
+
+
+        print cmdIvr
+        print "button 1"
+
+        os.system(cmdIvr)
+
+
+
+
+    def close_application(self):
+        print("whooaaaa so custom!!!")
+        sys.exit()
+
+
+
+    def startPage(self):
+
+        self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
+        startpage = mainWindow(self)
+        startpage.show()
+
+        print ("Now Entering Start Page")
+
+
+    def pageTwo(self):
+
+        self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
+
+        pagetwo = convertorPage(self)
+        pagetwo.show()
+        print ("Now Entering Page Two")
+
+    def pageThree(self):
+        self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
+        pagethree = dataScience(self)
+        pagethree.show()
+        print ("Now Entering Page Three")
+
+
+    def pageFour(self):
+
+        self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
+        pageFour = dataRelease(self)
+        pageFour.show()
+        print ("Now Entering Page 4")
+
+    def pageFive(self):
+
+
+        self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
+        pageFive = gameWindow(self)
+        pageFive.show()
+        print ("Now Entering Page 5")
+
+
+
+class downloadWindow(QtGui.QMainWindow):
+    def __init__(self, parent=None):
+        QtGui.QMainWindow.__init__(self, parent)
+
+        self.initUI()
+
+
+
+
+
+    def initUI(self):
+        self.setGeometry(300,300,1280,800)
+        self.setWindowTitle("Intel")
+        self.setWindowIcon(QtGui.QIcon("images/Intel.png"))
+        #self.setStyleSheet("background-color: rgb(255, 255, 255);\n")
+                           #"border:1px solid rgb(0, 131, 195);")
+
+
+
+#_________________________________________________________________________
+#(Menubah)
+
+
+
+###Icon bar
+
+        extractActionHome = QtGui.QAction(QtGui.QIcon('images/homelogo.png'), 'Home Page', self)
+        extractActionHome.triggered.connect(self.startPage)
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractActionHome)
+
+
+
+        extractActionConvert = QtGui.QAction(QtGui.QIcon('images/convertlogo.png'), 'Convert Page', self)
+        extractActionConvert.triggered.connect(self.pageTwo)
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractActionConvert)
+
+
+
+
+        extractActiondataScience = QtGui.QAction(QtGui.QIcon('images/graphlogo.png'), 'Data Page', self)
+        extractActiondataScience.triggered.connect(self.pageThree)
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractActiondataScience)
+
+        extractActiondataRelease = QtGui.QAction(QtGui.QIcon('images/dataRelease.png'), 'Data Release', self)
+        extractActiondataRelease.triggered.connect(self.pageFour)
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractActiondataRelease)
+
+        extractActiongameWindow = QtGui.QAction(QtGui.QIcon('images/gamelogo.png'), 'Game Page', self)
+        extractActiongameWindow.triggered.connect(self.pageFive)
+        self.toolBar = self.addToolBar("Extraction")
+        self.toolBar.addAction(extractActiongameWindow)
+
+##Calnder
+        self.pixmap = QtGui.QPixmap("images/intelmed.png")
+
+        self.lbl2 = QtGui.QLabel(self)
+        self.lbl2.setPixmap(self.pixmap)
+        self.lbl2.move(10,50)
+        self.lbl2.resize(300,200)
+
+
+
+
+
+
+
+
+
+        self.button = QtGui.QPushButton('Home', self)
+        self.button.clicked.connect(self.startPage)
+        self.button.setIconSize(QtCore.QSize(24,24))
+        self.button.move(20, 480)
+        self.button.setFixedSize(200,75)
+# button move  (over, down)
+
+        self.button2 = QtGui.QPushButton('Data Processing', self)
+        self.button2.clicked.connect(self.pageTwo)
+        self.button2.setIconSize(QtCore.QSize(24,24))
+        self.button2.move(20, 535)
+        self.button2.setFixedSize(200,75)
+
+
+        self.button3 = QtGui.QPushButton('Data Release', self)
+        self.button3.clicked.connect(self.pageThree)
+        self.button3.setIconSize(QtCore.QSize(24,24))
+        self.button3.move(20, 590)
+        self.button3.setFixedSize(200,75)
+
+
+
+        self.button5 = QtGui.QPushButton('Remote File Upload', self)
+        self.button5.clicked.connect(self.pageFour)
+        self.button5.setIconSize(QtCore.QSize(24,24))
+        self.button5.move(20, 645)
+        self.button5.setFixedSize(200,75)
+
+        self.button6 = QtGui.QPushButton('Tools', self)
+        self.button6.clicked.connect(self.pageFive)
+        self.button6.setIconSize(QtCore.QSize(24,24))
+        self.button6.move(20, 700)
+        self.button6.setFixedSize(200,75)
+
+
+# button move  (over, down)
+
+        self.lbl = QtGui.QLabel(self)
+        self.lbl.setText("Uploading/ Downloading Made Easy")
+        self.lbl.resize(245, 125)
+        self.lbl.move(600,20)
+
+
+
+
+
+        self.button = QtGui.QPushButton('Upload', self)
+        self.button.clicked.connect(self.uploadPage)
+        self.button.setIconSize(QtCore.QSize(24,24))
+        self.button.move(450, 120)
+
+# button move  (over, down)
+
+        self.button2 = QtGui.QPushButton('Download', self)
+        self.button2.clicked.connect(self.downloadPage)
+        self.button2.setIconSize(QtCore.QSize(24,24))
+        self.button2.move(850, 120)
+
+
+
+
+
+
+
+
+#_--------
+
+
+
+
+
+        self.show()
+
+
+
+#_________________________________________________________________________
+
+
+
+
+    def downloadPage(self):
+        self.hide()
+        startpage = downloadWindow(self)
+        startpage.show()
+        print ("Now Entering download Page")
+
+    def uploadPage(self):
+        self.hide()
+        startpage = uploadWindow(self)
+        startpage.show()
+        print ("Now Entering upload Page")
+
+    def close_application(self):
+        print("whooaaaa so custom!!!")
+        sys.exit()
+
+
+
+
+    def directoryChoice(self):
+        self.listWidget.clear()
+
+        directoryChoice = QtGui.QFileDialog.getExistingDirectory(self, "Pick a folder")
+
+        self.listWidget.addItem(directoryChoice)
+        print directoryChoice
+        return directoryChoice
+
+    def fileChoice(self):
+        self.listWidget.clear()
+        fileChoice = QtGui.QFileDialog.getOpenFileName(self, "Pick a folder")
+        self.listWidget.addItem(fileChoice)
+
+        print fileChoice
+        return fileChoice
+
+
+
+
+
+
+    def upload_button(self):
+        directoryUser = self.directoryChoice()
+
+        username = self.userName.text()
+        filepath = self.listWidgetdest.text()
+
+
+
+
+        cmdIvr = ('rsync  -av --progress ' +                                                                                                                                                                                                                                                 str(directoryUser)+ ' ' + str(username) +
+                '@10.127.235.151:' + str(filepath))
+
+
+
+
+        print cmdIvr
+        print "button 1"
+
+        os.system(cmdIvr)
+
+
+
+
+
+
+    def startPage(self):
+
+        self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
+        startpage = mainWindow(self)
+        startpage.show()
+
+        print ("Now Entering Start Page")
+
+
+    def pageTwo(self):
+
+        self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
+
+        pagetwo = convertorPage(self)
+        pagetwo.show()
+        print ("Now Entering Page Two")
+
+    def pageThree(self):
+        self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
+        pagethree = dataScience(self)
+        pagethree.show()
+        print ("Now Entering Page Three")
+
+
+    def pageFour(self):
+
+        self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
+        pageFour = dataRelease(self)
+        pageFour.show()
+        print ("Now Entering Page 4")
+
+    def pageFive(self):
+
+
+        self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
+        pageFive = gameWindow(self)
+        pageFive.show()
+        print ("Now Entering Page 5")
 
 
 
@@ -430,7 +1286,7 @@ class filesdownloadConvertorpage(QtGui.QMainWindow):
 
 
 
-        self.pixmap = QtGui.QPixmap("intelmed.png")
+        self.pixmap = QtGui.QPixmap("images/intelmed.png")
 
         self.lbl2 = QtGui.QLabel(self)
         self.lbl2.setPixmap(self.pixmap)
@@ -442,7 +1298,7 @@ class filesdownloadConvertorpage(QtGui.QMainWindow):
 
         self.lbl = QtGui.QLabel(self)
         self.lbl.setText("Data Release Made Easy")
-        self.lbl.move(550,20)
+        self.lbl.move(630,20)
         self.lbl.resize(250,70)
 
 
@@ -491,26 +1347,21 @@ class filesdownloadConvertorpage(QtGui.QMainWindow):
         self.convertpageTwo = QtGui.QPushButton('IVR DATA DOWNLOAD', self)
         self.convertpageTwo.clicked.connect(self.filesdownloaderconvertor)
         self.convertpageTwo.setIconSize(QtCore.QSize(24,24))
-        self.convertpageTwo.move(250,70)
+        self.convertpageTwo.move(300,75)
         self.convertpageTwo.setFixedSize(250,50)
 
         self.convertpageThree = QtGui.QPushButton('IVR CLEANUP', self)
         self.convertpageThree.clicked.connect(self.filescleanupconvertor)
         self.convertpageThree.setIconSize(QtCore.QSize(24,24))
-        self.convertpageThree.move(500,70)
+        self.convertpageThree.move(600,75)
         self.convertpageThree.setFixedSize(250,50)
 
         self.convertpageFour = QtGui.QPushButton('IVR CONVERSION', self)
         self.convertpageFour.clicked.connect(self.createedditconvertor)
         self.convertpageFour.setIconSize(QtCore.QSize(24,24))
-        self.convertpageFour.move(750,70)
+        self.convertpageFour.move(900,75)
         self.convertpageFour.setFixedSize(250,50)
 
-        self.convertpageFive = QtGui.QPushButton('FINAL CHECK', self)
-        self.convertpageFive.clicked.connect(self.checkFile)
-        self.convertpageFive.setIconSize(QtCore.QSize(24,24))
-        self.convertpageFive.move(1000,70)
-        self.convertpageFive.setFixedSize(250,50)
 
 
 
@@ -579,13 +1430,14 @@ class filesdownloadConvertorpage(QtGui.QMainWindow):
         self.btn = QtGui.QPushButton('Download', self)
         self.btn.move(550, 670)
         self.btn.resize(140,80)
+        #self.btn.clicked.connect(self.download)
         self.btn.clicked.connect(self.download_button)
 
 
         self.lblWorked = QtGui.QLabel(self)
         self.lblWorked.setText("Download was Successful! ")
         self.lblWorked.resize(340, 50)
-        self.lblWorked.move(750,670)
+        self.lblWorked.move(770,670)
         self.lblWorked.hide()
 
         self.lblFailed = QtGui.QLabel(self)
@@ -593,6 +1445,24 @@ class filesdownloadConvertorpage(QtGui.QMainWindow):
         self.lblFailed.resize(340, 50)
         self.lblFailed.move(770,670)
         self.lblFailed.hide()
+
+        self.lblconnecting = QtGui.QLabel(self)
+        self.lblconnecting.setText("Connecting ")
+        self.lblconnecting.resize(340, 50)
+        self.lblconnecting.move(770,670)
+        self.lblconnecting.hide()
+
+        self.lbldata = QtGui.QLabel(self)
+        self.lbldata.setText("downloading giant wav.. ")
+        self.lbldata.resize(340, 50)
+        self.lbldata.move(770,670)
+        self.lbldata.hide()
+
+        self.lblwav = QtGui.QLabel(self)
+        self.lblwav.setText("downloading data files.. ")
+        self.lblwav.resize(340, 50)
+        self.lblwav.move(770,670)
+        self.lblwav.hide()
 
 
 
@@ -609,9 +1479,25 @@ class filesdownloadConvertorpage(QtGui.QMainWindow):
         self.languageLbl.move(650,150)
         self.comboBox.activated[str].connect(self.languageChoice)
 
+        self.progress = QtGui.QProgressBar(self)
+        self.progress.setGeometry(770, 670, 250, 80)
+
+
 
 
         self.show()
+
+
+    def download(self):
+        self.completed = 0
+
+        while self.completed < 100:
+            QtGui.qApp.processEvents()
+            self.completed += 0.0001
+            self.progress.setValue(self.completed)
+
+
+
 
 
     def checkFile(self):
@@ -639,10 +1525,11 @@ class filesdownloadConvertorpage(QtGui.QMainWindow):
 
 
     def download_button(self):
+
         directoryUser = self.directory
         ivrNum = self.lblNumber.text()
         username = self.userName.text()
-
+        self.completed = 0
         ivrLang = self.languageLbl.text()
 
 
@@ -657,29 +1544,74 @@ class filesdownloadConvertorpage(QtGui.QMainWindow):
 
 
             if ivrLang == 'IVR_Italy':
+                self.lblWorked.hide()
+                self.lblwav.hide()
+                self.lblFailed.hide()
+                self.lblconnecting.hide()
+
+                while self.completed < 10:
+                    QtGui.qApp.processEvents()
+                    self.completed += 0.0001
+                    self.progress.setValue(self.completed)
+                    self.lblconnecting.show()
 
 
                 cmdIvrtranscripts = ('rsync  -avp ' + str(username) +
                         '@10.127.235.151:/media/sdidrive/proj/Localization/DataCollection/'
                         +str(ivrLang) + '/Transcripts/'+str(ivrNum) + ' ' + str(directoryUser))
+                self.lblconnecting.hide()
+                os.system(cmdIvrtranscripts)
+                while self.completed < 50:
+                    QtGui.qApp.processEvents()
+                    self.lbldata.show()
+
+                    self.completed += 0.01
+                    self.progress.setValue(self.completed)
 
                 cmdIvr = ('rsync  -avp ' + str(username) +
                         '@10.127.235.151:/media/sdidrive/proj/Localization/DataCollection/'
                         +str(ivrLang) + '/' + str(ivrNum) + ' ' + str(directoryUser))
 
 
+
                 print cmdIvr
                 print cmdIvrtranscripts
-                os.system(cmdIvrtranscripts)
+
+
+                self.lbldata.hide()
+                self.lblwav.show()
                 os.system(cmdIvr)
 
+
+
+
+
+                while self.completed < 100:
+
+                    QtGui.qApp.processEvents()
+                    self.completed += 0.01
+                    self.progress.setValue(self.completed)
+                self.lblwav.hide()
                 self.lblWorked.show()
 
+                time.sleep(2)
+                self.lblWorked.hide()
+                self.lblwav.hide()
+                self.lblFailed.hide()
+                self.lblconnecting.hide()
 
 
             if ivrLang == 'IVR_France':
+                self.lblWorked.hide()
+                self.lblwav.hide()
+                self.lblFailed.hide()
+                self.lblconnecting.hide()
 
-
+                while self.completed < 10:
+                    QtGui.qApp.processEvents()
+                    self.completed += 0.0001
+                    self.progress.setValue(self.completed)
+                    self.lblconnecting.show()
 
 
                 cmdIvr = ('rsync  -avp ' + str(username) +
@@ -695,12 +1627,35 @@ class filesdownloadConvertorpage(QtGui.QMainWindow):
 
                 print cmdIvr
                 print cmdIvrtranscripts
-                os.system(cmdIvr)
+
+                self.lblconnecting.hide()
                 os.system(cmdIvrtranscripts)
+                while self.completed < 50:
+                    QtGui.qApp.processEvents()
+                    self.lbldata.show()
+
+                    self.completed += 0.01
+                    self.progress.setValue(self.completed)
+                self.lbldata.hide()
+                self.lblwav.show()
+                os.system(cmdIvr)
+
+
+                while self.completed < 100:
+
+                    QtGui.qApp.processEvents()
+                    self.completed += 0.01
+                    self.progress.setValue(self.completed)
+                self.lblwav.hide()
+
 
                 self.lblWorked.show()
 
             if ivrLang == 'IVR_Spain':
+                self.lblWorked.hide()
+                self.lblwav.hide()
+                self.lblFailed.hide()
+                self.lblconnecting.hide()
 
                 cmdIvr = ('rsync  -avp ' + str(username) +
                         '@10.127.235.151:/media/sdidrive/proj/Localization/DataCollection/'
@@ -717,13 +1672,50 @@ class filesdownloadConvertorpage(QtGui.QMainWindow):
 
                 print cmdIvr
                 print cmdIvrtranscripts
-                os.system(cmdIvr)
+
+                self.lblconnecting.hide()
                 os.system(cmdIvrtranscripts)
+                while self.completed < 50:
+                    QtGui.qApp.processEvents()
+                    self.lbldata.show()
+
+                    self.completed += 0.01
+                    self.progress.setValue(self.completed)
+                self.lbldata.hide()
+                self.lblwav.show()
+                os.system(cmdIvr)
+
+
+
+                while self.completed < 100:
+
+                    QtGui.qApp.processEvents()
+                    self.completed += 0.01
+                    self.progress.setValue(self.completed)
+                self.lblwav.hide()
+
 
                 self.lblWorked.show()
 
-            if ivrLang == 'IVR_Germany':
+                time.sleep(2)
+                self.lblWorked.hide()
+                self.lblwav.hide()
+                self.lblFailed.hide()
+                self.lblconnecting.hide()
 
+
+
+            if ivrLang == 'IVR_Germany':
+                self.lblWorked.hide()
+                self.lblwav.hide()
+                self.lblFailed.hide()
+                self.lblconnecting.hide()
+
+                while self.completed < 10:
+                    QtGui.qApp.processEvents()
+                    self.completed += 0.0001
+                    self.progress.setValue(self.completed)
+                    self.lblconnecting.show()
 
                 cmdIvr = ('rsync  -avp ' + str(username) +
                         '@10.127.235.151:/media/sdidrive/proj/Localization/DataCollection/'
@@ -734,14 +1726,37 @@ class filesdownloadConvertorpage(QtGui.QMainWindow):
                         + '/' +str(ivrNum)  + ' ' + str(directoryUser))
 
 
-
-
                 print cmdIvr
                 print cmdIvrtranscripts
-                os.system(cmdIvr)
+
+                self.lblconnecting.hide()
                 os.system(cmdIvrtranscripts)
+                while self.completed < 50:
+                    QtGui.qApp.processEvents()
+                    self.lbldata.show()
+
+                    self.completed += 0.01
+                    self.progress.setValue(self.completed)
+                self.lbldata.hide()
+                self.lblwav.show()
+                os.system(cmdIvr)
+
+
+                while self.completed < 100:
+
+                    QtGui.qApp.processEvents()
+                    self.completed += 0.01
+                    self.progress.setValue(self.completed)
+                self.lblwav.hide()
+
 
                 self.lblWorked.show()
+
+                time.sleep(2)
+                self.lblWorked.hide()
+                self.lblwav.hide()
+                self.lblFailed.hide()
+                self.lblconnecting.hide()
 
 
         except Exception as e:
@@ -753,8 +1768,15 @@ class filesdownloadConvertorpage(QtGui.QMainWindow):
 
 
 
+
+
     def csvtoXmlconvertor(self):
         self.hide()
+
+        self.filescleanupconvertor = None
+        self.filesdownloaderconvertor = None
+        self.createedditconvertor = None
+
         convert1 = convertcsvtoXml(self)
         convert1.show()
         print 'Button Pressed'
@@ -762,41 +1784,80 @@ class filesdownloadConvertorpage(QtGui.QMainWindow):
 
     def filesdownloaderconvertor(self):
         self.hide()
+
+        self.filescleanupconvertor = None
+        #self.filesdownloaderconvertor = None
+        self.createedditconvertor = None
         convert1 = filesdownloadConvertorpage(self)
         convert1.show()
         print 'Button Pressed'
 
     def filescleanupconvertor(self):
         self.hide()
+
+        #self.filescleanupconvertor = None
+        self.filesdownloaderconvertor = None
+        self.createedditconvertor = None
         convert1 = filescleanupConvertorpage(self)
         convert1.show()
         print 'Button Pressed'
 
     def createedditconvertor(self):
         self.hide()
+
+        self.filescleanupconvertor = None
+        self.filesdownloaderconvertor = None
+        #self.createedditconvertor = None
         convert1 = createedditConvertorpage(self)
         convert1.show()
         print 'Button Pressed'
 
 
 
+
     def startPage(self):
 
         self.hide()
-        startpage = mainWindow()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
+        startpage = mainWindow(self)
         startpage.show()
+
         print ("Now Entering Start Page")
 
 
     def pageTwo(self):
 
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
+
         pagetwo = convertorPage(self)
         pagetwo.show()
         print ("Now Entering Page Two")
 
     def pageThree(self):
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
         pagethree = dataScience(self)
         pagethree.show()
         print ("Now Entering Page Three")
@@ -805,16 +1866,33 @@ class filesdownloadConvertorpage(QtGui.QMainWindow):
     def pageFour(self):
 
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
         pageFour = dataRelease(self)
         pageFour.show()
         print ("Now Entering Page 4")
 
     def pageFive(self):
+
+
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
         pageFive = gameWindow(self)
         pageFive.show()
         print ("Now Entering Page 5")
-
     def showDate(self, date):
 
         self.lbl.setText(date.toString())
@@ -843,7 +1921,7 @@ class filescleanupConvertorpage(QtGui.QMainWindow):
 #(Menubah)
 
 
-        self.pixmap = QtGui.QPixmap("intelmed.png")
+        self.pixmap = QtGui.QPixmap("images/intelmed.png")
 
         self.lbl2 = QtGui.QLabel(self)
         self.lbl2.setPixmap(self.pixmap)
@@ -852,9 +1930,10 @@ class filescleanupConvertorpage(QtGui.QMainWindow):
 
 
 
+
         self.lbl = QtGui.QLabel(self)
         self.lbl.setText("Data Release Made Easy")
-        self.lbl.move(550,20)
+        self.lbl.move(630,20)
         self.lbl.resize(250,70)
 
 
@@ -902,27 +1981,23 @@ class filescleanupConvertorpage(QtGui.QMainWindow):
         self.convertpageTwo = QtGui.QPushButton('IVR DATA DOWNLOAD', self)
         self.convertpageTwo.clicked.connect(self.filesdownloaderconvertor)
         self.convertpageTwo.setIconSize(QtCore.QSize(24,24))
-        self.convertpageTwo.move(250,70)
+        self.convertpageTwo.move(300,75)
         self.convertpageTwo.setFixedSize(250,50)
 
         self.convertpageThree = QtGui.QPushButton('IVR CLEANUP', self)
         self.convertpageThree.clicked.connect(self.filescleanupconvertor)
         self.convertpageThree.setIconSize(QtCore.QSize(24,24))
-        self.convertpageThree.move(500,70)
+        self.convertpageThree.move(600,75)
         self.convertpageThree.setFixedSize(250,50)
 
         self.convertpageFour = QtGui.QPushButton('IVR CONVERSION', self)
         self.convertpageFour.clicked.connect(self.createedditconvertor)
         self.convertpageFour.setIconSize(QtCore.QSize(24,24))
-        self.convertpageFour.move(750,70)
+        self.convertpageFour.move(900,75)
         self.convertpageFour.setFixedSize(250,50)
 
 
-        self.convertpageFive = QtGui.QPushButton('FINAL CHECK', self)
-        self.convertpageFive.clicked.connect(self.checkFile)
-        self.convertpageFive.setIconSize(QtCore.QSize(24,24))
-        self.convertpageFive.move(1000,70)
-        self.convertpageFive.setFixedSize(250,50)
+
 
 
 
@@ -1014,11 +2089,7 @@ class filescleanupConvertorpage(QtGui.QMainWindow):
         self.show()
 
 
-    def checkFile(self):
-        self.hide()
-        convert1 = finalCheck(self)
-        convert1.show()
-        print 'Button Pressed'
+
 
     def directoryChoice(self):
 
@@ -1130,265 +2201,104 @@ class filescleanupConvertorpage(QtGui.QMainWindow):
 
     def csvtoXmlconvertor(self):
         self.hide()
+        self.filescleanupConvertorpage = None
+        self.createedditConvertorpage = None
+
+        self.finalCheck = None
         convert1 = convertcsvtoXml(self)
         convert1.show()
         print 'Button Pressed'
 
-
-    def filesdownloaderconvertor(self):
-        self.hide()
-        convert1 = filesdownloadConvertorpage(self)
-        convert1.show()
-        print 'Button Pressed'
-
-    def filescleanupconvertor(self):
-        self.hide()
-        convert1 = filescleanupConvertorpage(self)
-        convert1.show()
-        print 'Button Pressed'
-
-    def createedditconvertor(self):
-        self.hide()
-        convert1 = createedditConvertorpage(self)
-        convert1.show()
-        print 'Button Pressed'
-
-
-
-    def startPage(self):
-
-        self.hide()
-        startpage = mainWindow()
-        startpage.show()
-        print ("Now Entering Start Page")
-
-
-    def pageTwo(self):
-
-        self.hide()
-        pagetwo = convertorPage(self)
-        pagetwo.show()
-        print ("Now Entering Page Two")
-
-    def pageThree(self):
-        self.hide()
-        pagethree = dataScience(self)
-        pagethree.show()
-        print ("Now Entering Page Three")
-
-
-    def pageFour(self):
-
-        self.hide()
-        pageFour = dataRelease(self)
-        pageFour.show()
-        print ("Now Entering Page 4")
-
-    def pageFive(self):
-        self.hide()
-        pageFive = gameWindow(self)
-        pageFive.show()
-        print ("Now Entering Page 5")
-
-    def showDate(self, date):
-
-        self.lbl.setText(date.toString())
-
-
-
-    def close_application(self):
-        print("whooaaaa you quit!!")
-        sys.exit()
-
-class convertcsvtoXml(QtGui.QMainWindow):
-    def __init__(self,parent = None):
-        QtGui.QWidget.__init__(self, parent)
-
-        self.initUI()
-
-    def initUI(self):
-# button move  (over, down)
-        self.setGeometry(300,300,1280,800)
-        self.setWindowTitle("Intel")
-        self.setWindowIcon(QtGui.QIcon("Intel Converter"))
-        self.setStyleSheet("font-size:15px")
-
-
-#_________________________________________________________________________
-#(Menubah)
-
-
-        self.pixmap = QtGui.QPixmap("intelmed.png")
-
-        self.lbl2 = QtGui.QLabel(self)
-        self.lbl2.setPixmap(self.pixmap)
-        self.lbl2.move(10,50)
-        self.lbl2.resize(300,200)
-
-
-
-
-
-        self.lbl = QtGui.QLabel(self)
-        self.lbl.setText("Data Release Made Easy")
-        self.lbl.move(550,20)
-        self.lbl.resize(250,70)
-
-
-        self.button = QtGui.QPushButton('Home', self)
-        self.button.clicked.connect(self.startPage)
-        self.button.setIconSize(QtCore.QSize(24,24))
-        self.button.move(20, 480)
-        self.button.setFixedSize(200,75)
-# button move  (over, down)
-
-        self.button2 = QtGui.QPushButton('Data Processing', self)
-        self.button2.clicked.connect(self.pageTwo)
-        self.button2.setIconSize(QtCore.QSize(24,24))
-        self.button2.move(20, 535)
-        self.button2.setFixedSize(200,75)
-
-
-        self.button3 = QtGui.QPushButton('Data Release ', self)
-        self.button3.clicked.connect(self.pageThree)
-        self.button3.setIconSize(QtCore.QSize(24,24))
-        self.button3.move(20, 590)
-        self.button3.setFixedSize(200,75)
-
-
-
-        self.button5 = QtGui.QPushButton('Remote File Upload', self)
-        self.button5.clicked.connect(self.pageFour)
-        self.button5.setIconSize(QtCore.QSize(24,24))
-        self.button5.move(20, 645)
-        self.button5.setFixedSize(200,75)
-
-        self.button6 = QtGui.QPushButton('Tools', self)
-        self.button6.clicked.connect(self.pageFive)
-        self.button6.setIconSize(QtCore.QSize(24,24))
-        self.button6.move(20, 700)
-        self.button6.setFixedSize(200,75)
-
-# button move  (over, down)
-
-
-
-
-
-        self.listWidget = QtGui.QListWidget(self)
-
-        self.listWidget.move(360,300)
-        self.listWidget.resize(300,300)
-
-        self.listWidgetcomplete = QtGui.QListWidget(self)
-
-        self.listWidgetcomplete.move(780,300)
-        self.listWidgetcomplete.resize(300,300)
-
-
-
-    # Open a FILE and append to screen
-        self.selectFileButton = QtGui.QPushButton('Select Files', self)
-        self.selectFileButton.move(455, 250)
-        self.selectFileButton.clicked.connect(self.selectFilecsvtoxml)
-
-
-
-
-    # Open a FILE and append to screen
-        self.convertButton = QtGui.QPushButton('Convert!', self)
-        self.convertButton.move(670,400)
-        self.convertButton.clicked.connect(self.osconvertfilecsvtoxml)
-
-
-
-
-
-
-
-        self.convertpageTwo = QtGui.QPushButton('IVR DATA DOWNLOAD', self)
-        self.convertpageTwo.clicked.connect(self.filesdownloaderconvertor)
-        self.convertpageTwo.setIconSize(QtCore.QSize(24,24))
-        self.convertpageTwo.move(250,70)
-        self.convertpageTwo.setFixedSize(250,50)
-
-        self.convertpageThree = QtGui.QPushButton('IVR CLEANUP', self)
-        self.convertpageThree.clicked.connect(self.filescleanupconvertor)
-        self.convertpageThree.setIconSize(QtCore.QSize(24,24))
-        self.convertpageThree.move(500,70)
-        self.convertpageThree.setFixedSize(250,50)
-
-        self.convertpageFour = QtGui.QPushButton('IVR CONVERSION', self)
-        self.convertpageFour.clicked.connect(self.createedditconvertor)
-        self.convertpageFour.setIconSize(QtCore.QSize(24,24))
-        self.convertpageFour.move(750,70)
-        self.convertpageFour.setFixedSize(250,50)
-
-        self.convertpageFive = QtGui.QPushButton('FINAL CHECK', self)
-        self.convertpageFive.clicked.connect(self.checkFile)
-        self.convertpageFive.setIconSize(QtCore.QSize(24,24))
-        self.convertpageFive.move(1000,70)
-        self.convertpageFive.setFixedSize(250,50)
-
-        self.lblPage1 = QtGui.QLabel(self)
-        self.lblPage1.setText("Under the data you download, select the continous folder.  All files and folders")
-
-        self.lblPage1.resize(640, 50)
-        self.lblPage1.move(400,130)
-
-        self.lblPage = QtGui.QLabel(self)
-        self.lblPage.setText("will be converted ready to check")
-        self.lblPage.resize(640, 50)
-        self.lblPage.move(450,150)
-        self.show()
-
-
-
     def checkFile(self):
         self.hide()
+        self.createedditconvertor = None
+        self.filescleanupconvertor = None
+        self.filesdownloaderconvertor = None
+        self.convercsvtoXml = None
         convert1 = finalCheck(self)
         convert1.show()
         print 'Button Pressed'
 
-
     def filesdownloaderconvertor(self):
         self.hide()
+        self.filescleanupConvertorpage = None
+        self.createedditConvertorpage = None
+        self.convertcsvtoXml = None
+        self.convertcsvtoXml = None
+        self.finalCheck = None
+
         convert1 = filesdownloadConvertorpage(self)
         convert1.show()
         print 'Button Pressed'
 
     def filescleanupconvertor(self):
         self.hide()
+
+        self.createedditConvertorpage = None
+        self.convertcsvtoXml = None
+        self.convertcsvtoXml = None
+        self.finalCheck = None
         convert1 = filescleanupConvertorpage(self)
         convert1.show()
         print 'Button Pressed'
 
     def createedditconvertor(self):
         self.hide()
+        self.filescleanupConvertorpage = None
+
+        self.convertcsvtoXml = None
+        self.convertcsvtoXml = None
+        self.finalCheck = None
         convert1 = createedditConvertorpage(self)
         convert1.show()
         print 'Button Pressed'
 
 
 
+
     def startPage(self):
 
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
         startpage = mainWindow(self)
         startpage.show()
-        print ("Now Entering Start Page")
 
+        print ("Now Entering Start Page")
 
 
     def pageTwo(self):
 
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
+
         pagetwo = convertorPage(self)
         pagetwo.show()
         print ("Now Entering Page Two")
 
     def pageThree(self):
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
         pagethree = dataScience(self)
         pagethree.show()
         print ("Now Entering Page Three")
@@ -1397,12 +2307,30 @@ class convertcsvtoXml(QtGui.QMainWindow):
     def pageFour(self):
 
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
         pageFour = dataRelease(self)
         pageFour.show()
         print ("Now Entering Page 4")
 
     def pageFive(self):
+
+
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
         pageFive = gameWindow(self)
         pageFive.show()
         print ("Now Entering Page 5")
@@ -1417,41 +2345,6 @@ class convertcsvtoXml(QtGui.QMainWindow):
         print("whooaaaa you quit!!")
         sys.exit()
 
-
-
-    def selectFilecsvtoxml(self):
-
-
-        self.listWidget.clear() # In case there are any existing elements in the list
-        directory = QtGui.QFileDialog.getExistingDirectory(self, "Pick a folder")
-        print directory
-
-
-        for file_name in os.listdir(directory):
-            if file_name.endswith(".csv"):
-                self.listWidget.addItem(file_name)
-                print (file_name)
-        self.directory = directory
-        return directory
-
-
-
-
-
-    def osconvertfilecsvtoxml(self):
-
-
-        directoryPath = self.directory
-        print directoryPath
-
-        cmd = ('python createxmlFromcsv.py '
-               +str(directoryPath))
-        print cmd
-        os.system(cmd)
-        for file_name in directoryPath:
-            if file_name.endswith(".xml"):
-                self.listWidgetcomplete.addItem(file_name)
-                print (file_name)
 
 
 
@@ -1528,7 +2421,7 @@ class createedditConvertorpage(QtGui.QMainWindow):
 #(Menubah)
 
 
-        self.pixmap = QtGui.QPixmap("intelmed.png")
+        self.pixmap = QtGui.QPixmap("images/intelmed.png")
 
         self.lbl2 = QtGui.QLabel(self)
         self.lbl2.setPixmap(self.pixmap)
@@ -1539,8 +2432,9 @@ class createedditConvertorpage(QtGui.QMainWindow):
 
         self.lbl = QtGui.QLabel(self)
         self.lbl.setText("Data Release Made Easy")
-        self.lbl.move(550,20)
+        self.lbl.move(630,20)
         self.lbl.resize(250,70)
+
 
 
         self.button = QtGui.QPushButton('Home', self)
@@ -1586,32 +2480,24 @@ class createedditConvertorpage(QtGui.QMainWindow):
 
 
 
-
-
         self.convertpageTwo = QtGui.QPushButton('IVR DATA DOWNLOAD', self)
         self.convertpageTwo.clicked.connect(self.filesdownloaderconvertor)
         self.convertpageTwo.setIconSize(QtCore.QSize(24,24))
-        self.convertpageTwo.move(250,70)
+        self.convertpageTwo.move(300,75)
         self.convertpageTwo.setFixedSize(250,50)
 
         self.convertpageThree = QtGui.QPushButton('IVR CLEANUP', self)
         self.convertpageThree.clicked.connect(self.filescleanupconvertor)
         self.convertpageThree.setIconSize(QtCore.QSize(24,24))
-        self.convertpageThree.move(500,70)
+        self.convertpageThree.move(600,75)
         self.convertpageThree.setFixedSize(250,50)
 
         self.convertpageFour = QtGui.QPushButton('IVR CONVERSION', self)
         self.convertpageFour.clicked.connect(self.createedditconvertor)
         self.convertpageFour.setIconSize(QtCore.QSize(24,24))
-        self.convertpageFour.move(750,70)
+        self.convertpageFour.move(900,75)
         self.convertpageFour.setFixedSize(250,50)
 
-
-        self.convertpageFive = QtGui.QPushButton('FINAL CHECK', self)
-        self.convertpageFive.clicked.connect(self.checkFile)
-        self.convertpageFive.setIconSize(QtCore.QSize(24,24))
-        self.convertpageFive.move(1000,70)
-        self.convertpageFive.setFixedSize(250,50)
 
 
 
@@ -1620,11 +2506,12 @@ class createedditConvertorpage(QtGui.QMainWindow):
         self.listDirPath.move(650,300)
 
 
-        self.selectFileButton = QtGui.QPushButton('Create merged file', self)
+        self.selectFileButton = QtGui.QPushButton('Select File', self)
         self.selectFileButton.move(355, 300)
         self.selectFileButton.setFixedSize(250,50)
-        self.selectFileButton.clicked.connect(self.convertDirectory)
+        self.selectFileButton.clicked.connect(self.convertDirectorybefore)
         #self.selectFileButton.clicked.connect(self.openTxt)
+
 
 
 
@@ -1633,21 +2520,21 @@ class createedditConvertorpage(QtGui.QMainWindow):
         self.lbl.move(365,330)
         self.lbl.resize(250,70)
 
-        self.pixmap = QtGui.QPixmap("xmlLogo.png")
+        self.pixmap = QtGui.QPixmap("images/xmlLogo.png")
 
         self.lblxml = QtGui.QLabel(self)
         self.lblxml.setPixmap(self.pixmap)
         self.lblxml.move(450,130)
         self.lblxml.resize(150,150)
 
-        self.pixmap = QtGui.QPixmap("addIcon.png")
+        self.pixmap = QtGui.QPixmap("images/addIcon.png")
 
         self.lblplus = QtGui.QLabel(self)
         self.lblplus.setPixmap(self.pixmap)
         self.lblplus.move(650,130)
         self.lblplus.resize(150,150)
 
-        self.pixmap = QtGui.QPixmap("csvLogo.png")
+        self.pixmap = QtGui.QPixmap("images/csvLogo.png")
 
         self.lblcsv = QtGui.QLabel(self)
         self.lblcsv.setPixmap(self.pixmap)
@@ -1702,15 +2589,26 @@ class createedditConvertorpage(QtGui.QMainWindow):
 
 
 
-
-
     def convertDirectory(self):
+
+        import longXmlEditor
+        longXmlEditor.Main()
+
+
+
+
+
+
+
+    def convertDirectorybefore(self):
 
         os.chdir(dname)
         os.getcwd()
         print (os.getcwd()) + " this is the current directory"
         directoryPath = self.selectFilecsvtoxml()
         print directoryPath
+
+
 
         cmd = ('python longXmlEditor.py '
                +str(directoryPath))
@@ -1727,24 +2625,19 @@ class createedditConvertorpage(QtGui.QMainWindow):
                 self.textEdit.setText(readMe)
 
 
-    def openTxt(self):
-
-
-        txtWindow = readoutWindow(self)
-        txtWindow.show()
 
 
 
 
-    def openReadout(self):
 
-        readOut = readoutWindow(self)
-        readOut.show()
-        print ("Opening Readout")
 
 
     def csvtoXmlconvertor(self):
         self.hide()
+        self.createedditconvertor = None
+        self.filescleanupconvertor = None
+        self.filesdownloaderconvertor = None
+        self.convercsvtoXml = None
         convert1 = convertcsvtoXml(self)
         convert1.show()
         print 'Button Pressed'
@@ -1752,42 +2645,80 @@ class createedditConvertorpage(QtGui.QMainWindow):
 
     def filesdownloaderconvertor(self):
         self.hide()
+        self.createedditconvertor = None
+        self.filescleanupconvertor = None
+        self.filesdownloaderconvertor = None
+        self.convercsvtoXml = None
         convert1 = filesdownloadConvertorpage(self)
         convert1.show()
         print 'Button Pressed'
 
     def filescleanupconvertor(self):
         self.hide()
+        self.createedditconvertor = None
+        self.filescleanupconvertor = None
+        self.filesdownloaderconvertor = None
+        self.convercsvtoXml = None
         convert1 = filescleanupConvertorpage(self)
         convert1.show()
         print 'Button Pressed'
 
     def createedditconvertor(self):
         self.hide()
+        self.createedditconvertor = None
+        self.filescleanupconvertor = None
+        self.filesdownloaderconvertor = None
+        self.convercsvtoXml = None
         convert1 = createedditConvertorpage(self)
         convert1.show()
         print 'Button Pressed'
 
 
 
+
     def startPage(self):
 
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
         startpage = mainWindow(self)
         startpage.show()
-        print ("Now Entering Start Page")
 
+        print ("Now Entering Start Page")
 
 
     def pageTwo(self):
 
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
+
         pagetwo = convertorPage(self)
         pagetwo.show()
         print ("Now Entering Page Two")
 
     def pageThree(self):
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
         pagethree = dataScience(self)
         pagethree.show()
         print ("Now Entering Page Three")
@@ -1796,12 +2727,30 @@ class createedditConvertorpage(QtGui.QMainWindow):
     def pageFour(self):
 
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
         pageFour = dataRelease(self)
         pageFour.show()
         print ("Now Entering Page 4")
 
     def pageFive(self):
+
+
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
         pageFive = gameWindow(self)
         pageFive.show()
         print ("Now Entering Page 5")
@@ -1838,7 +2787,7 @@ class convertorPage(QtGui.QMainWindow):
 #(Menubah)
 
 
-        self.pixmap = QtGui.QPixmap("intelmed.png")
+        self.pixmap = QtGui.QPixmap("images/intelmed.png")
 
         self.lbl2 = QtGui.QLabel(self)
         self.lbl2.setPixmap(self.pixmap)
@@ -1853,14 +2802,14 @@ class convertorPage(QtGui.QMainWindow):
 
 ###Icon bar
 
-        extractActionHome = QtGui.QAction(QtGui.QIcon('homelogo.png'), 'Home Page', self)
+        extractActionHome = QtGui.QAction(QtGui.QIcon('images/homelogo.png'), 'Home Page', self)
         extractActionHome.triggered.connect(self.startPage)
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(extractActionHome)
 
 
 
-        extractActionConvert = QtGui.QAction(QtGui.QIcon('convertlogo.png'), 'Convert Page', self)
+        extractActionConvert = QtGui.QAction(QtGui.QIcon('images/convertlogo.png'), 'Convert Page', self)
         extractActionConvert.triggered.connect(self.pageTwo)
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(extractActionConvert)
@@ -1868,17 +2817,17 @@ class convertorPage(QtGui.QMainWindow):
 
 
 
-        extractActiondataScience = QtGui.QAction(QtGui.QIcon('graphlogo.png'), 'Data Page', self)
+        extractActiondataScience = QtGui.QAction(QtGui.QIcon('images/graphlogo.png'), 'Data Page', self)
         extractActiondataScience.triggered.connect(self.pageThree)
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(extractActiondataScience)
 
-        extractActiondataRelease = QtGui.QAction(QtGui.QIcon('dataRelease.png'), 'Data Release', self)
+        extractActiondataRelease = QtGui.QAction(QtGui.QIcon('images/dataRelease.png'), 'Data Release', self)
         extractActiondataRelease.triggered.connect(self.pageFour)
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(extractActiondataRelease)
 
-        extractActiongameWindow = QtGui.QAction(QtGui.QIcon('gamelogo.png'), 'Tools', self)
+        extractActiongameWindow = QtGui.QAction(QtGui.QIcon('images/gamelogo.png'), 'Tools', self)
         extractActiongameWindow.triggered.connect(self.pageFive)
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(extractActiongameWindow)
@@ -1937,32 +2886,27 @@ class convertorPage(QtGui.QMainWindow):
         self.convertpageTwo = QtGui.QPushButton('IVR DATA DOWNLOAD', self)
         self.convertpageTwo.clicked.connect(self.filesdownloaderconvertor)
         self.convertpageTwo.setIconSize(QtCore.QSize(24,24))
-        self.convertpageTwo.move(250,70)
+        self.convertpageTwo.move(300,75)
         self.convertpageTwo.setFixedSize(250,50)
 
         self.convertpageThree = QtGui.QPushButton('IVR CLEANUP', self)
         self.convertpageThree.clicked.connect(self.filescleanupconvertor)
         self.convertpageThree.setIconSize(QtCore.QSize(24,24))
-        self.convertpageThree.move(500,70)
+        self.convertpageThree.move(600,75)
         self.convertpageThree.setFixedSize(250,50)
 
         self.convertpageFour = QtGui.QPushButton('IVR CONVERSION', self)
         self.convertpageFour.clicked.connect(self.createedditconvertor)
         self.convertpageFour.setIconSize(QtCore.QSize(24,24))
-        self.convertpageFour.move(750,70)
+        self.convertpageFour.move(900,75)
         self.convertpageFour.setFixedSize(250,50)
 
-        self.convertpageFive = QtGui.QPushButton('FINAL CHECK', self)
-        self.convertpageFive.clicked.connect(self.checkFile)
-        self.convertpageFive.setIconSize(QtCore.QSize(24,24))
-        self.convertpageFive.move(1000,70)
-        self.convertpageFive.setFixedSize(250,50)
 
 
         self.lblPage = QtGui.QLabel(self)
         self.lblPage.setText("Data Processing Center ")
-        self.lblPage.resize(340, 50)
-        self.lblPage.move(600,150)
+        self.lblPage.resize(360, 50)
+        self.lblPage.move(650,150)
 
 
 
@@ -1978,14 +2922,14 @@ class convertorPage(QtGui.QMainWindow):
 
 
         self.lblPage = QtGui.QLabel(self)
-        self.lblPage.setText("2. The file cleaner will properly format names, remove wrong punctuation in files, and group files in folders by name")
+        self.lblPage.setText("2.  The file cleaner will properly format names, remove wrong punctuation in files, and group files in folders by name")
         self.lblPage.resize(640, 50)
         self.lblPage.move(300,300)
 
 
         self.lblPage = QtGui.QLabel(self)
-        self.lblPage.setText("3.  This will merge the csv transcript and xml data into one long file.  If successful a text file be made and display any errors.")
-        self.lblPage.resize(640, 50)
+        self.lblPage.setText("3.  IVR will merge the csv transcript and xml data into one long file.  If successful a text file be made and display any errors.")
+        self.lblPage.resize(680, 50)
         self.lblPage.move(300,350)
 
 
@@ -2001,6 +2945,10 @@ class convertorPage(QtGui.QMainWindow):
 
     def checkFile(self):
         self.hide()
+        self.createedditconvertor = None
+        self.filescleanupconvertor = None
+        self.filesdownloaderconvertor = None
+        self.convercsvtoXml = None
         convert1 = finalCheck(self)
         convert1.show()
         print 'Button Pressed'
@@ -2008,6 +2956,10 @@ class convertorPage(QtGui.QMainWindow):
 
     def csvtoXmlconvertor(self):
         self.hide()
+        self.createedditconvertor = None
+        self.filescleanupconvertor = None
+        self.filesdownloaderconvertor = None
+        self.convercsvtoXml = None
         convert1 = convertcsvtoXml(self)
         convert1.show()
         print 'Button Pressed'
@@ -2015,40 +2967,79 @@ class convertorPage(QtGui.QMainWindow):
 
     def filesdownloaderconvertor(self):
         self.hide()
+        self.createedditconvertor = None
+        self.filescleanupconvertor = None
+        self.filesdownloaderconvertor = None
+        self.convercsvtoXml = None
         convert1 = filesdownloadConvertorpage(self)
         convert1.show()
         print 'Button Pressed'
 
     def filescleanupconvertor(self):
         self.hide()
+        self.createedditconvertor = None
+        self.filescleanupconvertor = None
+        self.filesdownloaderconvertor = None
+        self.convercsvtoXml = None
         convert1 = filescleanupConvertorpage(self)
         convert1.show()
         print 'Button Pressed'
 
     def createedditconvertor(self):
         self.hide()
+        self.createedditconvertor = None
+        self.filescleanupconvertor = None
+        self.filesdownloaderconvertor = None
+        self.convercsvtoXml = None
         convert1 = createedditConvertorpage(self)
         convert1.show()
         print 'Button Pressed'
 
 
+
     def startPage(self):
 
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
         startpage = mainWindow(self)
         startpage.show()
+
         print ("Now Entering Start Page")
 
 
     def pageTwo(self):
 
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
+
         pagetwo = convertorPage(self)
         pagetwo.show()
         print ("Now Entering Page Two")
 
     def pageThree(self):
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
         pagethree = dataScience(self)
         pagethree.show()
         print ("Now Entering Page Three")
@@ -2057,16 +3048,33 @@ class convertorPage(QtGui.QMainWindow):
     def pageFour(self):
 
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
         pageFour = dataRelease(self)
         pageFour.show()
         print ("Now Entering Page 4")
 
     def pageFive(self):
+
+
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
         pageFive = gameWindow(self)
         pageFive.show()
         print ("Now Entering Page 5")
-
 
 
 
@@ -2104,7 +3112,7 @@ class finalCheck(QtGui.QMainWindow):
 #(Menubah)
 
 
-        self.pixmap = QtGui.QPixmap("intelmed.png")
+        self.pixmap = QtGui.QPixmap("images/intelmed.png")
 
         self.lbl2 = QtGui.QLabel(self)
         self.lbl2.setPixmap(self.pixmap)
@@ -2121,14 +3129,14 @@ class finalCheck(QtGui.QMainWindow):
 
 ###Icon bar
 
-        extractActionHome = QtGui.QAction(QtGui.QIcon('homelogo.png'), 'Home Page', self)
+        extractActionHome = QtGui.QAction(QtGui.QIcon('images/homelogo.png'), 'Home Page', self)
         extractActionHome.triggered.connect(self.startPage)
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(extractActionHome)
 
 
 
-        extractActionConvert = QtGui.QAction(QtGui.QIcon('convertlogo.png'), 'Convert Page', self)
+        extractActionConvert = QtGui.QAction(QtGui.QIcon('images/convertlogo.png'), 'Convert Page', self)
         extractActionConvert.triggered.connect(self.pageTwo)
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(extractActionConvert)
@@ -2136,17 +3144,17 @@ class finalCheck(QtGui.QMainWindow):
 
 
 
-        extractActiondataScience = QtGui.QAction(QtGui.QIcon('graphlogo.png'), 'Data Page', self)
+        extractActiondataScience = QtGui.QAction(QtGui.QIcon('images/graphlogo.png'), 'Data Page', self)
         extractActiondataScience.triggered.connect(self.pageThree)
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(extractActiondataScience)
 
-        extractActiondataRelease = QtGui.QAction(QtGui.QIcon('dataRelease.png'), 'Data Release', self)
+        extractActiondataRelease = QtGui.QAction(QtGui.QIcon('images/dataRelease.png'), 'Data Release', self)
         extractActiondataRelease.triggered.connect(self.pageFour)
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(extractActiondataRelease)
 
-        extractActiongameWindow = QtGui.QAction(QtGui.QIcon('gamelogo.png'), 'Tools', self)
+        extractActiongameWindow = QtGui.QAction(QtGui.QIcon('images/gamelogo.png'), 'Tools', self)
         extractActiongameWindow.triggered.connect(self.pageFive)
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(extractActiongameWindow)
@@ -2205,30 +3213,20 @@ class finalCheck(QtGui.QMainWindow):
         self.convertpageTwo = QtGui.QPushButton('IVR DATA DOWNLOAD', self)
         self.convertpageTwo.clicked.connect(self.filesdownloaderconvertor)
         self.convertpageTwo.setIconSize(QtCore.QSize(24,24))
-        self.convertpageTwo.move(250,70)
+        self.convertpageTwo.move(300,75)
         self.convertpageTwo.setFixedSize(250,50)
 
         self.convertpageThree = QtGui.QPushButton('IVR CLEANUP', self)
         self.convertpageThree.clicked.connect(self.filescleanupconvertor)
         self.convertpageThree.setIconSize(QtCore.QSize(24,24))
-        self.convertpageThree.move(500,70)
+        self.convertpageThree.move(600,75)
         self.convertpageThree.setFixedSize(250,50)
 
         self.convertpageFour = QtGui.QPushButton('IVR CONVERSION', self)
         self.convertpageFour.clicked.connect(self.createedditconvertor)
         self.convertpageFour.setIconSize(QtCore.QSize(24,24))
-        self.convertpageFour.move(750,70)
+        self.convertpageFour.move(900,75)
         self.convertpageFour.setFixedSize(250,50)
-
-
-
-
-        self.convertpageFive = QtGui.QPushButton('FINAL CHECK', self)
-        self.convertpageFive.clicked.connect(self.checkFile)
-        self.convertpageFive.setIconSize(QtCore.QSize(24,24))
-        self.convertpageFive.move(1000,70)
-        self.convertpageFive.setFixedSize(250,50)
-
 
         self.fileButton = QtGui.QPushButton('Select Txt', self)
         self.fileButton.clicked.connect(self.selectTxt)
@@ -2353,6 +3351,9 @@ class finalCheck(QtGui.QMainWindow):
 
     def checkFile(self):
         self.hide()
+        self.filescleanupconvertor = None
+        self.filesdownloaderconvertor = None
+        self.createedditconvertor = None
         convert1 = finalCheck(self)
         convert1.show()
         print 'Button Pressed'
@@ -2360,6 +3361,11 @@ class finalCheck(QtGui.QMainWindow):
 
     def csvtoXmlconvertor(self):
         self.hide()
+        self.filescleanupconvertor = None
+        self.filesdownloaderconvertor = None
+        self.createedditconvertor = None
+        self.finalCheck = None
+
         convert1 = convertcsvtoXml(self)
         convert1.show()
         print 'Button Pressed'
@@ -2367,18 +3373,32 @@ class finalCheck(QtGui.QMainWindow):
 
     def filesdownloaderconvertor(self):
         self.hide()
+        self.filescleanupconvertor = None
+        #self.filesdownloaderconvertor = None
+        self.createedditconvertor = None
+        self.finalCheck = None
+
         convert1 = filesdownloadConvertorpage(self)
         convert1.show()
         print 'Button Pressed'
 
     def filescleanupconvertor(self):
         self.hide()
+        #self.filescleanupconvertor = None
+        self.filesdownloaderconvertor = None
+        self.createedditconvertor = None
+        self.finalCheck = None
+
         convert1 = filescleanupConvertorpage(self)
         convert1.show()
         print 'Button Pressed'
 
     def createedditconvertor(self):
         self.hide()
+        self.filescleanupconvertor = None
+        #self.filesdownloaderconvertor = None
+        self.createedditconvertor = None
+        convert1 = filesdownloadConvertorpage(self)
         convert1 = createedditConvertorpage(self)
         convert1.show()
         print 'Button Pressed'
@@ -2392,24 +3412,50 @@ class finalCheck(QtGui.QMainWindow):
 
 
 
+
     def startPage(self):
 
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
         startpage = mainWindow(self)
         startpage.show()
-        print ("Now Entering Start Page")
 
+        print ("Now Entering Start Page")
 
 
     def pageTwo(self):
 
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
+
         pagetwo = convertorPage(self)
         pagetwo.show()
         print ("Now Entering Page Two")
 
     def pageThree(self):
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
         pagethree = dataScience(self)
         pagethree.show()
         print ("Now Entering Page Three")
@@ -2418,16 +3464,33 @@ class finalCheck(QtGui.QMainWindow):
     def pageFour(self):
 
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
         pageFour = dataRelease(self)
         pageFour.show()
         print ("Now Entering Page 4")
 
     def pageFive(self):
+
+
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
         pageFive = gameWindow(self)
         pageFive.show()
         print ("Now Entering Page 5")
-
 
 
 
@@ -2477,14 +3540,14 @@ class dataScience(QtGui.QMainWindow):
 ###Icon bar
 
 
-        extractActionHome = QtGui.QAction(QtGui.QIcon('homelogo.png'), 'Home Page', self)
+        extractActionHome = QtGui.QAction(QtGui.QIcon('images/homelogo.png'), 'Home Page', self)
         extractActionHome.triggered.connect(self.startPage)
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(extractActionHome)
 
 
 
-        extractActionConvert = QtGui.QAction(QtGui.QIcon('convertlogo.png'), 'Convert Page', self)
+        extractActionConvert = QtGui.QAction(QtGui.QIcon('images/convertlogo.png'), 'Convert Page', self)
         extractActionConvert.triggered.connect(self.pageTwo)
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(extractActionConvert)
@@ -2492,22 +3555,22 @@ class dataScience(QtGui.QMainWindow):
 
 
 
-        extractActiondataScience = QtGui.QAction(QtGui.QIcon('graphlogo.png'), 'Data Page', self)
+        extractActiondataScience = QtGui.QAction(QtGui.QIcon('images/graphlogo.png'), 'Data Page', self)
         extractActiondataScience.triggered.connect(self.pageThree)
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(extractActiondataScience)
 
-        extractActiondataRelease = QtGui.QAction(QtGui.QIcon('dataRelease.png'), 'Data Release', self)
+        extractActiondataRelease = QtGui.QAction(QtGui.QIcon('images/dataRelease.png'), 'Data Release', self)
         extractActiondataRelease.triggered.connect(self.pageFour)
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(extractActiondataRelease)
 
-        extractActiongameWindow = QtGui.QAction(QtGui.QIcon('gamelogo.png'), 'Tools', self)
+        extractActiongameWindow = QtGui.QAction(QtGui.QIcon('images/gamelogo.png'), 'Tools', self)
         extractActiongameWindow.triggered.connect(self.pageFive)
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(extractActiongameWindow)
 ##Calnder
-        self.pixmap = QtGui.QPixmap("intelmed.png")
+        self.pixmap = QtGui.QPixmap("images/intelmed.png")
 
         self.lbl2 = QtGui.QLabel(self)
         self.lbl2.setPixmap(self.pixmap)
@@ -2598,10 +3661,7 @@ class dataScience(QtGui.QMainWindow):
         self.lbl.move(580,40)
 
 
-        self.lblPage = QtGui.QLabel(self)
-        self.lblPage.setText("Data Release Uploading Center ")
-        self.lblPage.resize(340, 50)
-        self.lblPage.move(570,150)
+
 
 
 
@@ -2640,8 +3700,6 @@ class dataScience(QtGui.QMainWindow):
 
 
 
-
-
     def showDate(self, date):
 
         self.lbl.setText(date.toString())
@@ -2664,23 +3722,50 @@ class dataScience(QtGui.QMainWindow):
         convert1.show()
         print 'Button Pressed'
 
+
     def startPage(self):
 
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
         startpage = mainWindow(self)
         startpage.show()
+
         print ("Now Entering Start Page")
 
 
     def pageTwo(self):
 
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
+
         pagetwo = convertorPage(self)
         pagetwo.show()
         print ("Now Entering Page Two")
 
     def pageThree(self):
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
         pagethree = dataScience(self)
         pagethree.show()
         print ("Now Entering Page Three")
@@ -2689,12 +3774,30 @@ class dataScience(QtGui.QMainWindow):
     def pageFour(self):
 
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
         pageFour = dataRelease(self)
         pageFour.show()
         print ("Now Entering Page 4")
 
     def pageFive(self):
+
+
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
         pageFive = gameWindow(self)
         pageFive.show()
         print ("Now Entering Page 5")
@@ -2720,7 +3823,7 @@ class ldsuploadformatPage(QtGui.QMainWindow):
 
 #_________________________________________________________________________
 #(Menubah)
-        self.pixmap = QtGui.QPixmap("intelmed.png")
+        self.pixmap = QtGui.QPixmap("images/intelmed.png")
 
         self.lbl2 = QtGui.QLabel(self)
         self.lbl2.setPixmap(self.pixmap)
@@ -2733,7 +3836,7 @@ class ldsuploadformatPage(QtGui.QMainWindow):
 
         self.lbl = QtGui.QLabel(self)
         self.lbl.setText("Data Release Made Easy")
-        self.lbl.move(550,20)
+        self.lbl.move(570,20)
         self.lbl.resize(250,70)
 
 
@@ -2942,23 +4045,50 @@ class ldsuploadformatPage(QtGui.QMainWindow):
         print 'Button Pressed'
 
 
+
     def startPage(self):
 
         self.hide()
-        startpage = mainWindow()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
+        startpage = mainWindow(self)
         startpage.show()
+
         print ("Now Entering Start Page")
 
 
     def pageTwo(self):
 
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
+
         pagetwo = convertorPage(self)
         pagetwo.show()
         print ("Now Entering Page Two")
 
     def pageThree(self):
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
         pagethree = dataScience(self)
         pagethree.show()
         print ("Now Entering Page Three")
@@ -2967,12 +4097,30 @@ class ldsuploadformatPage(QtGui.QMainWindow):
     def pageFour(self):
 
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
         pageFour = dataRelease(self)
         pageFour.show()
         print ("Now Entering Page 4")
 
     def pageFive(self):
+
+
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
         pageFive = gameWindow(self)
         pageFive.show()
         print ("Now Entering Page 5")
@@ -3008,7 +4156,7 @@ class emaildataUpload(QtGui.QMainWindow):
 
 #_________________________________________________________________________
 #(Menubah)
-        self.pixmap = QtGui.QPixmap("intelmed.png")
+        self.pixmap = QtGui.QPixmap("images/intelmed.png")
 
         self.lbl2 = QtGui.QLabel(self)
         self.lbl2.setPixmap(self.pixmap)
@@ -3021,7 +4169,7 @@ class emaildataUpload(QtGui.QMainWindow):
 
         self.lbl = QtGui.QLabel(self)
         self.lbl.setText("Data Release Made Easy")
-        self.lbl.move(550,20)
+        self.lbl.move(570,20)
         self.lbl.resize(250,70)
 
 
@@ -3096,6 +4244,7 @@ class emaildataUpload(QtGui.QMainWindow):
 
 
 
+
         self.textEdit = QtGui.QTextEdit(self)
         self.textEdit.resize(600,400)
         self.textEdit.move(450,360)
@@ -3117,6 +4266,20 @@ class emaildataUpload(QtGui.QMainWindow):
         self.show()
 
 
+    def directorySource(self):
+        pass
+
+    def directoryMaker(self):
+        pass
+
+    def quickMove(self):
+        for root, dirs, files in os.walk(directory):
+            if len(files) >= 5:
+                for f in files:
+                    #print(os.path.join(root, f))
+
+                    if f.endswith("_Edited.xml"):
+                        print f + ' THIS WILL BE DATA FILE'
 
     def checkFile(self):
         self.hide()
@@ -3194,20 +4357,46 @@ class emaildataUpload(QtGui.QMainWindow):
     def startPage(self):
 
         self.hide()
-        startpage = mainWindow()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
+        startpage = mainWindow(self)
         startpage.show()
+
         print ("Now Entering Start Page")
 
 
     def pageTwo(self):
 
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
+
         pagetwo = convertorPage(self)
         pagetwo.show()
         print ("Now Entering Page Two")
 
     def pageThree(self):
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
         pagethree = dataScience(self)
         pagethree.show()
         print ("Now Entering Page Three")
@@ -3216,16 +4405,33 @@ class emaildataUpload(QtGui.QMainWindow):
     def pageFour(self):
 
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
         pageFour = dataRelease(self)
         pageFour.show()
         print ("Now Entering Page 4")
 
     def pageFive(self):
+
+
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
         pageFive = gameWindow(self)
         pageFive.show()
         print ("Now Entering Page 5")
-
     def showDate(self, date):
 
         self.lbl.setText(date.toString())
@@ -3252,7 +4458,7 @@ class mainWindow(QtGui.QMainWindow):
 
     def initUI(self):
         self.setGeometry(300,300,1280,800)
-        self.setWindowTitle("Intel")
+        self.setWindowTitle("Intel V1.01")
         self.setWindowIcon(QtGui.QIcon("Intel.png"))
         #self.setStyleSheet("background-color: rgb(255, 255, 255);\n")
                            #"border:1px solid rgb(0, 131, 195);")
@@ -3279,14 +4485,14 @@ class mainWindow(QtGui.QMainWindow):
 ###Icon bar
 
 
-        extractActionHome = QtGui.QAction(QtGui.QIcon('homelogo.png'), 'Home Page', self)
+        extractActionHome = QtGui.QAction(QtGui.QIcon('images/homelogo.png'), 'Home Page', self)
         extractActionHome.triggered.connect(self.startPage)
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(extractActionHome)
 
 
 
-        extractActionConvert = QtGui.QAction(QtGui.QIcon('convertlogo.png'), 'Convert Page', self)
+        extractActionConvert = QtGui.QAction(QtGui.QIcon('images/convertlogo.png'), 'Convert Page', self)
         extractActionConvert.triggered.connect(self.pageTwo)
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(extractActionConvert)
@@ -3294,17 +4500,17 @@ class mainWindow(QtGui.QMainWindow):
 
 
 
-        extractActiondataScience = QtGui.QAction(QtGui.QIcon('graphlogo.png'), 'Data Page', self)
+        extractActiondataScience = QtGui.QAction(QtGui.QIcon('images/graphlogo.png'), 'Data Page', self)
         extractActiondataScience.triggered.connect(self.pageThree)
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(extractActiondataScience)
 
-        extractActiondataRelease = QtGui.QAction(QtGui.QIcon('dataRelease.png'), 'Data Release', self)
+        extractActiondataRelease = QtGui.QAction(QtGui.QIcon('images/dataRelease.png'), 'Data Release', self)
         extractActiondataRelease.triggered.connect(self.pageFour)
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(extractActiondataRelease)
 
-        extractActiongameWindow = QtGui.QAction(QtGui.QIcon('gamelogo.png'), 'Tools', self)
+        extractActiongameWindow = QtGui.QAction(QtGui.QIcon('images/gamelogo.png'), 'Tools', self)
         extractActiongameWindow.triggered.connect(self.pageFive)
         self.toolBar = self.addToolBar("Extraction")
         self.toolBar.addAction(extractActiongameWindow)
@@ -3360,7 +4566,7 @@ class mainWindow(QtGui.QMainWindow):
         self.lbl.move(580,40)
 
 
-        self.pixmap = QtGui.QPixmap("intelmed.png")
+        self.pixmap = QtGui.QPixmap("images/intelmed.png")
 
         self.lbl2 = QtGui.QLabel(self)
         self.lbl2.setPixmap(self.pixmap)
@@ -3368,7 +4574,7 @@ class mainWindow(QtGui.QMainWindow):
         self.lbl2.resize(300,200)
 
 
-        self.pixmap = QtGui.QPixmap("DataScience.png")
+        self.pixmap = QtGui.QPixmap("images/DataScience.png")
 
         self.lbl2 = QtGui.QLabel(self)
         self.lbl2.setPixmap(self.pixmap)
@@ -3413,23 +4619,50 @@ class mainWindow(QtGui.QMainWindow):
         sys.exit()
 
 
+
     def startPage(self):
 
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
         startpage = mainWindow(self)
         startpage.show()
+
         print ("Now Entering Start Page")
 
 
     def pageTwo(self):
 
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
+
         pagetwo = convertorPage(self)
         pagetwo.show()
         print ("Now Entering Page Two")
 
     def pageThree(self):
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
         pagethree = dataScience(self)
         pagethree.show()
         print ("Now Entering Page Three")
@@ -3438,6 +4671,14 @@ class mainWindow(QtGui.QMainWindow):
     def pageFour(self):
 
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
         pageFour = dataRelease(self)
         pageFour.show()
         print ("Now Entering Page 4")
@@ -3446,6 +4687,14 @@ class mainWindow(QtGui.QMainWindow):
 
 
         self.hide()
+        self.gameWindow = None
+        self.downloadWindow = None
+        self.uploadWindow = None
+        self.convertorPage = None
+        self.dataRelease = None
+        self.dataScience = None
+        self.mainWindow = None
+        print ("Closed**********************")
         pageFive = gameWindow(self)
         pageFive.show()
         print ("Now Entering Page 5")

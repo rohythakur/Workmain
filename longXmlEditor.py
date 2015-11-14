@@ -1,21 +1,13 @@
-__author__ = 'eeamesX'
-""" longXmlEditor """
-
-# the folder(s), csv file(s), and xml file(s) should all have the same name.
-# for example:  ./data/longXmlEditor.py
-#               ./data/22CyclingOut/22CyclingOut.csv
-#               ./data/22CyclingOut/22CyclingOut.xml
-
 from collections import Counter
-from lxml import etree
-import csv
-import os, os.path, shutil, argparse
-from prettytable import PrettyTable
-import UnicodeCSV
+import os
+import os.path
 import sys
 import shutil
-import unicodedata
 
+from lxml import etree
+from prettytable import PrettyTable
+
+from tools import UnicodeCSV
 
 try:
     __import__('prettytable')
@@ -25,7 +17,16 @@ except ImportError:
     pass
 
 
+
+
+
+print ("starting conversion")
+
 directory = sys.argv[1]
+
+print str(directory) + "this si string of directory"
+
+
 
 def resetToZero(root):
 	allPromptStartNodes = root.findall(".//promptStartMillis")
@@ -302,9 +303,7 @@ def Main():
                                     xmlElement.append(languageTag)
                                     languageCounter += 1
 
-                                    genderTag = etree.Element('gender')
-                                    if genderTag.text == 'Femme':
-                                        genderTag.text = 'Female'
+                                    languageIden = 'French'
 
 
                                 elif "DE" in lan:
@@ -313,12 +312,15 @@ def Main():
                                     xmlElement.append(languageTag)
                                     languageCounter += 1
 
+                                    languageIden = 'German'
+
 
                                 elif "IT" in lan:
                                     languageTag = etree.Element('language')
                                     languageTag.text = 'Italian'
                                     xmlElement.append(languageTag)
                                     languageCounter += 1
+                                    languageIden = 'Italian'
 
 
 
@@ -329,6 +331,8 @@ def Main():
                                     languageTag.text = 'Spanish'
                                     xmlElement.append(languageTag)
                                     languageCounter += 1
+
+                                    languageIden = 'Spanish'
 
 
 
@@ -354,7 +358,7 @@ def Main():
                                 pass
                             else:
                                 if METRICS.text == 'calorie':
-                                    METRICS.text == 'calories'
+                                    METRICS.text = 'calories'
                                     calorieCounter += 1
                                 else:
                                     pass
@@ -365,7 +369,7 @@ def Main():
                                 pass
                             else:
                                 if TIMETYPE2.text == 'tommorow':
-                                    TIMETYPE2.text == 'tomorrow'
+                                    TIMETYPE2.text = 'tomorrow'
                                     timeType2Counter += 1
                                 else:
                                     pass
@@ -380,7 +384,6 @@ def Main():
                                 totalExtraPrompts += numberOfTranscriptionPerPrompt
                             elif numberOfTranscriptionPerPrompt < 1:
                                 noTranscriptionPrompts.append("<%s> has no transcription" %(literalPrompt))
-                        import subprocess
                         tree = etree.ElementTree(root)
                         tree.write(output_file, pretty_print=True, encoding="utf-8")
 
@@ -430,20 +433,21 @@ def Main():
                             print "Prompt(s) with multiple transcriptions:"
                             countX = 0
                             for x in  multipleTranscriptionPrompts:
-                                countX += 1
-                                print countX, x
+                                try:
+                                    countX += 1
+                                    print countX, x
+                                except UnicodeError:
+                                    continue
 
                         if len(noTranscriptionPrompts) > 0:
                             print "\nPrompt(s) with no transcription:"
                             countY = 0
                             for y in  noTranscriptionPrompts:
                                 try:
-
-
                                     countY += 1
                                     print countY, y
                                 except UnicodeError:
-                                    pass
+                                    continue
 
                         #print len(addedTranscriptions)
                         #print len(allTranscriptionsFromCsv)
@@ -451,7 +455,10 @@ def Main():
                         print "\nTranscriptions duplicates:"
                         for k,v in Counter(allTranscriptionsFromCsv).items():
                             if v > 1:
-                                print k, ":", v, "times"
+                                try:
+                                    print k, ":", v, "times"
+                                except UnicodeError:
+                                    continue
 
                         csvTranscriptions = set(allTranscriptionsFromCsv)
                         usedTranscriptions = set(addedTranscriptions)
@@ -471,7 +478,8 @@ def Main():
                                     countR += 1
                                     print countR, x
                                 except UnicodeError:
-                                    pass
+                                    continue
+
 
 
                         countPR = 0
@@ -482,12 +490,16 @@ def Main():
                                     countPR += 1
                                     print countPR, x
                                 except UnicodeError:
-                                    pass
+                                    continue
+
                         if len(sameLineTimeStampingError) > 0:
                             print "\nTime stamping inconsitencies were found in the csv file:"
                             for x in sameLineTimeStampingError:
-                                countPR += 1
-                                print countPR, x
+                                try:
+                                    countPR += 1
+                                    print countPR, x
+                                except UnicodeError:
+                                    continue
 
 
                         print "\nNumber of 'Prompt' element(s) found in the xml file:", xmlElementCounter
@@ -508,7 +520,7 @@ def Main():
                         if timeType2Counter > 0:
                             print timeType2Counter, "tommorow > tomorrow"
                         if languageCounter > 0:
-                            print languageCounter, "language tags added with the value 'English'"
+                            print languageCounter, "language tags added with the value " + languageIden
 
                         #for x in listOfUsedTranscriptions:
                         #    print x

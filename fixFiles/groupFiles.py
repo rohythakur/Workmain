@@ -25,7 +25,7 @@ for f in os.listdir(directoryChosen):
             os.mkdir(destination)
             print " Path is created ..maiking directory here"
 
-            shutil.copy(source, dest_path)
+            shutil.copy(source, destination)
 
         if os.path.isdir(destination):
 

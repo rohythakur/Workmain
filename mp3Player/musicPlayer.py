@@ -3,7 +3,7 @@ import pygame
 
 import os, sys
 import time
-
+from datetime import datetime
 
 
 pygame.mixer.pre_init(18000, -16, 2, 2048) # setup mixer to get sound right
@@ -38,6 +38,10 @@ forImg = pygame.image.load('forward.png')
 forImg = pygame.transform.scale(forImg, (50,50))
 stopImg = pygame.image.load('play.png')
 stopImg = pygame.transform.scale(stopImg, (50,50))
+exitImg = pygame.image.load('exit.png')
+exitImg = pygame.transform.scale(stopImg, (50,50))
+intelImg = pygame.image.load('exit.png')
+intelImg = pygame.transform.scale(stopImg, (50,50))
 
 
 display_width = 500
@@ -47,11 +51,8 @@ gameDisplay = pygame.display.set_mode((display_width,display_height))
 pygame.display.set_caption('Audio Player')
 
 
-smallfont = pygame.font.SysFont("comicsansms", 25)
-medfont = pygame.font.SysFont("comicsansms", 50)
-largefont = pygame.font.SysFont("comicsansms", 85)
 
-done = False
+
 musicExit = False
 
 
@@ -99,7 +100,7 @@ def button(text, x, y, width, height, inactive_color, active_color, action = Non
 
             if action == "play":
                 print("clicked play")
-                stopPlay()
+                Play()
 
             if action == "back":
                 print("clicked back")
@@ -128,12 +129,25 @@ def forwardButton():
 
 def backButton():
     pygame.mixer.music.rewind()
-    pygame.mixer.music.stop()
 
-def stopPlay():
-    pygame.mixer.music.pause()
 
-    pygame.mixer.music.unpause()
+
+
+def Play():
+    a = pygame.mixer.Sound("test.wav")
+    print("length",a.get_length())
+    soundfile = 'test.wav'
+    pygame.mixer.init()
+    pygame.mixer.music.load(soundfile)
+    #pygame.mixer.music.play()
+    pygame.mixer.music.set_volume(1.0)
+    time.sleep(1)
+    pygame.mixer.music.play()
+
+
+
+    return pygame.mixer.music.get_pos()
+
 
 
 def stopmusic():
@@ -144,18 +158,38 @@ def stopmusic():
 
 def playloop():
     print 'starting'
-    fps = 60
+    fps = 30
+    start=datetime.now()
+    # Set up clock
+    clock = pygame.time.Clock()
 
 
 
 
+    print datetime.now()-start
     while not musicExit:
 
+
+
+        time.sleep(0.020)
+
+
         events = pygame.event.get()
+        for event in events:
 
-        pygame.mixer.music.load('test2.wav')#load music
+            if event.type == pygame.QUIT:
+                sys.exit()
 
-        pygame.mixer.music.play(-1)
+
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.Q:
+                    sys.exit()
+            elif event.type == pygame.MOUSEMOTION:
+                 #print "mouse at (%d, %d)" % event.pos
+                pass
+
+
         gameDisplay.fill(white)
 
 
@@ -163,37 +197,30 @@ def playloop():
 
 
 
-        button("play", 200,200,100,50, green, light_green, action="play")
-        button("back", 50,200,100,50, yellow, light_yellow, action="back")
-        button("forward", 350,200,100,50, yellow, light_yellow, action="forward")
+        button("", 225,200,50,50, white, white, action="play")
+        button("", 75,200,50,50, white, white, action="back")
+        button("", 375,200,50,50, white, white, action="forward")
 
-        button("quit", 400,350,100,50, red, light_red, action ="quit")
-        gameDisplay.blit(backImg, (50,200))
-        #gameDisplay.blit(playImg, (50,200))
-        gameDisplay.blit(stopImg, (200,150))
-        gameDisplay.blit(forImg, (350,200))
+        button("", 450,350,50,50, white, white, action ="quit")
+        gameDisplay.blit(backImg, (75,200))
+
+        gameDisplay.blit(stopImg, (225,200))
+        gameDisplay.blit(forImg, (375,200))
+        gameDisplay.blit(intelImg, (375,200))
+        gameDisplay.blit(exitImg, (450,350))
         clock.tick(fps)
         pygame.display.flip()
-        if pygame.mixer.music.get_busy():
 
-            for event in events:
 
-                if event.type == pygame.QUIT:
-                    sys.exit()
 
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.Q:
-                        sys.exit()
-                elif event.type == pygame.MOUSEMOTION:
-                     #print "mouse at (%d, %d)" % event.pos
-                    pass
 
 
     pygame.quit()
     quit()
 
 
-start_time = time.time()
-print("--- %s seconds ---" % (time.time() - start_time))
+
+
+
 playloop()
 pygame.quit()
