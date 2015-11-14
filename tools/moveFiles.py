@@ -46,6 +46,11 @@ class moveWindow(QtGui.QMainWindow):
         self.source.move(260,120)
 
 
+        self.lbl = QtGui.QLabel(self)
+        self.lbl.setText("Ex: FR_042")
+        self.lbl.resize(145, 25)
+        self.lbl.move(560,120)
+
 
 
 
@@ -58,15 +63,25 @@ class moveWindow(QtGui.QMainWindow):
         self.dest = QtGui.QLineEdit(self)
         self.dest.resize(250, 30)
         self.dest.move(260,220)
+        self.lbl = QtGui.QLabel(self)
+        self.lbl.setText("Ex: releaseNov12")
+        self.lbl.resize(145, 25)
+        self.lbl.move(560,220)
 
 
 
         self.button = QtGui.QPushButton('Move!', self)
         self.button.clicked.connect(self.quickMove)
+        self.button.clicked.connect(self.removeEnd)
+        self.button.clicked.connect(self.showFinished)
 
-        self.button.move(250, 320)
+        self.button.move(350, 280)
 
 
+
+        self.buttonclose = QtGui.QPushButton('Quit', self)
+        self.buttonclose.clicked.connect(self.close_application)
+        self.buttonclose.move(670, 550)
 
 
         self.lbl = QtGui.QLabel(self)
@@ -75,6 +90,10 @@ class moveWindow(QtGui.QMainWindow):
         self.lbl.move(360,40)
 
 
+        self.listWidgetcomplete = QtGui.QListWidget(self)
+
+        self.listWidgetcomplete.move(220,330)
+        self.listWidgetcomplete.resize(390,250)
 
 
 
@@ -138,23 +157,60 @@ class moveWindow(QtGui.QMainWindow):
                     if f.endswith("_Edited.xml"):
 
 
-                        #remove Edited and change directorys
+
                         print f + ' THIS WILL BE DATA FILE'
                         fname, fext = os.path.splitext(f)
-                        print fname
-                        ftoMove = directory + '/' + f
-                        shutil.copy2(ftoMove, directoryEnd)
+                        print fname[:-7]
+
+                        try:
+                            ftoMove = directory + '/' + fname[:-7] + '/' + f
+                            print ftoMove + 'this is file xml to move'
+                            shutil.copy2(ftoMove, directoryEnd)
+
+                        except Exception as e:
+                            print str(e)
 
                     elif f.endswith(".wav"):
                         print f + ' This is wav file'
                         fname, fext = os.path.splitext(f)
-                        print fname
-                        ftoMove = directory + '/' + f
-                        shutil.copy2(ftoMove, directoryEnd)
+
+                        try:
+                            ftoMove = directory + '/' + fname + '/' + f
+                            print ftoMove + 'this is file xml to move'
+                            shutil.copy2(ftoMove, directoryEnd)
 
 
-                        #shutil.copy2(f, directoryEnd)
 
+
+                        except Exception as e:
+                            print str(e)
+
+
+
+    def removeEnd(self):
+        directoryEnd = str(self.dest.text())
+
+        print directoryEnd + "this is directory in removeend"
+
+        for f in os.listdir(directoryEnd):
+            filepath = os.path.join(directoryEnd, f)
+            if f.endswith("_Edited.xml"):
+                print f + " this needs to be renamed!!!!"
+                os.rename(filepath, filepath[:-11] + '.xml')
+
+
+
+
+
+    def showFinished(self):
+        directoryEnd = str(self.dest.text())
+
+        print directoryEnd + "this is directory in removeend"
+
+        for f in os.listdir(directoryEnd):
+            if f.endswith(".xml"):
+
+                self.listWidgetcomplete.addItem(f)
 
 
 
