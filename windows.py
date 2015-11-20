@@ -3405,8 +3405,6 @@ class finalCheck(QtGui.QMainWindow):
 
 
 
-
-
     def startPage(self):
 
         self.hide()
